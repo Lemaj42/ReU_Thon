@@ -45,4 +45,4 @@ security:
     - { path: ^/admin, roles: ROLE_ADMIN } # Accès restreint aux administrateurs
     - { path: ^/meeting, roles: ROLE_USER } # Accès aux réunions pour les utilisateurs authentifiés
     - { path: ^/user, roles: IS_AUTHENTICATED_FULLY } # Accès aux pages utilisateur pour les utilisateurs authentifiés
-    - { path: ^/login  } # La page de login doit être accessible uniquement aux anonymes
+    - { path: ^/login } # La page de login doit être accessible uniquement aux anonymes

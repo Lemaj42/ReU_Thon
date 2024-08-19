@@ -18,20 +18,21 @@ class RegisterFormType extends AbstractType
     {
         $builder
             ->add('firstname', TextType::class, [
-                'label' => 'First Name',
+                'label' => 'Prénom :',
             ])
             ->add('lastname', TextType::class, [
-                'label' => 'Last Name',
+                'label' => 'Nom :',
             ])
             ->add('email', EmailType::class, [
-                'label' => 'Email Address',
+                'label' => 'Email :',
             ])
             ->add('plainPassword', PasswordType::class, [
-                'label' => 'Password',
+                'label' => 'Mot de pass :',
             ])
-            ->add('agreeTerms', CheckboxType::class, [
-                'mapped' => false,
-            ]);
+            // ->add('agreeTerms', CheckboxType::class, [
+            //     'mapped' => false,
+            // ])
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver): void

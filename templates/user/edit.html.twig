@@ -4,12 +4,12 @@
 {% endblock %}
 
 {% block body %}
-	<h1>Edit User</h1>
 
 	{{ form_start(form) }}
 	{{ form_widget(form) }}
 	<button class="btn">Save</button>
 	{{ form_end(form) }}
 
-	<a href="{{ path('app_user_index') }}">Back to list</a>
+	<a href="{{ path('app_meeting_index') }}">Back to list</a>
+
 {% endblock %}

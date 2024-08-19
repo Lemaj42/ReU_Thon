@@ -1,6 +1,6 @@
-/* Styles de base similaires à ceux de index.css */
+/* Styles de base */
 body {
-    background-color: #4a148c;
+    background-color: #FFCD19;
     font-family: 'Roboto', sans-serif;
     margin: 0;
     padding: 0;
@@ -10,88 +10,87 @@ body {
     min-height: 100vh;
 }
 
-/* Centrage de la carte et ajout de styles */
-.container {
+/* Conteneur de connexion */
+.login-container {
     display: flex;
     justify-content: center;
     align-items: center;
     min-height: 100vh;
 }
 
-.card {
+/* Boîte de connexion (similaire à la carte) */
+.login-box {
+    display: flex;
+    width: 900px;
     background-color: #fff;
     border-radius: 15px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
-    width: 100%;
-    max-width: 600px;
-    padding: 20px;
 }
 
-.card-header {
-    background-color: #3f51b5;
+.login-content {
+    flex: 1;
+    padding: 40px;
+}
+
+/* Titre de la section de connexion */
+.login-header {
+    text-align: left;
+    margin-bottom: 30px;
+}
+
+h1 {
+    font-size: 36px;
+    color: #333;
+}
+
+h1 strong {
+    color: #FFCD19;
+}
+
+/* Styles pour le formulaire et les champs */
+.form-group {
+    margin-bottom: 20px;
+}
+
+/* Boutons de soumission et d'annulation */
+.login-buttons {
+    display: flex;
+    justify-content: space-between;
+}
+
+.btn-login {
+    background-color: #D01900;
     color: white;
-    padding: 15px;
-    border-top-left-radius: 15px;
-    border-top-right-radius: 15px;
-    text-align: center;
-    font-size: 24px;
-    font-weight: bold;
-}
-
-.card-body {
-    padding: 30px;
-}
-
-.card-body .form-group {
-    margin-bottom: 15px;
-}
-
-/* Styles des boutons */
-.btn-primary {
-    background-color: #ff4081;
-    color: white;
-    padding: 12px 20px;
+    padding: 15px 30px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
-    width: 100%;
-    margin-bottom: 15px;
-    transition: background-color 0.3s ease;
 }
 
-.btn-primary:hover {
-    background-color: #e91e63;
-}
-
-.btn-secondary {
+.btn-signup {
     background-color: transparent;
-    color: #3f51b5;
-    padding: 12px 20px;
-    border: 2px solid #3f51b5;
+    color: #FFCD19;
+    padding: 15px 30px;
+    border: 2px solid #FFCD19;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
-    width: 100%;
-    transition: background-color 0.3s ease;
 }
 
-.btn-secondary:hover {
-    background-color: #3f51b5;
+.btn-login:hover {
+    background-color: #FFCD19;
+}
+
+.btn-signup:hover {
+    background-color: #FFCD19;
     color: white;
 }
 
-/* Alignement centré des boutons */
-.text-center {
-    text-align: center;
-}
-
-.text-center .btn {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    width: 48%;
-}
-
-.text-center .btn+.btn {
-    margin-left: 4%;
+/* Image à droite */
+.login-image {
+    flex: 1;
+    background-image: url('{{ asset("images/Logo_Téléthon_France.svg") }}');
+    background-size: cover;
+    background-position: center;
+    border-top-right-radius: 15px;
+    border-bottom-right-radius: 15px;
 }
