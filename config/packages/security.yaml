@@ -1,39 +1,48 @@
 security:
-    # https://symfony.com/doc/current/security.html#registering-the-user-hashing-passwords
-    password_hashers:
-        Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: 'auto'
-    # https://symfony.com/doc/current/security.html#loading-the-user-the-user-provider
-    providers:
-        users_in_memory: { memory: null }
-    firewalls:
-        dev:
-            pattern: ^/(_(profiler|wdt)|css|images|js)/
-            security: false
-        main:
-            lazy: true
-            provider: users_in_memory
+  # Gestion du hachage des mots de passe
+  password_hashers:
+    Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface: "auto"
 
-            # activate different ways to authenticate
-            # https://symfony.com/doc/current/security.html#the-firewall
+  # Fournisseur d'utilisateurs basé sur l'entité User
+  providers:
+    app_user_provider:
+      entity:
+        class: App\Entity\User
+        property: email
 
-            # https://symfony.com/doc/current/security/impersonating_user.html
-            # switch_user: true
+  firewalls:
+    # Désactiver la sécurité pour certaines routes de développement
+    dev:
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
 
-    # Easy way to control access for large sections of your site
-    # Note: Only the *first* access control that matches will be used
-    access_control:
-        # - { path: ^/admin, roles: ROLE_ADMIN }
-        # - { path: ^/profile, roles: ROLE_USER }
+    # Firewall principal pour gérer les utilisateurs
+    main:
+      lazy: true
+      provider: app_user_provider
 
-when@test:
-    security:
-        password_hashers:
-            # By default, password hashers are resource intensive and take time. This is
-            # important to generate secure password hashes. In tests however, secure hashes
-            # are not important, waste resources and increase test times. The following
-            # reduces the work factor to the lowest possible values.
-            Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface:
-                algorithm: auto
-                cost: 4 # Lowest possible value for bcrypt
-                time_cost: 3 # Lowest possible value for argon
-                memory_cost: 10 # Lowest possible value for argon
+      # Formulaire de connexion
+      form_login:
+        login_path: app_login # La route de connexion
+        check_path: app_login # La route pour vérifier les identifiants
+        enable_csrf: true # Activer la protection CSRF pour le formulaire de connexion
+        default_target_path: app_meeting_index # Redirection après connexion réussie vers la page des réunions
+
+      # Déconnexion
+      logout:
+        path: app_logout # Route de déconnexion
+        target: app_login # Redirection après déconnexion vers la page de connexion (ou vers une page publique)
+
+      # Activation de la mémorisation de l'utilisateur (Remember Me)
+      remember_me:
+        secret: "%kernel.secret%"
+        lifetime: 604800 # Durée de vie de la session en secondes (1 semaine)
+        path: /
+        always_remember_me: false # Ne mémoriser l'utilisateur que si l'option est activée explicitement
+
+  # Règles de contrôle d'accès pour différentes sections du site
+  access_control:
+    - { path: ^/admin, roles: ROLE_ADMIN } # Accès restreint aux administrateurs
+    - { path: ^/meeting, roles: ROLE_USER } # Accès aux réunions pour les utilisateurs authentifiés
+    - { path: ^/user, roles: IS_AUTHENTICATED_FULLY } # Accès aux pages utilisateur pour les utilisateurs authentifiés
+    - { path: ^/login$, roles: IS_AUTHENTICATED_ANONYMOUSLY } # La page de login doit être accessible uniquement aux anonymes
