@@ -1,7 +1,6 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-	{{ parent() }}
 	<link rel="stylesheet" href="{{ asset('styles/index.css') }}">
 {% endblock %}
 
@@ -17,7 +16,8 @@
 						<strong>welcome!</strong>
 					</h1>
 				</div>
-				{{ form_start(loginForm) }}
+				{# Pas besoin de cette page le /register créer un user #}
+				{# {{ form_start(loginForm) }}
 				<div class="form-group">
 					{{ form_row(loginForm.email, {'attr': {'placeholder': 'Email address'}}) }}
 				</div>
@@ -36,7 +36,7 @@
 					<!-- Lien vers la page d'édition (signup) -->
 					<a href="{{ path('app_user_new') }}" class="btn btn-signup">Sign up</a>
 				</div>
-				{{ form_end(loginForm) }}
+				{{ form_end(loginForm) }} #}
 			</div>
 			<div class="login-image"></div>
 		</div>

@@ -25,38 +25,41 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
-    {
-        $user = new User();
-        $form = $this->createForm(RegisterFormType::class, $user);
-        $form->handleRequest($request);
+    
+    // Pas besoin de cette route le /register est déjà géré par le RegistrationController
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            // Récupérer le mot de passe en clair depuis le formulaire
-            $plainPassword = $form->get('plainPassword')->getData();
-            if ($plainPassword) {
-                $hashedPassword = $passwordHasher->hashPassword($user, $plainPassword);
-                $user->setPassword($hashedPassword);
-            }
+    // #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
+    // public function new(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
+    // {
+    //     $user = new User();
+    //     $form = $this->createForm(RegisterFormType::class, $user);
+    //     $form->handleRequest($request);
 
-            // Attribuer un rôle par défaut
-            $user->setRoles(['ROLE_USER']);
+    //     if ($form->isSubmitted() && $form->isValid()) {
+    //         // Récupérer le mot de passe en clair depuis le formulaire
+    //         $plainPassword = $form->get('plainPassword')->getData();
+    //         if ($plainPassword) {
+    //             $hashedPassword = $passwordHasher->hashPassword($user, $plainPassword);
+    //             $user->setPassword($hashedPassword);
+    //         }
 
-            // Sauvegarde de l'utilisateur en base de données
-            $entityManager->persist($user);
-            $entityManager->flush();
+    //         // Attribuer un rôle par défaut
+    //         $user->setRoles(['ROLE_USER']);
 
-            $this->addFlash('success', 'Compte créé avec succès! Bienvenue ' . $user->getFirstname());
+    //         // Sauvegarde de l'utilisateur en base de données
+    //         $entityManager->persist($user);
+    //         $entityManager->flush();
 
-            // Redirection vers la page des réunions après création de compte
-            return $this->redirectToRoute('app_meeting_index');
-        }
+    //         $this->addFlash('success', 'Compte créé avec succès! Bienvenue ' . $user->getFirstname());
 
-        return $this->render('user/new.html.twig', [
-            'form' => $form->createView(),
-        ]);
-    }
+    //         // Redirection vers la page des réunions après création de compte
+    //         return $this->redirectToRoute('app_meeting_index');
+    //     }
+
+    //     return $this->render('user/new.html.twig', [
+    //         'form' => $form->createView(),
+    //     ]);
+    // }
 
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]

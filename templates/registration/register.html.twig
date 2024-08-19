@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+{# Ce block utilise l'asset mapper faut bien le comprendre avant de l'utiliser en lisant la doc : 
+	https://symfony.com/doc/current/frontend/asset_mapper.html#handling-css
+	Tu peux avoir des effet indésirable si tu le comprend pas bien
+
+	En gros, il permet de générer un fichier css unique pour chaque page, ce qui permet de ne pas avoir à charger tout les css de tout les pages en même temps
+	Mais des fois, il peut ne pas fonctionner correctement, 
+	par exemple si tu fais un redirect vers une autre page, le fichier css de la page précédente peut rester chargé,
+#}
+{% endblock %}
+
+{% block title %}Create New User{% endblock %}
+
+{% block body %}
+	<link rel="stylesheet" href="{{ asset('styles/new.user.css') }}">
+	<div class="container mt-5">
+		<div class="card shadow-lg">
+			<div class="card-header bg-primary text-white">
+				<h3 class="mb-0 text-center">Create New User</h3>
+			</div>
+			<div class="card-body">
+				{{ form_start(registrationForm) }}
+				<div class="mb-3">
+					{{ form_widget(registrationForm) }}
+				</div>
+				<div class="text-center">
+					<button class="btn btn-primary">Save</button>
+					<a href="{{ path('app_user_index') }}" class="btn btn-secondary">Back to list</a>
+				</div>
+				{{ form_end(registrationForm) }}
+			</div>
+		</div>
+	</div>
+{% endblock %}
