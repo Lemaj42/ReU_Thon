@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
 use Symfony\Component\Form\Extension\Core\Type\EmailType;
 use Symfony\Component\Form\Extension\Core\Type\PasswordType;
 use Symfony\Component\Form\Extension\Core\Type\RepeatedType;
@@ -17,7 +18,6 @@ class UserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
-        // Builder for the user form
         $builder
             ->add('firstname', TextType::class, [
                 'label' => 'Prénom',
@@ -55,8 +55,8 @@ class UserType extends AbstractType
             ])
             ->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
-                'mapped' => false, // This field is not linked to the User entity directly
-                'required' => !$options['is_edit'], // Password is required only on registration
+                'mapped' => false,
+                'required' => !$options['is_edit'],
                 'first_options' => ['label' => 'Mot de passe'],
                 'second_options' => ['label' => 'Répétez le mot de passe'],
                 'constraints' => [
@@ -70,13 +70,27 @@ class UserType extends AbstractType
                     ]),
                 ],
             ]);
+
+        // Ajoute les rôles uniquement si l'option 'show_roles' est vraie
+        if ($options['show_roles']) {
+            $builder->add('roles', ChoiceType::class, [
+                'choices' => [
+                    'Utilisateur' => 'ROLE_USER',
+                    'Administrateur' => 'ROLE_ADMIN',
+                ],
+                'expanded' => true,
+                'multiple' => true,
+                'label' => 'Rôles',
+            ]);
+        }
     }
 
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
             'data_class' => User::class,
-            'is_edit' => false, // This option will differentiate between new user and editing user
+            'is_edit' => false,
+            'show_roles' => false, // Indique si le champ des rôles doit être affiché
         ]);
     }
 }

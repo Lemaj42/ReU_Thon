@@ -1,0 +1,88 @@
+body {
+    background-color: #FFCD19;
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+}
+
+.meeting-container {
+    padding: 40px;
+    text-align: center;
+}
+
+h1 {
+    font-size: 36px;
+    color: #333;
+    margin-bottom: 40px;
+}
+
+.meeting-cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+}
+
+.card {
+    background-color: #fff;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    width: 300px;
+    padding: 20px;
+    text-align: left;
+}
+
+.card-body {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.card-title {
+    font-size: 24px;
+    color: #D01900;
+    margin-bottom: 15px;
+}
+
+.card-text {
+    font-size: 16px;
+    margin-bottom: 15px;
+}
+
+.card-date,
+.card-place {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+.btn {
+    background-color: #D01900;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: #e91e63;
+}
+
+.btn-login {
+    background-color: #FFCD19;
+    color: #333;
+    border: 2px solid #D01900;
+    padding: 12px 30px;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    transition: background-color 0.3s ease;
+}
+
+.btn-login:hover {
+    background-color: #e91e63;
+    color: white;
+}

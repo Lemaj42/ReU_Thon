@@ -1,11 +1,28 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}New Meeting{% endblock %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('styles/index.css') }}">
+{% endblock %}
+
+{% block title %}New Meeting
+{% endblock %}
 
 {% block body %}
-    <h1>Create new Meeting</h1>
+	<div class="login-container">
+		<div class="login-box">
+			<div class="login-content">
+				<div class="login-header">
+					<h1>Create new Meeting</h1>
+				</div>
 
-    {{ include('meeting/_form.html.twig') }}
-
-    <a href="{{ path('app_meeting_index') }}">back to list</a>
+				<div class="card-body">
+					{{ include('meeting/_form.html.twig') }}
+				</div>
+				<div class="login-buttons">
+					<a href="{{ path('app_meeting_index') }}" class="btn btn-signup">back to list</a>
+				</div>
+			</div>
+			<div class="login-image"></div>
+		</div>
+	</div>
 {% endblock %}

@@ -25,41 +25,20 @@ class UserController extends AbstractController
         ]);
     }
 
-    
-    // Pas besoin de cette route le /register est déjà géré par le RegistrationController
+    #[Route('/profile', name: 'app_user_profile', methods: ['GET'])]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function profile(): Response
+    {
+        $user = $this->getUser();
 
-    // #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
-    // public function new(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
-    // {
-    //     $user = new User();
-    //     $form = $this->createForm(RegisterFormType::class, $user);
-    //     $form->handleRequest($request);
+        if (!$user) {
+            throw $this->createAccessDeniedException('Vous devez être connecté pour accéder à cette page.');
+        }
 
-    //     if ($form->isSubmitted() && $form->isValid()) {
-    //         // Récupérer le mot de passe en clair depuis le formulaire
-    //         $plainPassword = $form->get('plainPassword')->getData();
-    //         if ($plainPassword) {
-    //             $hashedPassword = $passwordHasher->hashPassword($user, $plainPassword);
-    //             $user->setPassword($hashedPassword);
-    //         }
-
-    //         // Attribuer un rôle par défaut
-    //         $user->setRoles(['ROLE_USER']);
-
-    //         // Sauvegarde de l'utilisateur en base de données
-    //         $entityManager->persist($user);
-    //         $entityManager->flush();
-
-    //         $this->addFlash('success', 'Compte créé avec succès! Bienvenue ' . $user->getFirstname());
-
-    //         // Redirection vers la page des réunions après création de compte
-    //         return $this->redirectToRoute('app_meeting_index');
-    //     }
-
-    //     return $this->render('user/new.html.twig', [
-    //         'form' => $form->createView(),
-    //     ]);
-    // }
+        return $this->render('user/profile.html.twig', [
+            'user' => $user,
+        ]);
+    }
 
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
@@ -83,23 +62,27 @@ class UserController extends AbstractController
         }
 
         $form = $this->createForm(UserType::class, $user, [
-            'roles_disabled' => !$this->isGranted('ROLE_ADMIN'),
+            'is_edit' => true, // Indique qu'il s'agit d'une édition
         ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Vérifier si le mot de passe a été changé
+            // Gestion du mot de passe
             $plainPassword = $form->get('plainPassword')->getData();
             if ($plainPassword) {
                 $hashedPassword = $passwordHasher->hashPassword($user, $plainPassword);
                 $user->setPassword($hashedPassword);
             }
 
-            $entityManager->flush();
+            // Gestion des rôles si l'utilisateur connecté est administrateur
+            if ($this->isGranted('ROLE_ADMIN')) {
+                $roles = $form->get('roles')->getData();
+                $user->setRoles($roles);
+            }
 
+            $entityManager->flush();
             $this->addFlash('success', 'Profil mis à jour avec succès!');
 
-            // Redirection vers la page des réunions après modification du profil
             return $this->redirectToRoute('app_meeting_index');
         }
 
@@ -108,6 +91,7 @@ class UserController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
 
     #[Route('/{id}/role', name: 'app_user_role_edit', methods: ['POST'])]
     #[IsGranted('ROLE_ADMIN')]

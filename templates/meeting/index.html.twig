@@ -1,42 +1,38 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Meeting index{% endblock %}
 {% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('styles/meeting.css') }}">
 {% endblock %}
+
+{% block title %}Meeting Index
+{% endblock %}
+
 {% block body %}
-    <h1>Meeting index</h1>
+	<div class="meeting-container">
+		<h1 class="text-center">Liste des Meetings</h1>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Title</th>
-                <th>Detail</th>
-                <th>Date</th>
-                <th>Place</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for meeting in meetings %}
-            <tr>
-                <td>{{ meeting.id }}</td>
-                <td>{{ meeting.title }}</td>
-                <td>{{ meeting.detail }}</td>
-                <td>{{ meeting.date ? meeting.date|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ meeting.place }}</td>
-                <td>
-                    <a href="{{ path('app_meeting_show', {'id': meeting.id}) }}">show</a>
-                    <a href="{{ path('app_meeting_edit', {'id': meeting.id}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="6">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
+		<div class="meeting-cards">
+			{% for meeting in meetings %}
+				<div class="card">
+					<div class="card-body">
+						<h5 class="card-title">{{ meeting.title }}</h5>
+						<p class="card-text">{{ meeting.detail }}</p>
+						<p class="card-date">{{ meeting.date ? meeting.date|date('Y-m-d H:i:s') : '' }}</p>
+						<p class="card-place">{{ meeting.place }}</p>
+						{% if is_granted('ROLE_ADMIN') %}
+							<a href="{{ path('app_meeting_edit', {'id': meeting.id}) }}" class="btn btn-primary">Modifier</a>
+						{% endif %}
+					</div>
+				</div>
+			{% else %}
+				<p>Aucun meeting trouvé.</p>
+			{% endfor %}
+		</div>
 
-    <a href="{{ path('app_meeting_new') }}">Create new</a>
+		<div class="text-center">
+			{% if is_granted('ROLE_ADMIN') %}
+				<a href="{{ path('app_meeting_new') }}" class="btn btn-login">Créer un nouveau meeting</a>
+			{% endif %}
+		</div>
+	</div>
 {% endblock %}
