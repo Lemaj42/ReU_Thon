@@ -8,21 +8,22 @@
 {% endblock %}
 
 {% block body %}
-	<div class="login-container">
+	<section class="login-container">
 		<div class="login-box">
 			<div class="login-content">
-				<div class="login-header">
+				<header class="login-header">
 					<h1>Create new Meeting</h1>
-				</div>
+				</header>
 
 				<div class="card-body">
 					{{ include('meeting/_form.html.twig') }}
 				</div>
+
 				<div class="login-buttons">
-					<a href="{{ path('app_meeting_index') }}" class="btn btn-signup">back to list</a>
+					<a href="{{ path('app_meeting_index') }}" class="btn btn-secondary">Back to list</a>
 				</div>
 			</div>
 			<div class="login-image"></div>
 		</div>
-	</div>
+	</section>
 {% endblock %}

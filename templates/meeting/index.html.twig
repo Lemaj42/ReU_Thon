@@ -8,12 +8,12 @@
 {% endblock %}
 
 {% block body %}
-	<div class="meeting-container">
+	<section class="meeting-container">
 		<h1 class="text-center">Liste des Meetings</h1>
 
 		<div class="meeting-cards">
 			{% for meeting in meetings %}
-				<div class="card">
+				<article class="card">
 					<div class="card-body">
 						<h5 class="card-title">{{ meeting.title }}</h5>
 						<p class="card-text">{{ meeting.detail }}</p>
@@ -23,7 +23,7 @@
 							<a href="{{ path('app_meeting_edit', {'id': meeting.id}) }}" class="btn btn-primary">Modifier</a>
 						{% endif %}
 					</div>
-				</div>
+				</article>
 			{% else %}
 				<p>Aucun meeting trouvé.</p>
 			{% endfor %}
@@ -31,8 +31,8 @@
 
 		<div class="text-center">
 			{% if is_granted('ROLE_ADMIN') %}
-				<a href="{{ path('app_meeting_new') }}" class="btn btn-login">Créer un nouveau meeting</a>
+				<a href="{{ path('app_meeting_new') }}" class="btn btn-primary">Créer un nouveau meeting</a>
 			{% endif %}
 		</div>
-	</div>
+	</section>
 {% endblock %}

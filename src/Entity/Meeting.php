@@ -5,12 +5,10 @@ namespace App\Entity;
 use App\Repository\MeetingRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
-use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\UX\Turbo\Attribute\Broadcast;
+use Doctrine\DBAL\Types\Types;
 
 #[ORM\Entity(repositoryClass: MeetingRepository::class)]
-#[Broadcast]
 class Meeting
 {
     #[ORM\Id]
@@ -30,18 +28,18 @@ class Meeting
     #[ORM\Column(length: 255)]
     private ?string $place = null;
 
-    #[ORM\ManyToOne(inversedBy: 'meeting')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?Booking $booking = null;
-
     #[ORM\ManyToOne(inversedBy: 'meetings')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $owner = null;
 
+    #[ORM\OneToMany(mappedBy: 'meeting', targetEntity: Booking::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    private Collection $bookings;
+
+
     public function __construct()
     {
+        $this->bookings = new ArrayCollection();
     }
-
 
     public function getId(): ?int
     {
@@ -56,7 +54,6 @@ class Meeting
     public function setTitle(string $title): static
     {
         $this->title = $title;
-
         return $this;
     }
 
@@ -68,7 +65,6 @@ class Meeting
     public function setDetail(string $detail): static
     {
         $this->detail = $detail;
-
         return $this;
     }
 
@@ -80,7 +76,6 @@ class Meeting
     public function setDate(\DateTimeInterface $date): static
     {
         $this->date = $date;
-
         return $this;
     }
 
@@ -92,19 +87,6 @@ class Meeting
     public function setPlace(string $place): static
     {
         $this->place = $place;
-
-        return $this;
-    }
-
-    public function getBooking(): ?Booking
-    {
-        return $this->booking;
-    }
-
-    public function setBooking(?Booking $booking): static
-    {
-        $this->booking = $booking;
-
         return $this;
     }
 
@@ -116,7 +98,30 @@ class Meeting
     public function setOwner(?User $owner): static
     {
         $this->owner = $owner;
+        return $this;
+    }
 
+    public function getBookings(): Collection
+    {
+        return $this->bookings;
+    }
+
+    public function addBooking(Booking $booking): static
+    {
+        if (!$this->bookings->contains($booking)) {
+            $this->bookings->add($booking);
+            $booking->setMeeting($this);
+        }
+        return $this;
+    }
+
+    public function removeBooking(Booking $booking): static
+    {
+        if ($this->bookings->removeElement($booking)) {
+            if ($booking->getMeeting() === $this) {
+                $booking->setMeeting(null);
+            }
+        }
         return $this;
     }
 }

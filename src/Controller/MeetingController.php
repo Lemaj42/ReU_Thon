@@ -25,10 +25,17 @@ class MeetingController extends AbstractController
     }
 
     #[Route('/new', name: 'app_meeting_new', methods: ['GET', 'POST'])]
-    #[IsGranted('ROLE_ADMIN')]  // Seuls les administrateurs peuvent créer une réunion
+    #[IsGranted('ROLE_ADMIN')]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
         $meeting = new Meeting();
+
+        // Récupérer l'utilisateur connecté (qui est l'owner de la réunion)
+        $user = $this->getUser();
+
+        // Assigner cet utilisateur comme owner du Meeting
+        $meeting->setOwner($user);
+
         $form = $this->createForm(MeetingType::class, $meeting);
         $form->handleRequest($request);
 
@@ -37,12 +44,12 @@ class MeetingController extends AbstractController
             $entityManager->flush();
 
             $this->addFlash('success', 'Réunion créée avec succès!');
-            return $this->redirectToRoute('app_meeting_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_meeting_index');
         }
 
         return $this->render('meeting/new.html.twig', [
             'meeting' => $meeting,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 

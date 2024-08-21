@@ -6,13 +6,11 @@ use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_EMAIL', fields: ['email'])]
-#[UniqueEntity(fields: ['email'], message: 'There is already an account with this email')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -23,15 +21,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 180, unique: true)]
     private ?string $email = null;
 
-    /**
-     * @var list<string> The user roles
-     */
     #[ORM\Column]
     private array $roles = [];
 
-    /**
-     * @var string The hashed password
-     */
     #[ORM\Column]
     private ?string $password = null;
 
@@ -41,21 +33,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column(length: 255)]
     private ?string $lastname = null;
 
-    /**
-     * Non persisté - Utilisé pour stocker temporairement le mot de passe en clair
-     */
+    // Cette propriété est temporaire et ne sera pas stockée en base de données
     private ?string $plainPassword = null;
 
-    /**
-     * @var Collection<int, Booking>
-     */
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Booking::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Booking::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $bookings;
 
-    /**
-     * @var Collection<int, Meeting>
-     */
-    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Meeting::class, orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'owner', targetEntity: Meeting::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $meetings;
 
     public function __construct()
@@ -77,47 +61,24 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setEmail(string $email): static
     {
         $this->email = $email;
-
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
-    public function getUserIdentifier(): string
-    {
-        return (string) $this->email;
-    }
-
-    /**
-     * @see UserInterface
-     *
-     * @return list<string>
-     */
     public function getRoles(): array
     {
         $roles = $this->roles;
-        $roles[] = 'ROLE_USER'; // Toujours garantir le rôle ROLE_USER par défaut
+        $roles[] = 'ROLE_USER';
 
         return array_unique($roles);
     }
 
-    /**
-     * @param list<string> $roles
-     */
     public function setRoles(array $roles): static
     {
         $this->roles = $roles;
-
         return $this;
     }
 
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
@@ -125,31 +86,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setPassword(string $password): static
     {
         $this->password = $password;
-
         return $this;
-    }
-
-    /**
-     * Méthode pour gérer le mot de passe en clair (non persisté).
-     */
-    public function getPlainPassword(): ?string
-    {
-        return $this->plainPassword;
-    }
-
-    public function setPlainPassword(?string $plainPassword): static
-    {
-        $this->plainPassword = $plainPassword;
-        return $this;
-    }
-
-    /**
-     * Efface les données sensibles (par exemple, plainPassword) après utilisation.
-     * @see UserInterface
-     */
-    public function eraseCredentials(): void
-    {
-        $this->plainPassword = null;
     }
 
     public function getFirstname(): ?string
@@ -160,7 +97,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setFirstname(string $firstname): static
     {
         $this->firstname = $firstname;
-
         return $this;
     }
 
@@ -172,13 +108,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function setLastname(string $lastname): static
     {
         $this->lastname = $lastname;
-
         return $this;
     }
 
-    /**
-     * @return Collection<int, Booking>
-     */
     public function getBookings(): Collection
     {
         return $this->bookings;
@@ -197,7 +129,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeBooking(Booking $booking): static
     {
         if ($this->bookings->removeElement($booking)) {
-            // Set the owning side to null (unless already changed)
             if ($booking->getUser() === $this) {
                 $booking->setUser(null);
             }
@@ -206,9 +137,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return Collection<int, Meeting>
-     */
     public function getMeetings(): Collection
     {
         return $this->meetings;
@@ -227,12 +155,47 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     public function removeMeeting(Meeting $meeting): static
     {
         if ($this->meetings->removeElement($meeting)) {
-            // Set the owning side to null (unless already changed)
             if ($meeting->getOwner() === $this) {
                 $meeting->setOwner(null);
             }
         }
 
+        return $this;
+    }
+
+    /**
+     * Retourne l'identifiant unique de l'utilisateur.
+     * Cette méthode est utilisée par le système d'authentification.
+     */
+    public function getUserIdentifier(): string
+    {
+        return $this->email;
+    }
+
+    /**
+     * Efface les données sensibles de l'utilisateur.
+     * Utilisé pour supprimer les informations sensibles après l'authentification.
+     */
+    public function eraseCredentials(): void
+    {
+        // Effacer le mot de passe en clair s'il existe
+        $this->plainPassword = null;
+    }
+
+    /**
+     * Retourne le mot de passe en clair (non persisté).
+     */
+    public function getPlainPassword(): ?string
+    {
+        return $this->plainPassword;
+    }
+
+    /**
+     * Définit le mot de passe en clair (non persisté).
+     */
+    public function setPlainPassword(?string $plainPassword): static
+    {
+        $this->plainPassword = $plainPassword;
         return $this;
     }
 }
