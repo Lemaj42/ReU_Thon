@@ -1,0 +1,91 @@
+body {
+    background-image: url('/images/Bg_Login.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 100vh;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Roboto', sans-serif;
+}
+
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    width: 100%;
+}
+
+.login-box {
+    display: flex;
+    flex-direction: column;
+    width: 400px;
+    background-color: #FFCD19;
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+    padding: 30px;
+}
+
+.login-header {
+    text-align: left;
+    margin-bottom: 30px;
+}
+
+.login-header h1 {
+    font-size: 36px;
+    color: #333;
+}
+
+.login-header h1 strong {
+    color: #121111;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+input[type="email"],
+input[type="password"] {
+    width: 100%;
+    padding: 15px;
+    border-radius: 5px;
+    border: 1px solid #ddd;
+    background-color: #f9f9f9;
+    font-size: 16px;
+}
+
+.login-buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+}
+
+.btn-login {
+    background-color: #D01900;
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-login:hover {
+    background-color: #e91e63;
+}
+
+.btn-signup {
+    background-color: transparent;
+    color: #FFCD19;
+    padding: 15px 30px;
+    border: 2px solid #FFCD19;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.btn-signup:hover {
+    background-color: #FFCD19;
+    color: white;
+}

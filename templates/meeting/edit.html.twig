@@ -1,13 +1,40 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Meeting{% endblock %}
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('styles/meeting.css') }}">
+{% endblock %}
+
+{% block title %}Meeting Index
+{% endblock %}
 
 {% block body %}
-    <h1>Edit Meeting</h1>
+	<section class="meeting-container">
+		<h1 class="text-center">Liste des Meetings</h1>
 
-    {{ include('meeting/_form.html.twig', {'button_label': 'Update'}) }}
+		<div class="meeting-cards">
+			{% for meeting in meetings %}
+				<a href="{{ path('app_meeting_show', {'id': meeting.id}) }}" class="card-link">
+					<article class="card">
+						<div class="card-body">
+							<h5 class="card-title">{{ meeting.title }}</h5>
+							<p class="card-text">{{ meeting.detail }}</p>
+							<p class="card-date">{{ meeting.date ? meeting.date|date('Y-m-d H:i:s') : '' }}</p>
+							<p class="card-place">{{ meeting.place }}</p>
+							{% if is_granted('ROLE_ADMIN') %}
+								<a href="{{ path('app_meeting_edit', {'id': meeting.id}) }}" class="btn btn-primary">Modifier</a>
+							{% endif %}
+						</div>
+					</article>
+				</a>
+			{% else %}
+				<p>Aucun meeting trouvé.</p>
+			{% endfor %}
+		</div>
 
-    <a href="{{ path('app_meeting_index') }}">back to list</a>
-
-    {{ include('meeting/_delete_form.html.twig') }}
+		<div class="text-center">
+			{% if is_granted('ROLE_ADMIN') %}
+				<a href="{{ path('app_meeting_new') }}" class="btn btn-primary">Créer un nouveau meeting</a>
+			{% endif %}
+		</div>
+	</section>
 {% endblock %}

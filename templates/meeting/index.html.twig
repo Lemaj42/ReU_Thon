@@ -19,6 +19,7 @@
 						<p class="card-text">{{ meeting.detail }}</p>
 						<p class="card-date">{{ meeting.date ? meeting.date|date('Y-m-d H:i:s') : '' }}</p>
 						<p class="card-place">{{ meeting.place }}</p>
+						<a href="{{ path('app_meeting_show', {'id': meeting.id}) }}" class="btn btn-secondary">Voir les détails</a>
 						{% if is_granted('ROLE_ADMIN') %}
 							<a href="{{ path('app_meeting_edit', {'id': meeting.id}) }}" class="btn btn-primary">Modifier</a>
 						{% endif %}

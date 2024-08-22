@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-	<link rel="stylesheet" href="{{ asset('styles/index.css') }}">
+	<link rel="stylesheet" href="{{ asset('styles/login.css') }}">
 {% endblock %}
 
 {% block title %}Log in
@@ -17,17 +17,15 @@
 					</h1>
 				</div>
 
-				{# Affichage des erreurs de connexion si elles existent #}
 				{% if error %}
 					<div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
 				{% endif %}
 
-				{# Si l'utilisateur est déjà connecté, on affiche un message avec un lien pour se déconnecter #}
 				{% if app.user %}
 					<div class="mb-3">
 						Vous êtes connecté en tant que
 						{{ app.user.userIdentifier }},
-						<a href="{{ path('app_logout') }}">Logout</a>
+						<a href="{{ path('app_logout') }}">Se déconnecter</a>
 					</div>
 				{% endif %}
 
@@ -46,9 +44,13 @@
 
 					<div class="login-buttons">
 						<button type="submit" class="btn btn-login">Connecte-toi</button>
-						<div class="login-buttons">
-							<a class="btn btn-login" href="{{ path('app_register') }}">Pas encore inscrit ?</a>
-						</div>
 					</div>
 				</form>
-			{% endblock %}
+
+				<div class="login-buttons">
+					<a class="btn btn-signup" href="{{ path('app_register') }}">Pas encore inscrit ?</a>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

@@ -1,30 +1,42 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('styles/index.css') }}">
+{% endblock %}
+
 {% block title %}Profil de
 	{{ user.firstname }}
 {% endblock %}
 
 {% block body %}
-	<div class="container mt-5">
-		<div class="card shadow-lg">
-			<div class="card-header bg-primary text-white">
-				<h3 class="mb-0 text-center">Votre profil</h3>
+	<div class="login-container">
+		<div class="login-box">
+			<div class="login-content">
+				<div class="login-header">
+					<h1>Votre
+						<strong>Profil</strong>
+					</h1>
+				</div>
+
+				<div class="card-body">
+					<p>
+						<strong>Email :</strong>
+						{{ user.email }}</p>
+					<p>
+						<strong>Prénom :</strong>
+						{{ user.firstname }}</p>
+					<p>
+						<strong>Nom :</strong>
+						{{ user.lastname }}</p>
+					<p>
+						<strong>Rôles :</strong>
+						{{ user.roles | join(', ') }}</p>
+					<div class="login-buttons">
+						<a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-login">Modifier mon profil</a>
+					</div>
+				</div>
 			</div>
-			<div class="card-body">
-				<p>
-					<strong>Email :</strong>
-					{{ user.email }}</p>
-				<p>
-					<strong>Prénom :</strong>
-					{{ user.firstname }}</p>
-				<p>
-					<strong>Nom :</strong>
-					{{ user.lastname }}</p>
-				<p>
-					<strong>Rôles :</strong>
-					{{ user.roles | join(', ') }}</p>
-				<a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-primary">Modifier mon profil</a>
-			</div>
+			<div class="login-image"></div>
 		</div>
 	</div>
 {% endblock %}

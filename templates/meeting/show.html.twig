@@ -1,39 +1,74 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Meeting
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('styles/meeting.css') }}">
+	<style>
+		#map {
+			height: 200px;
+			width: 50%;
+			margin-top: 20px;
+			margin-left: 450px;
+			border-radius: 10px;
+		}
+	</style>
+{% endblock %}
+
+{% block title %}Meeting -
+	{{ meeting.title }}
 {% endblock %}
 
 {% block body %}
-	<h1>Meeting</h1>
+	<section class="meeting-container">
+		<h1 class="text-center">{{ meeting.title }}</h1>
 
-	<table class="table">
-		<tbody>
-			<tr>
-				<th>Id</th>
-				<td>{{ meeting.id }}</td>
-			</tr>
-			<tr>
-				<th>Title</th>
-				<td>{{ meeting.title }}</td>
-			</tr>
-			<tr>
-				<th>Detail</th>
-				<td>{{ meeting.detail }}</td>
-			</tr>
-			<tr>
-				<th>Date</th>
-				<td>{{ meeting.date ? meeting.date|date('Y-m-d H:i:s') : '' }}</td>
-			</tr>
-			<tr>
-				<th>Place</th>
-				<td>{{ meeting.place }}</td>
-			</tr>
-		</tbody>
-	</table>
+		<div class="meeting-cards">
+			<article class="card">
+				<div class="card-body">
+					<h5 class="card-title">{{ meeting.title }}</h5>
+					<p class="card-text">{{ meeting.detail }}</p>
+					<p class="card-date">{{ meeting.date ? meeting.date|date('Y-m-d H:i:s') : '' }}</p>
+					<p class="card-place">{{ meeting.place }}</p>
+				</div>
+			</article>
+		</div>
 
-	<a href="{{ path('app_meeting_index') }}" class="btn btn-secondary">Back to list</a>
+		<!-- Ajout de l'élément pour afficher la carte -->
+		<div id="map"></div>
 
-	<a href="{{ path('app_meeting_edit', {'id': meeting.id}) }}" class="btn btn-primary">Edit</a>
+		<div class="text-center" style="margin-top: 20px;">
+			<a href="{{ path('app_meeting_index') }}" class="btn btn-secondary">Retour à la liste</a>
 
-	{{ include('meeting/_delete_form.html.twig') }}
+			{% if is_granted('ROLE_ADMIN') %}
+				<a href="{{ path('app_meeting_edit', {'id': meeting.id}) }}" class="btn btn-primary">Modifier</a>
+				{{ include('meeting/_delete_form.html.twig') }}
+			{% endif %}
+		</div>
+	</section>
+
+	<!-- Google Maps Script -->
+	<script>
+		function initMap() {
+var geocoder = new google.maps.Geocoder();
+var address = "{{ meeting.place }}"; // L'adresse du meeting
+
+geocoder.geocode({
+'address': address
+}, function (results, status) {
+if (status === 'OK') {
+var map = new google.maps.Map(document.getElementById('map'), {
+zoom: 14,
+center: results[0].geometry.location
+});
+
+var marker = new google.maps.Marker({position: results[0].geometry.location, map: map});
+} else {
+alert('La géolocalisation de l\'adresse a échoué : ' + status);
+}
+});
+}
+	</script>
+
+	<!-- Chargement de l'API Google Maps avec la clé API -->
+	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDA-wAzfEDLcn_9AmpmqR6pdjcYWLlEJW8&callback=initMap"></script>
+
 {% endblock %}
