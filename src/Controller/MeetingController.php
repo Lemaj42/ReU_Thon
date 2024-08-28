@@ -13,14 +13,15 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\Mime\Email;
 use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
 
 #[Route('/meeting')]
 class MeetingController extends AbstractController
 {
-    // Affiche la liste des meetings
+    // Affiche la Liste des Meetings 
     #[Route('/', name: 'app_meeting_index', methods: ['GET'])]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')] // Seuls les utilisateurs authentifiés peuvent voir la liste des meetings
+    #[IsGranted('IS_AUTHENTICATED_FULLY')] // Seuls les utilisateurs authentifiés peuvent voir la Liste des Meetings 
     public function index(MeetingRepository $meetingRepository): Response
     {
         $meetings = $meetingRepository->findAll(); // Récupère tous les meetings
@@ -30,46 +31,61 @@ class MeetingController extends AbstractController
     }
 
     // Crée un nouveau meeting
-    #[Route('/new', name: 'app_meeting_new', methods: ['GET', 'POST'])]
-    #[IsGranted('ROLE_ADMIN')] // Seuls les administrateurs peuvent créer un meeting
-    public function new(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer, UserRepository $userRepository): Response
+    #[Route('/meeting/new', name: 'app_meeting_new', methods: ['GET', 'POST'])]
+
+    public function new(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer, UserRepository $userRepository, UrlGeneratorInterface $urlGenerator): Response
     {
         $meeting = new Meeting();
-        $user = $this->getUser(); // L'utilisateur connecté devient le propriétaire du meeting
+        $user = $this->getUser();
         $meeting->setOwner($user);
 
-        // Crée et traite le formulaire
         $form = $this->createForm(MeetingType::class, $meeting);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Sauvegarde du meeting dans la base de données
             $entityManager->persist($meeting);
             $entityManager->flush();
 
-            // Envoi d'e-mails à tous les utilisateurs
+            // Envoi des e-mails aux utilisateurs
             $users = $userRepository->findAll();
             foreach ($users as $recipient) {
+                // Génère les URL pour voter via l'e-mail
+                $voteForMainDateUrl = $urlGenerator->generate('app_booking_vote_email', [
+                    'meetingId' => $meeting->getId(),
+                    'userId' => $recipient->getId(),
+                    'date' => $meeting->getDate()->format('Y-m-d H:i:s'),
+                ], UrlGeneratorInterface::ABSOLUTE_URL);
+
+                $voteForAltDateUrl = $urlGenerator->generate('app_booking_vote_email', [
+                    'meetingId' => $meeting->getId(),
+                    'userId' => $recipient->getId(),
+                    'date' => $meeting->getAlternativeDate()->format('Y-m-d H:i:s'),
+                ], UrlGeneratorInterface::ABSOLUTE_URL);
+
+                // Création de l'e-mail avec les liens de vote
                 $email = (new Email())
-                    ->from('noreply@example.com') // Remplace par ton adresse e-mail
+                    ->from('noreply@example.com')
                     ->to($recipient->getEmail())
-                    ->subject('Nouvelle réunion créée')
-                    ->text(sprintf(
-                        'Bonjour %s, une nouvelle réunion a été programmée : %s à %s',
-                        $recipient->getLastname(), // Ajuste si nécessaire pour récupérer le nom complet
+                    ->subject('Nouvelle réunion : ' . $meeting->getTitle())
+                    ->html(sprintf(
+                        'Bonjour %s,<br><br>Une nouvelle réunion a été programmée : %s à %s.<br><br>
+                    Veuillez choisir votre date préférée en cliquant sur l\'un des liens ci-dessous :<br>
+                    <a href="%s">Choisir la date principale</a> ou <a href="%s">Choisir la date alternative</a>.<br><br>
+                    Merci !',
+                        $recipient->getFirstname(),
                         $meeting->getTitle(),
-                        $meeting->getDate()->format('d-m-Y H:i')
+                        $meeting->getPlace(),
+                        $voteForMainDateUrl,
+                        $voteForAltDateUrl
                     ));
 
                 $mailer->send($email);
             }
 
-            // Message de succès et redirection
-            $this->addFlash('success', 'Réunion créée avec succès! Les utilisateurs ont été notifiés par email.');
+            $this->addFlash('success', 'Réunion créée avec succès ! Les utilisateurs ont été notifiés par email.');
             return $this->redirectToRoute('app_meeting_index');
         }
 
-        // Affiche le formulaire de création
         return $this->render('meeting/new.html.twig', [
             'meeting' => $meeting,
             'form' => $form->createView(),

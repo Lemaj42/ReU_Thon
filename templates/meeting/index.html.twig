@@ -1,32 +1,46 @@
 {% extends 'base.html.twig' %}
 
-{% block stylesheets %}
-	<link rel="stylesheet" href="{{ asset('styles/meeting.css') }}">
+{% block title %}
+	Liste des Réunions
 {% endblock %}
 
-{% block title %}Meeting Index
-{% endblock %}
+{% block stylesheets %}
+	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+	<link rel="stylesheet" href="{{ asset('styles/meeting.css') }}">
+{% endblock stylesheets %}
 
 {% block body %}
 	<section class="meeting-container">
-		<h1 class="text-center">Liste des Meetings</h1>
+		<h1 class="text-center">LISTE DES RÉUNIONS</h1>
 
 		<div class="meeting-cards">
 			{% for meeting in meetings %}
 				<article class="card">
+					<div class="card-header">
+						<h5 class="card-title">Objet de la réunion :</h5>
+						<h2 class="card-subtitle">{{ meeting.title }}</h2>
+					</div>
 					<div class="card-body">
-						<h5 class="card-title">{{ meeting.title }}</h5>
+						<h5 class="card-section-title">Détail de la réunion :</h5>
 						<p class="card-text">{{ meeting.detail }}</p>
-						<p class="card-date">{{ meeting.date ? meeting.date|date('Y-m-d H:i:s') : '' }}</p>
-						<p class="card-place">{{ meeting.place }}</p>
-						<a href="{{ path('app_meeting_show', {'id': meeting.id}) }}" class="btn btn-secondary">Voir les détails</a>
-						{% if is_granted('ROLE_ADMIN') %}
-							<a href="{{ path('app_meeting_edit', {'id': meeting.id}) }}" class="btn btn-primary">Modifier</a>
+						<p class="card-info">
+							<strong>Date principale :</strong>
+							{{ meeting.date ? meeting.date|date('d/m/Y') : 'Non définie' }}</p>
+						{% if meeting.alternativeDate %}
+							<p class="card-info">
+								<strong>Date alternative :</strong>
+								{{ meeting.alternativeDate|date('d/m/Y') }}</p>
 						{% endif %}
+						<p class="card-info">
+							<strong>Lieu :</strong>
+							{{ meeting.place }}</p>
+					</div>
+					<div class="card-footer">
+						<a href="{{ path('app_meeting_show', {'id': meeting.id}) }}" class="btn btn-details">VOIR DÉTAILS</a>
 					</div>
 				</article>
 			{% else %}
-				<p>Aucun meeting trouvé.</p>
+				<p>Aucune réunion trouvée.</p>
 			{% endfor %}
 		</div>
 

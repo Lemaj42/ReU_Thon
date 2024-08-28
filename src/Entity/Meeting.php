@@ -25,6 +25,9 @@ class Meeting
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $date = null;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $alternativeDate = null;
+
     #[ORM\Column(length: 255)]
     private ?string $place = null;
 
@@ -34,7 +37,6 @@ class Meeting
 
     #[ORM\OneToMany(mappedBy: 'meeting', targetEntity: Booking::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $bookings;
-
 
     public function __construct()
     {
@@ -76,6 +78,17 @@ class Meeting
     public function setDate(\DateTimeInterface $date): static
     {
         $this->date = $date;
+        return $this;
+    }
+
+    public function getAlternativeDate(): ?\DateTimeInterface
+    {
+        return $this->alternativeDate;
+    }
+
+    public function setAlternativeDate(?\DateTimeInterface $alternativeDate): static
+    {
+        $this->alternativeDate = $alternativeDate;
         return $this;
     }
 

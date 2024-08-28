@@ -4,7 +4,8 @@
 	<link rel="stylesheet" href="{{ asset('styles/index.css') }}">
 {% endblock %}
 
-{% block title %}Profil de
+{% block title %}
+	Profil de
 	{{ user.firstname }}
 {% endblock %}
 
@@ -19,20 +20,28 @@
 				</div>
 
 				<div class="card-body">
-					<p>
-						<strong>Email :</strong>
-						{{ user.email }}</p>
-					<p>
-						<strong>Prénom :</strong>
-						{{ user.firstname }}</p>
-					<p>
-						<strong>Nom :</strong>
-						{{ user.lastname }}</p>
-					<p>
-						<strong>Rôles :</strong>
-						{{ user.roles | join(', ') }}</p>
+					<div class="profile-details">
+						<p>
+							<strong>Email :</strong>
+							{{ user.email }}
+						</p>
+						<p>
+							<strong>Prénom :</strong>
+							{{ user.firstname }}
+						</p>
+						<p>
+							<strong>Nom :</strong>
+							{{ user.lastname }}
+						</p>
+						<p>
+							<strong>Rôles :</strong>
+							{{ user.roles | join(', ') }}
+						</p>
+					</div>
+
 					<div class="login-buttons">
-						<a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-login">Modifier mon profil</a>
+						<a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-primary">Modifier mon profil</a>
+						<a href="{{ path('app_meeting_index') }}" class="btn btn-signup">Retour à la liste</a>
 					</div>
 				</div>
 			</div>

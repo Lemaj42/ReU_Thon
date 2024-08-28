@@ -57,41 +57,48 @@ class UserController extends AbstractController
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
+        // Vérifie si l'utilisateur actuel est autorisé à modifier le profil
         if ($user !== $this->getUser() && !$this->isGranted('ROLE_ADMIN')) {
             throw $this->createAccessDeniedException('Vous n\'êtes pas autorisé à modifier ce profil.');
         }
 
+        // Crée le formulaire de modification
         $form = $this->createForm(UserType::class, $user, [
             'is_edit' => true, // Indique qu'il s'agit d'une édition
         ]);
         $form->handleRequest($request);
 
+        // Si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()) {
-            // Gestion du mot de passe
+            // Gestion du mot de passe, uniquement si un mot de passe est fourni
             $plainPassword = $form->get('plainPassword')->getData();
             if ($plainPassword) {
                 $hashedPassword = $passwordHasher->hashPassword($user, $plainPassword);
                 $user->setPassword($hashedPassword);
             }
 
-            // Gestion des rôles si l'utilisateur connecté est administrateur
+            // Gestion des rôles, uniquement si l'utilisateur connecté est administrateur
             if ($this->isGranted('ROLE_ADMIN')) {
                 $roles = $form->get('roles')->getData();
                 $user->setRoles($roles);
             }
 
+            // Sauvegarde les modifications dans la base de données
             $entityManager->flush();
+
+            // Ajoute un message flash de succès
             $this->addFlash('success', 'Profil mis à jour avec succès!');
 
+            // Redirige vers une autre page après la modification (par exemple, la Liste des Meetings )
             return $this->redirectToRoute('app_meeting_index');
         }
 
+        // Affiche le formulaire de modification
         return $this->render('user/edit.html.twig', [
             'user' => $user,
             'form' => $form->createView(),
         ]);
     }
-
 
     #[Route('/{id}/role', name: 'app_user_role_edit', methods: ['POST'])]
     #[IsGranted('ROLE_ADMIN')]

@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\RegisterFormType;
-use App\Form\RegistrationFormType;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Bundle\SecurityBundle\Security;
@@ -23,7 +22,16 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
+            // Vérifier si un utilisateur avec cet e-mail existe déjà dans la base de données
+            $existingUser = $entityManager->getRepository(User::class)->findOneBy(['email' => $user->getEmail()]);
+
+            if ($existingUser) {
+                // Ajouter un message flash pour informer l'utilisateur que l'e-mail est déjà utilisé
+                $this->addFlash('error', 'Un utilisateur avec cet e-mail existe déjà.');
+                return $this->redirectToRoute('app_register'); // Rediriger vers le formulaire d'inscription
+            }
+
+            // Encoder le mot de passe en clair
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
@@ -31,16 +39,17 @@ class RegistrationController extends AbstractController
                 )
             );
 
+            // Persister l'utilisateur dans la base de données
             $entityManager->persist($user);
             $entityManager->flush();
 
-            // do anything else you need here, like send an email
-
+            // Optionnellement, connecter l'utilisateur ou envoyer un e-mail
             return $security->login($user, 'form_login', 'main');
         }
 
+        // Afficher le formulaire d'inscription
         return $this->render('registration/register.html.twig', [
-            'registrationForm' => $form,
+            'registrationForm' => $form->createView(),
         ]);
     }
 }

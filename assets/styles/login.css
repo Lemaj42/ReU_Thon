@@ -24,13 +24,16 @@ body {
     flex-direction: column;
     width: 400px;
     background-color: #FFCD19;
-    border-radius: 15px;
+    border-radius: 5px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
     padding: 30px;
+    text-align: center;
+    /* Centre le texte */
 }
 
 .login-header {
-    text-align: left;
+    text-align: center;
+    /* Centre le texte de l'en-tête */
     margin-bottom: 30px;
 }
 
@@ -45,21 +48,29 @@ body {
 
 .form-group {
     margin-bottom: 20px;
+    /* Espace plus large entre les champs */
+    text-align: left;
+    /* Aligne le texte des labels à gauche */
 }
 
 input[type="email"],
 input[type="password"] {
     width: 100%;
-    padding: 15px;
+    padding: 5px;
     border-radius: 5px;
     border: 1px solid #ddd;
     background-color: #f9f9f9;
     font-size: 16px;
+    margin-top: 5px;
+    /* Un peu d'espace au-dessus du champ */
 }
 
 .login-buttons {
     display: flex;
-    justify-content: space-between;
+    flex-direction: column;
+    /* Aligne les boutons verticalement */
+    gap: 10px;
+    /* Espace entre les boutons */
     margin-top: 20px;
 }
 
@@ -70,10 +81,12 @@ input[type="password"] {
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    width: 100%;
+    /* Bouton prend toute la largeur */
 }
 
 .btn-login:hover {
-    background-color: #e91e63;
+    background-color: #fff;
 }
 
 .btn-signup {
@@ -83,6 +96,8 @@ input[type="password"] {
     border: 2px solid #FFCD19;
     border-radius: 5px;
     cursor: pointer;
+    width: 100%;
+    /* Bouton prend toute la largeur */
 }
 
 .btn-signup:hover {

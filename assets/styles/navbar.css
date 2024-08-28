@@ -1,32 +1,121 @@
+/* public/styles/navbar.css */
+body {
+    font-family: Arial, sans-serif;
+}
+
 .navbar {
-    background-color: #FFCD19;
-    /* Couleur de fond de la navbar */
+    background-color: #DC2F02;
+    padding: 0.5rem 1rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 1030;
 }
 
-.navbar .nav-link {
-    color: #333;
-    /* Couleur du texte des liens */
-    font-size: 18px;
+.navbar-brand,
+.nav-link {
+    color: white !important;
     font-weight: bold;
-    padding: 10px 20px;
 }
 
-.navbar .nav-link:hover {
-    color: #D01900;
-    /* Couleur des liens au survol */
+.navbar-logo {
+    width: 30px;
+    height: 30px;
+    margin-right: 10px;
 }
 
-.navbar-brand {
-    font-size: 24px;
-    color: #D01900;
-    /* Couleur du texte de la marque */
-    font-weight: bold;
+.navbar-nav {
+    align-items: center;
+}
+
+.navbar-nav .nav-link {
+    padding: 0.5rem 1rem;
 }
 
 .navbar-toggler {
-    border: none;
+    border-color: white;
 }
 
 .navbar-toggler-icon {
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 30 30'%3E%3Cpath stroke='rgba%2833, 37, 41, 1%29' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+}
+
+.power-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.container {
+    margin-top: 70px;
+    /* Ajustez cette valeur en fonction de la hauteur de votre navbar */
+}
+
+@media (max-width: 992px) {
+    .navbar-nav {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+}
+
+/* Ajoutez ceci à votre fichier public/styles/navbar.css */
+
+.site-footer {
+    background-color: #DC2F02;
+    padding: 0.5rem 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 1030;
+}
+
+.footer-nav {
+    display: flex;
+    justify-content: center;
+}
+
+.nav-list {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+}
+
+.nav-item {
+    margin: 0 15px;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    font-weight: bold;
+    font-size: 0.9rem;
+}
+
+.nav-link:hover {
+    text-decoration: underline;
+}
+
+/* Ajustez la marge inférieure du conteneur principal */
+.container {
+    margin-bottom: 60px;
+    /* Ajustez cette valeur en fonction de la hauteur de votre footer */
+}
+
+/* Media query pour les petits écrans */
+@media (max-width: 768px) {
+    .nav-list {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .nav-item {
+        margin: 5px 0;
+    }
+
+    .container {
+        margin-bottom: 120px;
+        /* Ajustez cette valeur pour les petits écrans */
+    }
 }

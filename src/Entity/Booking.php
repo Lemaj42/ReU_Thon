@@ -3,13 +3,11 @@
 namespace App\Entity;
 
 use App\Repository\BookingRepository;
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\UX\Turbo\Attribute\Broadcast;
 
 #[ORM\Entity(repositoryClass: BookingRepository::class)]
-#[Broadcast]
+#[Broadcast(entity: "booking")] // Diffuse l'entité `Booking`
 class Booking
 {
     #[ORM\Id]
@@ -28,9 +26,9 @@ class Booking
     #[ORM\JoinColumn(nullable: false)]
     private ?Meeting $meeting = null;
 
-    public function __construct()
-    {
-    }
+    // Nouvelle propriété pour stocker la date choisie
+    #[ORM\Column(type: 'string', length: 255, nullable: true)]
+    private ?string $chosenDate = null;
 
     public function getId(): ?int
     {
@@ -73,4 +71,17 @@ class Booking
         return $this;
     }
 
+    // Nouvelle méthode getChosenDate()
+    public function getChosenDate(): ?string
+    {
+        return $this->chosenDate;
+    }
+
+    // Nouvelle méthode setChosenDate()
+    public function setChosenDate(?string $chosenDate): static
+    {
+        $this->chosenDate = $chosenDate;
+
+        return $this;
+    }
 }

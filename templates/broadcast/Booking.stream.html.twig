@@ -1,0 +1,33 @@
+{# templates/broadcast/Booking.stream.html.twig #}
+
+{% block create %}
+	{% if booking is defined %}
+		<turbo-stream action="append" target="bookings">
+			<template>
+				<div>
+					<strong>Nouveau Booking :</strong>
+					Booking #{{ booking.id }}
+					a été créé avec succès.
+				</div>
+			</template>
+		</turbo-stream>
+	{% else %}
+		<p>Erreur : Booking non défini.</p>
+	{% endif %}
+{% endblock %}
+
+{% block update %}
+	{% if booking is defined %}
+		<turbo-stream action="replace" target="booking-{{ booking.id }}">
+			<template>
+				<div>
+					<strong>Booking mis à jour :</strong>
+					Booking #{{ booking.id }}
+					a été mis à jour avec succès.
+				</div>
+			</template>
+		</turbo-stream>
+	{% else %}
+		<p>Erreur : Booking non défini.</p>
+	{% endif %}
+{% endblock %}

@@ -1,55 +1,97 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
+	{{ parent() }}
 	<link rel="stylesheet" href="{{ asset('styles/meeting.css') }}">
 	<style>
+
 		#map {
-			height: 200px;
-			width: 50%;
+			height: 300px;
+			width: 100%;
 			margin-top: 20px;
-			margin-left: 450px;
 			border-radius: 10px;
+		}
+		.vote-section {
+			margin-top: 20px;
+		}
+		.action-buttons {
+			margin-top: 20px;
 		}
 	</style>
 {% endblock %}
 
-{% block title %}Meeting -
-	{{ meeting.title }}
+{% block title %}Détails de la Réunion
 {% endblock %}
 
 {% block body %}
 	<section class="meeting-container">
-		<h1 class="text-center">{{ meeting.title }}</h1>
+
 
 		<div class="meeting-cards">
 			<article class="card">
-				<div class="card-body">
-					<h5 class="card-title">{{ meeting.title }}</h5>
-					<p class="card-text">{{ meeting.detail }}</p>
-					<p class="card-date">{{ meeting.date ? meeting.date|date('Y-m-d H:i:s') : '' }}</p>
-					<p class="card-place">{{ meeting.place }}</p>
+				<div class="card-header">
+					<h5 class="card-title">Objet de la réunion :</h5>
+					<h2 class="card-subtitle">{{ meeting.title }}</h2>
 				</div>
+				<div class="card-body">
+					<h5 class="card-section-title">Détail de la réunion :</h5>
+					<p class="card-text">{{ meeting.detail }}</p>
+					<p class="card-info">
+						<strong>Date principale :</strong>
+						{{ meeting.date ? meeting.date|date('d/m/Y H:i') : 'Non définie' }}
+					</p>
+					{% if meeting.alternativeDate %}
+						<p class="card-info">
+							<strong>Date alternative :</strong>
+							{{ meeting.alternativeDate|date('d/m/Y H:i') }}
+						</p>
+					{% endif %}
+					<p class="card-info">
+						<strong>Lieu :</strong>
+						{{ meeting.place }}
+					</p>
+				</div>
+				{% if is_granted('IS_AUTHENTICATED_FULLY') %}
+					<div class="card-footer vote-section">
+						<div id="vote-buttons">
+							{% if meeting.date %}
+								<button class="btn btn-details" onclick="chooseDate('{{ meeting.date|date('Y-m-d H:i:s') }}', 'principale')">
+									Choisir la date principale
+								</button>
+							{% endif %}
+							{% if meeting.alternativeDate %}
+								<button class="btn btn-details" onclick="chooseDate('{{ meeting.alternativeDate|date('Y-m-d H:i:s') }}', 'alternative')">
+									Choisir la date alternative
+								</button>
+							{% endif %}
+						</div>
+						<div id="confirmation-message" class="mt-3" style="display: none;"></div>
+					</div>
+				{% else %}
+					<div class="card-footer">
+						<p class="text-center">Veuillez vous connecter pour voter.</p>
+					</div>
+				{% endif %}
 			</article>
 		</div>
 
-		<!-- Ajout de l'élément pour afficher la carte -->
-		<div id="map"></div>
+		<div id="map" class="mb-4"></div>
 
-		<div class="text-center" style="margin-top: 20px;">
-			<a href="{{ path('app_meeting_index') }}" class="btn btn-secondary">Retour à la liste</a>
-
+		<div class="action-buttons text-center">
+			<a href="{{ path('app_meeting_index') }}" class="btn btn-details">Retour à la liste</a>
 			{% if is_granted('ROLE_ADMIN') %}
-				<a href="{{ path('app_meeting_edit', {'id': meeting.id}) }}" class="btn btn-primary">Modifier</a>
+				<a href="{{ path('app_meeting_edit', {'id': meeting.id}) }}" class="btn btn-details">Modifier</a>
 				{{ include('meeting/_delete_form.html.twig') }}
 			{% endif %}
 		</div>
 	</section>
-
-	<!-- Google Maps Script -->
+{% endblock body %}
+{% block javascripts %}
+	{{ parent() }}
 	<script>
 		function initMap() {
 var geocoder = new google.maps.Geocoder();
-var address = "{{ meeting.place }}"; // L'adresse du meeting
+var address = "{{ meeting.place }}";
 
 geocoder.geocode({
 'address': address
@@ -59,16 +101,21 @@ var map = new google.maps.Map(document.getElementById('map'), {
 zoom: 14,
 center: results[0].geometry.location
 });
-
-var marker = new google.maps.Marker({position: results[0].geometry.location, map: map});
+new google.maps.Marker({position: results[0].geometry.location, map: map});
 } else {
-alert('La géolocalisation de l\'adresse a échoué : ' + status);
+console.error('La géolocalisation de l\'adresse a échoué : ' + status);
+document.getElementById('map').innerHTML = '<p class="alert alert-danger">Impossible de charger la carte.</p>';
 }
 });
 }
+
+function chooseDate(date, type) {
+document.getElementById('vote-buttons').style.display = 'none';
+var messageDiv = document.getElementById('confirmation-message');
+messageDiv.style.display = 'block';
+var message = type === 'principale' ? "Vous avez choisi la date principale : " : "Vous avez choisi la date alternative : ";
+messageDiv.innerText = message + date;
+}
 	</script>
-
-	<!-- Chargement de l'API Google Maps avec la clé API -->
 	<script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDA-wAzfEDLcn_9AmpmqR6pdjcYWLlEJW8&callback=initMap"></script>
-
 {% endblock %}

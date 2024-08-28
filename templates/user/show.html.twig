@@ -1,34 +1,59 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}User Details
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('styles/index.css') }}">
+{% endblock %}
+
+{% block title %}
+	Détails de l'utilisateur
 {% endblock %}
 
 {% block body %}
-	<h1>User Details</h1>
+	<div class="login-container">
+		<div class="login-box">
+			<div class="login-content">
+				<div class="login-header">
+					<h1>Détails de
+						<strong>Profil</strong>
+					</h1>
+				</div>
 
-	<table>
-		<tr>
-			<th>ID</th>
-			<td>{{ user.id }}</td>
-		</tr>
-		<tr>
-			<th>First Name</th>
-			<td>{{ user.firstname }}</td>
-		</tr>
-		<tr>
-			<th>Last Name</th>
-			<td>{{ user.lastname }}</td>
-		</tr>
-		<tr>
-			<th>Email</th>
-			<td>{{ user.email }}</td>
-		</tr>
-	</table>
+				<div class="card-body">
+					<table class="user-details-table">
+						<tr>
+							<th>ID</th>
+							<td>{{ user.id }}</td>
+						</tr>
+						<tr>
+							<th>Prénom</th>
+							<td>{{ user.firstname }}</td>
+						</tr>
+						<tr>
+							<th>Nom</th>
+							<td>{{ user.lastname }}</td>
+						</tr>
+						<tr>
+							<th>Email</th>
+							<td>{{ user.email }}</td>
+						</tr>
+						<tr>
+							<th>Rôles</th>
+							<td>{{ user.roles | join(', ') }}</td>
+						</tr>
+					</table>
 
-	<a href="{{ path('app_user_index') }}">Back to list</a>
-	<a href="{{ path('app_user_edit', { id: user.id }) }}">Edit</a>
-	<form method="post" action="{{ path('app_user_delete', { id: user.id }) }}" style="display:inline;">
-		<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
-		<button class="btn">Delete</button>
-	</form>
+					<div class="login-buttons">
+						<a href="{{ path('app_user_index') }}" class="btn btn-signup">Retour à la liste</a>
+						<a href="{{ path('app_user_edit', { id: user.id }) }}" class="btn btn-login">Modifier</a>
+						<form method="post" action="{{ path('app_user_delete', { id: user.id }) }}" style="display:inline;">
+							<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+							<button class="btn btn-danger">Supprimer</button>
+						</form>
+					</div>
+				</div>
+			</div>
+			<div class="login-image"></div>
+		</div>
+	</div>
 {% endblock %}
