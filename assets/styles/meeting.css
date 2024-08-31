@@ -1,6 +1,6 @@
 body {
     font-family: 'Roboto', sans-serif;
-    background-color: #fff !important;
+    background-color: #fff;
     margin: 0;
     padding: 0;
     min-height: 100vh;
@@ -24,7 +24,7 @@ body {
 .meeting-container {
     width: 100%;
     max-width: 1000px;
-    /* Augmenté pour permettre plus de cartes par ligne */
+    /* Largeur pour permettre plus de cartes par ligne */
     margin: 1rem auto;
     display: flex;
     flex-direction: column;
@@ -35,10 +35,10 @@ body {
     width: 100%;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    /* Ajusté pour un meilleur fit */
     gap: 2rem;
     /* Espacement égal entre les cartes */
-    margin-bottom: 1rem;
+    margin-bottom: 2rem;
+    /* Marges en bas du conteneur des cartes */
 }
 
 .card {
@@ -48,6 +48,13 @@ body {
     overflow: hidden;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    margin-bottom: 0;
+    margin-left: auto;
+    /* Supprime la marge inférieure */
 }
 
 .card:hover {
@@ -63,8 +70,6 @@ body {
 
 .card-header {
     background-color: #FFAA00;
-    position: relative;
-    z-index: 1;
 }
 
 .card-title {
@@ -81,8 +86,8 @@ body {
 
 .card-body {
     background-color: #FFAA00;
-    position: relative;
-    z-index: 1;
+    flex-grow: 1;
+    /* Le corps de la carte prend tout l'espace disponible */
 }
 
 .card-section-title {
@@ -100,13 +105,13 @@ body {
 .card-footer {
     background-color: #FFAA00;
     text-align: center;
-    position: relative;
-    z-index: 1;
+    margin-top: 1.2rem;
+    /* Marge au-dessus du footer */
 }
 
-.btn-details {
+.btn-MeetinDetails {
     display: inline-block;
-    padding: 0.5rem 1rem;
+    padding: 0.75rem 1.5rem;
     background-color: #370617;
     color: white;
     text-decoration: none;
@@ -114,9 +119,11 @@ body {
     border: none;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
+    margin-top: auto;
+    /* Assure que le bouton reste en bas */
 }
 
-.btn-details:hover {
+.btn-MeetinDetails:hover {
     background-color: #DC2F02;
     transform: translateY(-2px);
 }

@@ -10,6 +10,13 @@ body {
     /* Espace pour la navbar fixe */
 }
 
+.Tittle {
+    text-align: center;
+    font-size: 2rem;
+    margin: 2rem;
+    text-transform: uppercase;
+    
+}
 .container {
     flex: 1;
     display: flex;
@@ -19,6 +26,7 @@ body {
     margin: 0 auto;
     padding: 1rem;
     box-sizing: border-box;
+    
 }
 
 .meeting-container {
@@ -29,6 +37,7 @@ body {
     display: flex;
     flex-direction: column;
     align-items: center;
+        text-align: center;
 }
 
 .card {
@@ -39,6 +48,7 @@ body {
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
     width: 100%;
+    margin-bottom: 2rem;
 }
 
 .card:hover {
@@ -60,9 +70,10 @@ body {
 
 .card-title {
     font-size: 2rem;
-    color: #000;
+    color: #370617;
     margin: 0;
     text-align: center;
+    text-transform: uppercase;
 }
 
 .card-subtitle {
@@ -76,6 +87,7 @@ body {
     background-color: #FFAA00;
     position: relative;
     z-index: 1;
+        font-size: 1.2rem;
 }
 
 .card-section-title {
@@ -97,24 +109,70 @@ body {
     z-index: 1;
 }
 
-.btn-details {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    background-color: #370617;
-    color: white;
+.btn-details,
+.btn-sup {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 400px;
+    /* Largeur fixe pour tous les boutons */
+    height: 60px;
+    /* Hauteur fixe pour tous les boutons */
+    padding: 0 1rem;
+    font-size: 1.3rem;
     text-decoration: none;
-    border-radius: 5px;
+    border-radius: 8px;
     border: none;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
     margin: 0.5rem;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.btn-details {
+    background-color: #370617;
+    color: white;
+}
+
+.btn-sup {
+    background-color: #9D0208;
+    color: white;
+}
+
+.btn-details:hover,
+.btn-sup:hover {
+    transform: translateY(-2px);
 }
 
 .btn-details:hover {
     background-color: #DC2F02;
-    transform: translateY(-2px);
 }
 
+.btn-sup:hover {
+    background-color: #6A040F;
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    margin-top: 2rem;
+    gap: 1rem;
+}
+
+/* Style pour le bouton dans le formulaire de suppression */
+.action-buttons form {
+    display: inline-flex;
+}
+
+.action-buttons form button {
+    width: 200px;
+    height: 60px;
+}
 #map {
     width: 100%;
     height: 300px;
@@ -122,14 +180,6 @@ body {
     border-radius: 10px;
     overflow: hidden;
 }
-
-.action-buttons {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    margin-top: 1rem;
-}
-
 /* Media queries */
 @media (max-width: 768px) {
     body {

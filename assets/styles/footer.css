@@ -1,27 +1,30 @@
-.navbar {
+.site-footer {
     background-color: #DC2F02;
     color: white;
     display: flex;
-    align-items: center;
-    padding: 0 20px;
+    /* align-items: center; */
+    justify-content: center;
+    padding: 10px 20px;
     height: 60px;
-    position: fixed;
-    top: 0;
     left: 0;
     right: 0;
-    z-index: 1000;
+    bottom: 0;
+    position: relative;
+    text-align: center;
+    width: 100%;
+    margin-bottom: 0;
 }
 
-.navbar-container {
+.footer-container {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
 }
 
-.navbar-brand {
+.footer-brand {
     display: flex;
     align-items: center;
     color: white;
@@ -31,24 +34,33 @@
     letter-spacing: 0.5px;
 }
 
-.navbar-logo {
+.footer-logo {
     width: 30px;
     height: 30px;
     margin-right: 10px;
 }
 
-.navbar-nav {
+.footer-nav .nav-list {
     display: flex;
     list-style: none;
     margin: 0;
     padding: 0;
+    justify-content: center;
 }
 
-.nav-item {
+.footer-nav .nav-item {
     margin-left: 20px;
+    position: relative;
 }
 
-.nav-link {
+.footer-nav .nav-item:not(:first-child)::before {
+    content: "•";
+    position: absolute;
+    left: -10px;
+    color: white;
+}
+
+.footer-link {
     color: white;
     text-decoration: none;
     font-weight: 700;
@@ -59,45 +71,23 @@
     letter-spacing: 0.3px;
 }
 
-.nav-link:hover {
+.footer-link:hover {
     opacity: 0.8;
 }
 
-.navbar-toggle {
-    display: none;
-    background: none;
-    border: none;
-    color: white;
-    font-size: 1.5rem;
-    cursor: pointer;
-}
-
-.power-icon {
-    width: 20px;
-    height: 20px;
-    margin-right: 5px;
-}
-
 @media (max-width: 768px) {
-    .navbar-container {
+    .footer-container {
         flex-direction: column;
         align-items: flex-start;
     }
 
-    .navbar-nav {
+    .footer-nav .nav-list {
         flex-direction: column;
         align-items: flex-start;
         width: 100%;
     }
 
-    .nav-item {
+    .footer-nav .nav-item {
         margin: 10px 0;
-    }
-
-    .navbar-toggle {
-        display: block;
-        position: absolute;
-        right: 20px;
-        top: 15px;
     }
 }

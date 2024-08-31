@@ -1,36 +1,37 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-	<link rel="stylesheet" href="{{ asset('styles/index.css') }}">
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('styles/showMeeting.css') }}">
 {% endblock %}
 
 {% block title %}Créer un nouveau compte
 {% endblock %}
 
 {% block body %}
-	<div class="login-container">
-		<div class="login-box">
-			<div class="login-content">
-				<div class="login-header">
-					<h1>Créer un
-						<strong>nouveau compte !</strong>
-					</h1>
-				</div>
+	<div class="container my-5">
+		<h1 class="Tittle mb-4">Créer un nouveau compte</h1>
 
-				<div class="card-body">
-					{{ form_start(registrationForm) }}
-					<div class="form-group">
-						{{ form_widget(registrationForm) }}
+		<div class="row">
+			<div class="col-lg-8 mb-4">
+				<article class="card">
+					<div class="card-header">
+						<h2 class="card-title h3 mb-0">Inscription</h2>
 					</div>
-					<div class="login-buttons">
-						<button class="btn btn-login">Enregistrer</button>
-						<a href="{{ path('app_user_index') }}" class="btn btn-signup">Retour à la liste</a>
+					<div class="card-body">
+						{{ form_start(registrationForm) }}
+						<div class="form-group">
+							{{ form_widget(registrationForm) }}
+						</div>
 					</div>
-					{{ form_end(registrationForm) }}
-				</div>
+					<div class="card-footer">
+						<div class="action-buttons">
+							<button class="btn btn-details">Enregistrer</button>
+						</div>
+						{{ form_end(registrationForm) }}
+					</div>
+				</article>
 			</div>
-			<div class="login-image"></div>
 		</div>
 	</div>
 {% endblock %}
-

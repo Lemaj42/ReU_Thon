@@ -5,11 +5,9 @@
 	<link rel="stylesheet" href="{{ asset('styles/meeting.css') }}">
 {% endblock stylesheets %}
 
-
 {% block title %}
 	Liste des Réunions
 {% endblock %}
-
 
 {% block body %}
 	<section class="meeting-container">
@@ -27,18 +25,24 @@
 						<p class="card-text">{{ meeting.detail }}</p>
 						<p class="card-info">
 							<strong>Date principale :</strong>
-							{{ meeting.date ? meeting.date|date('d/m/Y') : 'Non définie' }}</p>
+							{{ meeting.date ? meeting.date|date('d/m/Y') : 'Non définie' }}
+						</p>
+						<!-- Correction de la fermeture du paragraphe -->
 						{% if meeting.alternativeDate %}
 							<p class="card-info">
 								<strong>Date alternative :</strong>
-								{{ meeting.alternativeDate|date('d/m/Y') }}</p>
+								{{ meeting.alternativeDate|date('d/m/Y') }}
+							</p>
+							<!-- Correction de la fermeture du paragraphe -->
 						{% endif %}
 						<p class="card-info">
 							<strong>Lieu :</strong>
-							{{ meeting.place }}</p>
+							{{ meeting.place }}
+						</p>
+						<!-- Correction de la fermeture du paragraphe -->
 					</div>
 					<div class="card-footer">
-						<a href="{{ path('app_meeting_show', {'id': meeting.id}) }}" class="btn btn-details">VOIR DÉTAILS</a>
+						<a href="{{ path('app_meeting_show', {'id': meeting.id}) }}" class="btn btn-MeetinDetails">VOIR DÉTAILS</a>
 					</div>
 				</article>
 			{% else %}

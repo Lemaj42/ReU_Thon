@@ -1,45 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('styles/showMeeting.css') }}">
+{% endblock %}
+
 {% block title %}
 	Profil de
 	{{ user.firstname }}
 {% endblock %}
 
 {% block body %}
-	<div class="login-container">
-		<div class="login-box">
-			<div class="login-content">
-				<div class="login-header">
-					<h1>Votre
-						<strong>Profil</strong>
-					</h1>
-				</div>
+	<div class="container my-5">
+		<h1 class="Tittle mb-4">VOTRE PROFIL</h1>
 
-				<div class="card-body">
-					<div class="profile-details">
-						<p>
-							<strong>Email :</strong>
-							{{ user.email }}
-						</p>
-						<p>
-							<strong>Prénom :</strong>
-							{{ user.firstname }}
-						</p>
-						<p>
-							<strong>Nom :</strong>
-							{{ user.lastname }}
-						</p>
-						<p>
-							<strong>Rôles :</strong>
-							{{ user.roles | join(', ') }}
-						</p>
+		<div class="row">
+			<div class="col-lg-8 mb-4">
+				<article class="card">
+					<div class="card-header">
+						<h2 class="card-title h3 mb-0">Détails du profil</h2>
+					</div>
+					<div class="card-body">
+						<ul class="list-unstyled">
+							<li>
+								<strong>Email :</strong>
+								{{ user.email }}
+							</li>
+							<li>
+								<strong>Prénom :</strong>
+								{{ user.firstname }}
+							</li>
+							<li>
+								<strong>Nom :</strong>
+								{{ user.lastname }}
+							</li>
+							<li>
+								<strong>Rôles :</strong>
+								{{ user.roles | join(', ') }}
+							</li>
+						</ul>
 					</div>
 
-					<div class="login-buttons">
-						<a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-primary">Modifier mon profil</a>
-						<a href="{{ path('app_meeting_index') }}" class="btn btn-signup">Retour à la liste</a>
+					<div class="card-footer">
+						<div class="action-buttons">
+							<a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-details">Modifier mon profil</a>
+							<a href="{{ path('app_meeting_index') }}" class="btn btn-details">Retour à la liste</a>
+						</div>
 					</div>
-				</div>
+				</article>
 			</div>
-			<div class="login-image"></div>
 		</div>
 	</div>
 {% endblock %}

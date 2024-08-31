@@ -1,0 +1,177 @@
+body {
+    background-color: #fff;
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    padding-top: 60px;
+    /* Espace pour la navbar fixe */
+}
+
+/* Titre principal */
+.Tittle {
+    text-align: center;
+    font-size: 2rem;
+    /* Taille ajustée */
+    margin: 2rem;
+    text-transform: uppercase;
+}
+
+/* Conteneur principal */
+.container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    width: 90%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    /* Padding ajusté */
+    box-sizing: border-box;
+}
+
+/* Style de la carte */
+.card {
+    background-color: #FFAA00;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
+    width: 100%;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    position: relative;
+}
+
+.card-header,
+.card-body,
+.card-footer {
+    padding: 1.2rem;
+}
+
+.card-title {
+    font-size: 2rem;
+    color: #370617;
+    margin: 0;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.card-body {
+    font-size: 1.3rem;
+}
+
+/* Boutons */
+.btn-details {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    /* Prend toute la largeur disponible */
+    height: 60px;
+    padding: 0 1rem;
+    font-size: 1.2rem;
+    text-decoration: none;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin: 0.5rem;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-color: #370617;
+    color: white;
+}
+
+.btn-details:hover {
+    background-color: #DC2F02;
+    transform: translateY(-2px);
+}
+
+.action-buttons {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+}
+
+/* Styles des formulaires */
+.form-group {
+    margin-bottom: 1.5rem;
+    position: relative;
+    /* Position relative pour le conteneur du champ */
+}
+
+.form-group label {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    display: block;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+    width: 100%;
+    padding: 0.8rem;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    margin-bottom: 1rem;
+    padding-right: 35px;
+    /* Espace pour l'icône de l'œil */
+}
+
+/* Positionnement de l'icône de l'œil */
+.field-icon {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    color: #333;
+    transition: transform 0.3s ease, color 0.3s ease;
+}
+
+/* Effet de mouvement de la carte */
+.card:hover {
+    transform: perspective(1000px) rotateX(5deg) rotateY(5deg) scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+/* Ajouter des transitions pour l'icône de l'œil */
+.field-icon:hover {
+    color: #000;
+    transform: translateY(-50%) scale(1.1);
+}
+
+/* Assurez-vous que l'effet de mouvement s'applique à tous les éléments */
+.card:hover .field-icon {
+    transform: translateY(-50%) scale(1.1);
+}
+
+/* Media queries */
+@media (max-width: 768px) {
+    .card-body {
+        font-size: 1.1rem;
+    }
+
+    .btn-details {
+        font-size: 1.1rem;
+    }
+
+    .form-group label {
+        font-size: 1.1rem;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+        font-size: 1.1rem;
+    }
+}

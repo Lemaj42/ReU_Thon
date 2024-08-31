@@ -2,6 +2,7 @@
 
 namespace App\Form;
 
+
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
@@ -52,13 +53,16 @@ class UserType extends AbstractType
                         'message' => 'Veuillez entrer un email',
                     ]),
                 ],
-            ])
-            ->add('plainPassword', RepeatedType::class, [
+            ]);
+
+        // Ajouter le champ de mot de passe uniquement si on n'est pas en mode édition
+        if (!$options['is_edit']) {
+            $builder->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'mapped' => false,
-                'required' => !$options['is_edit'],
+                'required' => true,
                 'first_options' => ['label' => 'Mot de passe'],
-                'second_options' => ['label' => 'Répétez le mot de passe'],
+                'second_options' => ['label' => 'Confirmer le mot de passe'],
                 'constraints' => [
                     new NotBlank([
                         'message' => 'Veuillez entrer un mot de passe',
@@ -70,6 +74,7 @@ class UserType extends AbstractType
                     ]),
                 ],
             ]);
+        }
 
         // Ajoute les rôles uniquement si l'option 'show_roles' est vraie
         if ($options['show_roles']) {
@@ -89,8 +94,9 @@ class UserType extends AbstractType
     {
         $resolver->setDefaults([
             'data_class' => User::class,
-            'is_edit' => false,
+            'is_edit' => false, // Définit si le formulaire est en mode édition
             'show_roles' => false, // Indique si le champ des rôles doit être affiché
         ]);
     }
 }
+
