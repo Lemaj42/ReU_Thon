@@ -1,22 +1,42 @@
-/* public/styles/navbar.css */
+
+
 body {
-    font-family: Arial, sans-serif;
+    font-family: 'Roboto', sans-serif;
+    padding-top: 60px; /* Espace pour la navbar fixe */
+    line-height: 1.6;
 }
 
+/* Styles de la navbar */
 .navbar {
     background-color: #DC2F02;
-    padding: 0.5rem 1rem;
     position: fixed;
     top: 0;
     left: 0;
     right: 0;
-    z-index: 1030;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    z-index: 1000;
 }
 
-.navbar-brand,
-.nav-link {
-    color: white !important;
-    font-weight: bold;
+.navbar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.navbar-brand {
+    display: flex;
+    align-items: center;
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1.2rem;
+    letter-spacing: 0.5px;
 }
 
 .navbar-logo {
@@ -26,48 +46,89 @@ body {
 }
 
 .navbar-nav {
+    display: flex;
+    list-style-type: none;
+}
+
+.nav-item {
+    margin-left: 20px;
+}
+
+.nav-link {
+    color: white;
+    text-decoration: none;
+    font-weight: 700;
+    font-size: 1rem;
+    display: flex;
     align-items: center;
+    transition: opacity 0.3s ease;
+    letter-spacing: 0.3px;
 }
 
-.navbar-nav .nav-link {
-    padding: 0.5rem 1rem;
-}
-
-.navbar-toggler {
-    border-color: white;
-}
-
-.navbar-toggler-icon {
-    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='30' height='30' viewBox='0 0 30 30'%3e%3cpath stroke='rgba(255, 255, 255, 1)' stroke-linecap='round' stroke-miterlimit='10' stroke-width='2' d='M4 7h22M4 15h22M4 23h22'/%3e%3c/svg%3e");
+.nav-link:hover {
+    opacity: 0.8;
 }
 
 .power-icon {
-    width: 24px;
-    height: 24px;
+    width: 20px;
+    height: 20px;
+    margin-right: 5px;
 }
 
-.container {
-    margin-top: 70px;
-    /* Ajustez cette valeur en fonction de la hauteur de votre navbar */
+/* Styles pour le bouton du menu mobile */
+.navbar-toggle {
+    display: none;
+    background: none;
+    border: none;
+    color: white;
+    font-size: 1.5rem;
+    cursor: pointer;
 }
 
-@media (max-width: 992px) {
-    .navbar-nav {
+/* Media queries pour la responsivité */
+@media (max-width: 768px) {
+    .navbar-container {
         flex-direction: column;
         align-items: flex-start;
     }
+
+    .navbar-nav {
+        display: none;
+        flex-direction: column;
+        width: 100%;
+        position: absolute;
+        top: 60px;
+        left: 0;
+        background-color: #DC2F02;
+        padding: 20px;
+    }
+
+    .navbar-nav.active {
+        display: flex;
+    }
+
+    .nav-item {
+        margin: 10px 0;
+    }
+
+    .navbar-toggle {
+        display: block;
+        position: absolute;
+        right: 20px;
+        top: 15px;
+    }
 }
 
-/* Ajoutez ceci à votre fichier public/styles/navbar.css */
-
+/* Styles pour le footer */
 .site-footer {
     background-color: #DC2F02;
-    padding: 0.5rem 0;
+    color: white;
+    text-align: center;
+    padding: 10px 0;
     position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 1030;
 }
 
 .footer-nav {
@@ -75,47 +136,37 @@ body {
     justify-content: center;
 }
 
-.nav-list {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
+.footer-nav .nav-list {
     display: flex;
+    list-style-type: none;
 }
 
-.nav-item {
+.footer-nav .nav-item {
     margin: 0 15px;
 }
 
-.nav-link {
+.footer-nav .nav-link {
     color: white;
     text-decoration: none;
-    font-weight: bold;
     font-size: 0.9rem;
+    font-weight: 400;
 }
 
-.nav-link:hover {
-    text-decoration: underline;
-}
-
-/* Ajustez la marge inférieure du conteneur principal */
+/* Ajustement pour le contenu principal */
 .container {
-    margin-bottom: 60px;
-    /* Ajustez cette valeur en fonction de la hauteur de votre footer */
+    margin-bottom: 60px; /* Espace pour le footer */
 }
 
-/* Media query pour les petits écrans */
 @media (max-width: 768px) {
-    .nav-list {
+    .footer-nav .nav-list {
         flex-direction: column;
-        align-items: center;
     }
 
-    .nav-item {
+    .footer-nav .nav-item {
         margin: 5px 0;
     }
 
     .container {
-        margin-bottom: 120px;
-        /* Ajustez cette valeur pour les petits écrans */
+        margin-bottom: 120px; /* Plus d'espace pour le footer sur mobile */
     }
 }

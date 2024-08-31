@@ -1,17 +1,19 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('styles/meeting.css') }}">
+{% endblock stylesheets %}
+
+
 {% block title %}
 	Liste des Réunions
 {% endblock %}
 
-{% block stylesheets %}
-	<link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
-	<link rel="stylesheet" href="{{ asset('styles/meeting.css') }}">
-{% endblock stylesheets %}
 
 {% block body %}
 	<section class="meeting-container">
-		<h1 class="text-center">LISTE DES RÉUNIONS</h1>
+		<h1 class="text-center">VOTE POUR LES PROCHAINES RÉUNIONS</h1>
 
 		<div class="meeting-cards">
 			{% for meeting in meetings %}
@@ -42,12 +44,6 @@
 			{% else %}
 				<p>Aucune réunion trouvée.</p>
 			{% endfor %}
-		</div>
-
-		<div class="text-center">
-			{% if is_granted('ROLE_ADMIN') %}
-				<a href="{{ path('app_meeting_new') }}" class="btn btn-primary">Créer un nouveau meeting</a>
-			{% endif %}
 		</div>
 	</section>
 {% endblock %}

@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\UX\Turbo\Attribute\Broadcast;
 
 #[ORM\Entity(repositoryClass: BookingRepository::class)]
-#[Broadcast(entity: "booking")] // Diffuse l'entité `Booking`
+#[Broadcast(entity: "booking")]
 class Booking
 {
     #[ORM\Id]
@@ -26,9 +26,10 @@ class Booking
     #[ORM\JoinColumn(nullable: false)]
     private ?Meeting $meeting = null;
 
-    // Nouvelle propriété pour stocker la date choisie
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $chosenDate = null;
+
+    // Getters et setters...
 
     public function getId(): ?int
     {
@@ -43,7 +44,6 @@ class Booking
     public function setAnswer(string $answer): static
     {
         $this->answer = $answer;
-
         return $this;
     }
 
@@ -55,7 +55,6 @@ class Booking
     public function setUser(?User $user): static
     {
         $this->user = $user;
-
         return $this;
     }
 
@@ -67,21 +66,17 @@ class Booking
     public function setMeeting(?Meeting $meeting): static
     {
         $this->meeting = $meeting;
-
         return $this;
     }
 
-    // Nouvelle méthode getChosenDate()
     public function getChosenDate(): ?string
     {
         return $this->chosenDate;
     }
 
-    // Nouvelle méthode setChosenDate()
     public function setChosenDate(?string $chosenDate): static
     {
         $this->chosenDate = $chosenDate;
-
         return $this;
     }
 }

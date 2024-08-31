@@ -2,8 +2,10 @@
 
 namespace App\Controller;
 
+use App\Entity\Booking;
 use App\Entity\Meeting;
 use App\Form\MeetingType;
+use App\Repository\BookingRepository;
 use App\Repository\UserRepository;
 use App\Repository\MeetingRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -19,22 +21,27 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/meeting')]
 class MeetingController extends AbstractController
 {
-    // Affiche la Liste des Meetings 
+    // Affiche la liste des réunions
     #[Route('/', name: 'app_meeting_index', methods: ['GET'])]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')] // Seuls les utilisateurs authentifiés peuvent voir la Liste des Meetings 
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function index(MeetingRepository $meetingRepository): Response
     {
-        $meetings = $meetingRepository->findAll(); // Récupère tous les meetings
+        $meetings = $meetingRepository->findAll();
         return $this->render('meeting/index.html.twig', [
             'meetings' => $meetings,
         ]);
     }
 
-    // Crée un nouveau meeting
-    #[Route('/meeting/new', name: 'app_meeting_new', methods: ['GET', 'POST'])]
-
-    public function new(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer, UserRepository $userRepository, UrlGeneratorInterface $urlGenerator): Response
-    {
+    // Crée une nouvelle réunion
+    #[Route('/new', name: 'app_meeting_new', methods: ['GET', 'POST'])]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function new(
+        Request $request,
+        EntityManagerInterface $entityManager,
+        MailerInterface $mailer,
+        UserRepository $userRepository,
+        UrlGeneratorInterface $urlGenerator
+    ): Response {
         $meeting = new Meeting();
         $user = $this->getUser();
         $meeting->setOwner($user);
@@ -49,7 +56,6 @@ class MeetingController extends AbstractController
             // Envoi des e-mails aux utilisateurs
             $users = $userRepository->findAll();
             foreach ($users as $recipient) {
-                // Génère les URL pour voter via l'e-mail
                 $voteForMainDateUrl = $urlGenerator->generate('app_booking_vote_email', [
                     'meetingId' => $meeting->getId(),
                     'userId' => $recipient->getId(),
@@ -62,16 +68,15 @@ class MeetingController extends AbstractController
                     'date' => $meeting->getAlternativeDate()->format('Y-m-d H:i:s'),
                 ], UrlGeneratorInterface::ABSOLUTE_URL);
 
-                // Création de l'e-mail avec les liens de vote
                 $email = (new Email())
                     ->from('noreply@example.com')
                     ->to($recipient->getEmail())
                     ->subject('Nouvelle réunion : ' . $meeting->getTitle())
                     ->html(sprintf(
                         'Bonjour %s,<br><br>Une nouvelle réunion a été programmée : %s à %s.<br><br>
-                    Veuillez choisir votre date préférée en cliquant sur l\'un des liens ci-dessous :<br>
-                    <a href="%s">Choisir la date principale</a> ou <a href="%s">Choisir la date alternative</a>.<br><br>
-                    Merci !',
+                        Veuillez choisir votre date préférée en cliquant sur l\'un des liens ci-dessous :<br>
+                        <a href="%s">Choisir la date principale</a> ou <a href="%s">Choisir la date alternative</a>.<br><br>
+                        Merci !',
                         $recipient->getFirstname(),
                         $meeting->getTitle(),
                         $meeting->getPlace(),
@@ -92,55 +97,97 @@ class MeetingController extends AbstractController
         ]);
     }
 
-    // Affiche les détails d'un meeting
+    // Affiche les détails d'une réunion
     #[Route('/{id}', name: 'app_meeting_show', methods: ['GET'])]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')] // Seuls les utilisateurs authentifiés peuvent voir un meeting
-    public function show(Meeting $meeting): Response
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function show(Meeting $meeting, BookingRepository $bookingRepository): Response
     {
-        // Passe le meeting à la vue pour affichage des détails (incluant la Google Maps avec l'adresse)
+        $user = $this->getUser();
+        $booking = $bookingRepository->findOneBy([
+            'user' => $user,
+            'meeting' => $meeting,
+        ]);
+
+        $hasVoted = $booking !== null;
+        $chosenDate = $hasVoted ? $booking->getChosenDate() : null;
+
+        $googleMapsApiKey = $_ENV['GOOGLE_MAPS_API_KEY'];
+
         return $this->render('meeting/show.html.twig', [
             'meeting' => $meeting,
+            'hasVoted' => $hasVoted,
+            'chosenDate' => $chosenDate,
+            'google_maps_api_key' => $googleMapsApiKey,
         ]);
     }
 
-    // Modifie un meeting existant
+
+
+    // Modifie une réunion existante
     #[Route('/{id}/edit', name: 'app_meeting_edit', methods: ['GET', 'POST'])]
-    #[IsGranted('ROLE_ADMIN')] // Seuls les administrateurs peuvent modifier un meeting
+    #[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request, Meeting $meeting, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(MeetingType::class, $meeting);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Mise à jour du meeting dans la base de données
             $entityManager->flush();
-
-            // Message de succès et redirection
             $this->addFlash('success', 'Réunion mise à jour avec succès!');
             return $this->redirectToRoute('app_meeting_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        // Affiche le formulaire d'édition
         return $this->render('meeting/edit.html.twig', [
             'meeting' => $meeting,
             'form' => $form->createView(),
         ]);
     }
 
-    // Supprime un meeting existant
+    // Supprime une réunion existante
     #[Route('/{id}', name: 'app_meeting_delete', methods: ['POST'])]
-    #[IsGranted('ROLE_ADMIN')] // Seuls les administrateurs peuvent supprimer un meeting
+    #[IsGranted('ROLE_ADMIN')]
     public function delete(Request $request, Meeting $meeting, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $meeting->getId(), $request->request->get('_token'))) {
-            // Suppression du meeting de la base de données
             $entityManager->remove($meeting);
             $entityManager->flush();
-
-            // Message de succès
             $this->addFlash('success', 'Réunion supprimée avec succès.');
         }
 
         return $this->redirectToRoute('app_meeting_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    // Vote pour une date de réunion
+    #[Route('/{id}/vote', name: 'app_meeting_vote', methods: ['POST'])]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function vote(Meeting $meeting, Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $user = $this->getUser();
+        $dateChosen = $request->request->get('date'); // La date est récupérée comme une chaîne de caractères
+
+        // Vérifie si l'utilisateur a déjà voté pour cette réunion
+        $existingBooking = $entityManager->getRepository(Booking::class)->findOneBy([
+            'user' => $user,
+            'meeting' => $meeting,
+        ]);
+
+        if ($existingBooking) {
+            $chosenDate = $existingBooking->getChosenDate(); // Récupère la date sous forme de chaîne de caractères
+            $this->addFlash('warning', sprintf('Vous avez déjà voté pour cette réunion. Vous avez choisi la date : %s.', (new \DateTime($chosenDate))->format('d/m/Y H:i')));
+            return $this->redirectToRoute('app_meeting_show', ['id' => $meeting->getId()]);
+        }
+
+        // Crée une nouvelle réservation pour l'utilisateur
+        $booking = new Booking();
+        $booking->setUser($user);
+        $booking->setMeeting($meeting);
+        $booking->setChosenDate($dateChosen); // Passe directement la chaîne de caractères
+        $booking->setAnswer('Choix de la date: ' . $dateChosen);
+
+        $entityManager->persist($booking);
+        $entityManager->flush();
+
+        $this->addFlash('success', sprintf("Vous avez choisi la date : %s.", (new \DateTime($dateChosen))->format('d/m/Y H:i')));
+        return $this->redirectToRoute('app_meeting_show', ['id' => $meeting->getId()]);
     }
 }
