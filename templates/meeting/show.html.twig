@@ -6,15 +6,11 @@
 {% endblock %}
 
 {% block title %}DÉTAILS DE LA RÉUNION
-
 {% endblock %}
 
 {% block body %}
 	<div class="container my-5">
-		<h1 class="Tittle mb-4">DÉTAILS DE LA RÉUNION
-
-
-		</h1>
+		<h1 class="Tittle mb-4">DÉTAILS DE LA RÉUNION</h1>
 
 		<div class="row">
 			<div class="col-lg-8 mb-4">
@@ -42,13 +38,12 @@
 							</li>
 						</ul>
 					</div>
-
 					<div class="card-footer">
 						{% if not hasVoted %}
-							<form action="{{ path('app_meeting_vote', {'id': meeting.id}) }}" method="POST">
-								<button type="submit" name="date" value="{{ meeting.date|date('Y-m-d H:i:s') }}" class="btn btn-details">Choisir la date principale</button>
+							<form action="{{ path('app_meeting_vote', {'id': meeting.id}) }}" method="POST" class="btn-container">
+								<button type="submit" name="date" value="{{ meeting.date|date('Y-m-d H:i:s') }}" class="btn-date">Choisir la date principale</button>
 								{% if meeting.alternativeDate %}
-									<button type="submit" name="date" value="{{ meeting.alternativeDate|date('Y-m-d H:i:s') }}" class="btn btn-details">Choisir la date alternative</button>
+									<button type="submit" name="date" value="{{ meeting.alternativeDate|date('Y-m-d H:i:s') }}" class="btn-date">Choisir la date alternative</button>
 								{% endif %}
 							</form>
 						{% else %}
@@ -58,33 +53,37 @@
 					</div>
 				</article>
 			</div>
-
 		</div>
 
-		<div class="mt-4">
-			<a href="{{ path('app_meeting_index') }}" class="btn btn-details">Retour à la liste</a>
-			<a href="{{ path('app_meeting_edit', {'id': meeting.id}) }}" class="btn btn-details">Modifier</a>
-			<form method="post" action="{{ path('app_meeting_delete', {'id': meeting.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette réunion ?');" style="display: inline-block;">
-				<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ meeting.id) }}">
-				<button type="submit" class="btn btn-sup">Supprimer</button>
-			</form>
+		<div class="row mt-4">
+			<div class="col-md-12 btn-container">
+				<a href="{{ path('app_meeting_edit', {'id': meeting.id}) }}" class="btn-action btn-modify">Modifier</a>
+				<form method="post" action="{{ path('app_meeting_delete', {'id': meeting.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette réunion ?');" style="display:inline-block;">
+					<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ meeting.id) }}">
+					<button type="submit" class="btn-action btn-delete">Supprimer</button>
+				</form>
+			</div>
+		</div>
+
+		<div class="col-md-6">
+			<a href="{{ path('app_meeting_index') }}" class="btn btn-details w-100">Retour à la liste</a>
 		</div>
 
 		<div class="col-lg-4 mb-4">
-			<div id="map">></div>
+			<div id="map"></div>
 		</div>
-	{% endblock %}
-
-	{% block javascripts %}
-		{{ parent() }}
-		<script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap" async defer></script>
-		<script>
-			function initMap() {
+	</div>
+{% endblock %}
+{% block javascripts %}
+	{{ parent() }}
+	<script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap" async defer></script>
+	<script>
+		function initMap() {
 const address = "{{ meeting.place }}";
 const geocoder = new google.maps.Geocoder();
 const mapElement = document.getElementById('map');
 
-mapElement.style.height = '300px'; // Définir une hauteur par défaut
+mapElement.style.height = '300px'; // Set default height
 
 geocoder.geocode({
 address: address
@@ -101,5 +100,5 @@ mapElement.innerHTML = '<p>Impossible de charger la carte.</p>';
 }
 });
 }
-		</script>
-	{% endblock %}
+	</script>
+{% endblock %}

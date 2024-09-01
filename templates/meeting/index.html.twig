@@ -11,7 +11,7 @@
 
 {% block body %}
 	<section class="meeting-container">
-		<h1 class="text-center">VOTE POUR LES PROCHAINES RÉUNIONS</h1>
+		<h1 class="Tittle">VOTE POUR LES PROCHAINES RÉUNIONS</h1>
 
 		<div class="meeting-cards">
 			{% for meeting in meetings %}
@@ -42,8 +42,9 @@
 						<!-- Correction de la fermeture du paragraphe -->
 					</div>
 					<div class="card-footer">
-						<a href="{{ path('app_meeting_show', {'id': meeting.id}) }}" class="btn btn-MeetinDetails">VOIR DÉTAILS</a>
+						<a href="{{ path('app_meeting_show', {'id': meeting.id}) }}" class="btn-MeetinDetails flex-grow">VOIR DÉTAILS</a>
 					</div>
+
 				</article>
 			{% else %}
 				<p>Aucune réunion trouvée.</p>

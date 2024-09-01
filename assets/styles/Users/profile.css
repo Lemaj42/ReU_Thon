@@ -1,0 +1,128 @@
+/* Styles généraux */
+body {
+    background-color: #fff;
+    font-family: 'Roboto', sans-serif;
+    margin: 0;
+    padding: 60px 0 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    flex: 1;
+    width: 90%;
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 1.5rem;
+    box-sizing: border-box;
+}
+
+/* Titre principal */
+.Tittle {
+    text-align: center;
+    font-size: 2rem;
+    margin: 2rem 0;
+    text-transform: uppercase;
+}
+
+/* Styles de la carte */
+.card {
+    background-color: #FFAA00;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
+    width: 100%;
+    margin-bottom: 2rem;
+    padding: 1.5rem;
+    position: relative;
+}
+
+.card:hover {
+    transform: perspective(1000px) rotateX(5deg) rotateY(5deg) scale(1.05);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+.card-header,
+.card-body,
+.card-footer {
+    padding: 1.2rem;
+}
+
+.card-title {
+    font-size: 2rem;
+    color: #370617;
+    margin: 0;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+/* Styles des informations du profil */
+.profile-info p {
+    font-size: 1.2rem;
+    margin-bottom: 0.8rem;
+    color: #370617;
+}
+
+.profile-info strong {
+    font-weight: bold;
+}
+
+/* Styles des boutons */
+.action-buttons {
+    margin-top: 1.5rem;
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.btn-details {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 60px;
+    padding: 0 1rem;
+    font-size: 1.2rem;
+    text-decoration: none;
+    border-radius: 8px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin: 0.5rem 0;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-color: #370617;
+    color: white;
+}
+
+.btn-details:hover {
+    background-color: #DC2F02;
+    transform: translateY(-2px);
+}
+
+.btn-details i {
+    margin-right: 0.5rem;
+}
+
+.flex-grow {
+    flex-grow: 1;
+    width: 100%;
+}
+
+/* Media queries */
+@media (max-width: 768px) {
+
+    .card-body,
+    .btn-details,
+    .profile-info p {
+        font-size: 1.1rem;
+    }
+}

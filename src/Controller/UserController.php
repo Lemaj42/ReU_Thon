@@ -8,6 +8,7 @@ use App\Form\RegisterFormType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -54,46 +55,33 @@ class UserController extends AbstractController
     }
 
     #[Route('/{id}/edit', name: 'app_user_edit', methods: ['GET', 'POST'])]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function edit(Request $request, User $user, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
     {
-        // Vérifie si l'utilisateur actuel est autorisé à modifier le profil
+        // Vérification des droits d'accès
         if ($user !== $this->getUser() && !$this->isGranted('ROLE_ADMIN')) {
-            throw $this->createAccessDeniedException('Vous n\'êtes pas autorisé à modifier ce profil.');
+            throw new AccessDeniedException('Vous n\'êtes pas autorisé à modifier ce profil.');
         }
 
-        // Crée le formulaire de modification
         $form = $this->createForm(UserType::class, $user, [
-            'is_edit' => true, // Indique qu'il s'agit d'une édition
+            'is_edit' => true,
         ]);
         $form->handleRequest($request);
 
-        // Si le formulaire est soumis et valide
         if ($form->isSubmitted() && $form->isValid()) {
-            // Gestion du mot de passe, uniquement si un mot de passe est fourni
+            // Gestion du mot de passe
             $plainPassword = $form->get('plainPassword')->getData();
-            if ($plainPassword) {
+            if (!empty($plainPassword)) {
                 $hashedPassword = $passwordHasher->hashPassword($user, $plainPassword);
                 $user->setPassword($hashedPassword);
             }
 
-            // Gestion des rôles, uniquement si l'utilisateur connecté est administrateur
-            if ($this->isGranted('ROLE_ADMIN')) {
-                $roles = $form->get('roles')->getData();
-                $user->setRoles($roles);
-            }
-
-            // Sauvegarde les modifications dans la base de données
+            // Enregistrement des modifications
             $entityManager->flush();
 
-            // Ajoute un message flash de succès
             $this->addFlash('success', 'Profil mis à jour avec succès!');
-
-            // Redirige vers une autre page après la modification (par exemple, la Liste des Meetings )
-            return $this->redirectToRoute('app_meeting_index');
+            return $this->redirectToRoute('app_user_profile', ['id' => $user->getId()]);
         }
 
-        // Affiche le formulaire de modification
         return $this->render('user/edit.html.twig', [
             'user' => $user,
             'form' => $form->createView(),

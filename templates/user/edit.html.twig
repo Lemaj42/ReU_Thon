@@ -1,62 +1,99 @@
 {% extends 'base.html.twig' %}
 
-{% block stylesheets %}
-	{{ parent() }}
-	<link rel="stylesheet" href="{{ asset('styles/editProfile.css') }}">
-{% endblock %}
-
 {% block title %}Modifier mon profil
 {% endblock %}
 
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('styles/Users/editProfile.css') }}">
+{% endblock %}
+
 {% block body %}
-	<div class="container my-5">
-		<h1 class="Tittle mb-4">MODIFIER VOTRE PROFIL</h1>
+	<div id="overlay" class="overlay d-none"></div>
+	<div class="container">
+		<h1 class="Tittle">Modifier mon profil</h1>
+		<div class="card">
+			<div class="card-header">
+				<h2 class="card-title">Informations personnelles</h2>
+			</div>
+			<div class="card-body">
+				{{ form_start(form) }}
+				<div class="form-group">
+					{{ form_label(form.firstname) }}
+					{{ form_widget(form.firstname, {'attr': {'class': 'form-control'}}) }}
+					{{ form_errors(form.firstname) }}
+				</div>
 
-		<div class="row">
-			<div class="col-lg-8 mb-4">
-				<article class="card">
-					<div class="card-header">
-						<h2 class="card-title h3 mb-0">Modifier vos informations</h2>
+				<div class="form-group">
+					{{ form_label(form.lastname) }}
+					{{ form_widget(form.lastname, {'attr': {'class': 'form-control'}}) }}
+					{{ form_errors(form.lastname) }}
+				</div>
+
+				<div class="form-group">
+					{{ form_label(form.email) }}
+					{{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+					{{ form_errors(form.email) }}
+				</div>
+
+				<div class="action-buttons">
+					<div class="button-group">
+						<button type="button" id="toggle-password" class="btn-details flex-grow">
+							<i class="fas fa-key"></i>
+							Modifier le mot de passe
+						</button>
+						<button type="button" id="delete-account-btn" class="btn-details btn-delete flex-grow">
+							<i class="fas fa-trash-alt"></i>
+							Supprimer mon compte
+						</button>
+
 					</div>
-					<div class="card-body">
-						{{ form_start(form) }}
-						<div class="form-group">
-							{{ form_widget(form) }}
-						</div>
+				</div>
 
-						<hr>
-						<div class="form-group">
-							<label for="toggle-password-change">Modifier le mot de passe :</label>
-							<button id="toggle-password-change" class="btn btn-details" type="button">Modifier</button>
-						</div>
-
-						<div class="form-group">
-							<label for="current_password">Votre mot de passe actuel</label>
-							<input type="password" id="current_password" name="current_password" class="form-control">
-							<span toggle="#current_password" class="fa fa-fw fa-eye field-icon toggle-password"></span>
-						</div>
-
-						<div class="form-group">
-							<label for="new_password">Nouveau mot de passe</label>
-							<input type="password" id="new_password" name="new_password" class="form-control">
-							<span toggle="#new_password" class="fa fa-fw fa-eye field-icon toggle-password"></span>
-						</div>
-
-						<div class="form-group">
-							<label for="confirm_password">Confirmer le nouveau mot de passe</label>
-							<input type="password" id="confirm_password" name="confirm_password" class="form-control">
-							<span toggle="#confirm_password" class="fa fa-fw fa-eye field-icon toggle-password"></span>
-						</div>
-
+				<div id="password-fields" style="display: none;">
+					<div class="form-group">
+						{{ form_label(form.plainPassword.first) }}
+						{{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control'}}) }}
+						{{ form_errors(form.plainPassword.first) }}
 					</div>
-					<div class="card-footer">
-						<div class="action-buttons">
-							<button class="btn btn-details">Sauvegarder</button>
-							<a href="{{ path('app_meeting_index') }}" class="btn btn-details">Retour à la liste</a>
-						</div>
-						{{ form_end(form) }}
+
+					<div class="form-group">
+						{{ form_label(form.plainPassword.second) }}
+						{{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control'}}) }}
+						{{ form_errors(form.plainPassword.second) }}
 					</div>
-				</article>
+				</div>
+
+				<div class="action-buttons">
+					<div class="button-group">
+						<button type="submit" class="btn-details flex-grow">
+							<i class="fas fa-save"></i>
+							Enregistrer les modifications
+						</button>
+						<a href="{{ path('app_user_profile', {'id': app.user.id}) }}" class="btn-details flex-grow">
+							<i class="fas fa-arrow-left"></i>
+							Retour au profil
+						</a>
+					</div>
+				</div>
+				{{ form_end(form) }}
+			</div>
+		</div>
+	</div>
+
+	<!-- Notification de suppression -->
+	<div id="delete-confirmation" class="card delete-confirmation d-none">
+		<div class="card-header">
+			<h5>Confirmation de suppression</h5>
+		</div>
+		<div class="card-body">
+			<p>Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.</p>
+			<div class="d-flex justify-content-end">
+				<button id="cancel-delete" class="btn-details">Annuler</button>
+				<form id="delete-account-form" method="post" action="{{ path('app_user_delete', {'id': app.user.id}) }}">
+					<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ app.user.id) }}">
+					<button type="submit" class="btn-details">Confirmer la suppression</button>
+				</form>
 			</div>
 		</div>
 	</div>
@@ -65,19 +102,34 @@
 {% block javascripts %}
 	{{ parent() }}
 	<script>
-		document.getElementById('toggle-password-change').addEventListener('click', function () {
-var passwordFields = document.getElementById('password-change-fields');
-passwordFields.style.display = passwordFields.style.display === 'none' ? 'block' : 'none';
+		document.addEventListener('DOMContentLoaded', function () { // Toggle password fields
+var toggleButton = document.getElementById('toggle-password');
+var passwordFields = document.getElementById('password-fields');
+
+toggleButton.addEventListener('click', function () {
+if (passwordFields.style.display === 'none') {
+passwordFields.style.display = 'block';
+toggleButton.innerHTML = '<i class="fas fa-times"></i> Annuler la modification du mot de passe';
+} else {
+passwordFields.style.display = 'none';
+toggleButton.innerHTML = '<i class="fas fa-key"></i> Modifier le mot de passe';
+}
 });
 
-document.querySelectorAll('.toggle-password').forEach(function (toggle) {
-toggle.addEventListener('click', function () {
-var input = document.querySelector(toggle.getAttribute('toggle'));
-if (input.getAttribute('type') === 'password') {
-input.setAttribute('type', 'text');
-} else {
-input.setAttribute('type', 'password');
-} toggle.classList.toggle('fa-eye-slash');
+// Delete account confirmation
+var deleteBtn = document.getElementById('delete-account-btn');
+var deleteConfirmation = document.getElementById('delete-confirmation');
+var cancelDeleteBtn = document.getElementById('cancel-delete');
+var overlay = document.getElementById('overlay');
+
+deleteBtn.addEventListener('click', function () {
+deleteConfirmation.classList.remove('d-none');
+overlay.classList.remove('d-none');
+});
+
+cancelDeleteBtn.addEventListener('click', function () {
+deleteConfirmation.classList.add('d-none');
+overlay.classList.add('d-none');
 });
 });
 	</script>
