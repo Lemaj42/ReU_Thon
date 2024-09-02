@@ -1,43 +1,44 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Réunions et Réservations
+{% block title %}Booking index
 {% endblock %}
 
 {% block body %}
-	<h1>Réunions et Réservations</h1>
+	<h1>Booking index</h1>
 
-	{% for meeting in meetings %}
-		<h2>{{ meeting.title }}</h2>
-		<p>Date proposée :
-			{{ meeting.date|date('Y-m-d H:i') }}</p>
-		{% if meeting.alternativeDate %}
-			<p>Date alternative :
-				{{ meeting.alternativeDate|date('Y-m-d H:i') }}</p>
-		{% endif %}
-
-		{% if meeting.isConfirmed %}
-			<p>Date confirmée :
-				{{ meeting.confirmedDate|date('Y-m-d H:i') }}</p>
-		{% else %}
-			<a href="{{ path('app_confirm_meeting', {'id': meeting.id}) }}">Confirmer cette réunion</a>
-		{% endif %}
-
-		<h3>Réservations :</h3>
-		<ul>
-			{% for booking in meeting.bookings %}
-				<li>
-					{{ booking.user.email }}
-					- Date choisie :
-					{{ booking.chosenDate|date('Y-m-d H:i') }}
-					{% if booking.isConfirmed %}
-						(Confirmé)
-					{% endif %}
-				</li>
+	<table class="table">
+		<thead>
+			<tr>
+				<th>Id</th>
+				<th>Answer</th>
+				<th>ChosenDate</th>
+				<th>IsConfirmed</th>
+				<th>actions</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for booking in bookings %}
+				<tr>
+					<td>{{ booking.id }}</td>
+					<td>{{ booking.answer }}</td>
+					<td>{{ booking.chosenDate }}</td>
+					<td>{{ booking.isConfirmed ? 'Yes' : 'No' }}</td>
+					<td>
+						<a href="{{ path('app_booking_show', {'id': booking.id}) }}">show</a>
+						{% if is_granted('ROLE_ADMIN') %}
+							<a href="{{ path('app_booking_edit', {'id': booking.id}) }}">edit</a>
+						{% endif %}
+					</td>
+				</tr>
 			{% else %}
-				<li>Aucune réservation pour cette réunion.</li>
+				<tr>
+					<td colspan="5">no records found</td>
+				</tr>
 			{% endfor %}
-		</ul>
-	{% else %}
-		<p>Aucune réunion trouvée.</p>
-	{% endfor %}
+		</tbody>
+	</table>
+
+	{% if is_granted('ROLE_ADMIN') %}
+		<a href="{{ path('app_booking_new') }}">Create new</a>
+	{% endif %}
 {% endblock %}
