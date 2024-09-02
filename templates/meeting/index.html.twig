@@ -2,7 +2,7 @@
 
 {% block stylesheets %}
 	{{ parent() }}
-	<link rel="stylesheet" href="{{ asset('styles/meeting.css') }}">
+	<link rel="stylesheet" href="{{ asset('styles/Meeting/meeting.css') }}">
 {% endblock stylesheets %}
 
 {% block title %}
@@ -10,12 +10,12 @@
 {% endblock %}
 
 {% block body %}
-	<section class="meeting-container">
-		<h1 class="Tittle">VOTE POUR LES PROCHAINES RÉUNIONS</h1>
+	<section class="meeting-container container">
+		<h1 class="Tittle text-center">VOTE POUR LES PROCHAINES RÉUNIONS</h1>
 
-		<div class="meeting-cards">
+		<div class="meeting-cards row">
 			{% for meeting in meetings %}
-				<article class="card">
+				<article class="card col-12 col-md-6 col-lg-4 mb-4">
 					<div class="card-header">
 						<h5 class="card-title">Objet de la réunion :</h5>
 						<h2 class="card-subtitle">{{ meeting.title }}</h2>
@@ -27,24 +27,20 @@
 							<strong>Date principale :</strong>
 							{{ meeting.date ? meeting.date|date('d/m/Y') : 'Non définie' }}
 						</p>
-						<!-- Correction de la fermeture du paragraphe -->
 						{% if meeting.alternativeDate %}
 							<p class="card-info">
 								<strong>Date alternative :</strong>
 								{{ meeting.alternativeDate|date('d/m/Y') }}
 							</p>
-							<!-- Correction de la fermeture du paragraphe -->
 						{% endif %}
 						<p class="card-info">
 							<strong>Lieu :</strong>
 							{{ meeting.place }}
 						</p>
-						<!-- Correction de la fermeture du paragraphe -->
 					</div>
 					<div class="card-footer">
 						<a href="{{ path('app_meeting_show', {'id': meeting.id}) }}" class="btn-MeetinDetails flex-grow">VOIR DÉTAILS</a>
 					</div>
-
 				</article>
 			{% else %}
 				<p>Aucune réunion trouvée.</p>

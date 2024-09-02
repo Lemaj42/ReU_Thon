@@ -1,22 +1,36 @@
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('styles/Partials/footer.css') }}">
+{% endblock stylesheets %}
+
 <nav class="navbar">
 	<div class="navbar-container">
 		<a href="{{ path('app_meeting_index') }}" class="navbar-brand">
 			<img src="{{ asset('assets/images/logo.svg') }}" alt="Logo" class="navbar-logo">
 			ACCUEIL
 		</a>
+
+		<!-- Toggle button for mobile view -->
+		<button class="navbar-toggle" aria-label="Toggle navigation">
+			&#9776;
+			<!-- Hamburger icon -->
+		</button>
+
 		<ul class="navbar-nav">
-			<li class="nav-item">
-				<a href="{{ path('app_meeting_new') }}" class="nav-link">RÉUNIONS +</a>
-			</li>
+			{% if is_granted('ROLE_ADMIN') %}
+				<li class="nav-item">
+					<a href="{{ path('app_meeting_new') }}" class="nav-link">RÉUNIONS +</a>
+				</li>
+			{% endif %}
 			<li class="nav-item">
 				<a href="{{ path('app_user_profile') }}" class="nav-link">PROFIL</a>
 			</li>
 			<li class="nav-item">
 				<a href="{{ path('app_logout') }}" class="nav-link">
-					<img src="{{ asset('assets/images/deco.png') }}" alt="Déconnexion" class="power-icon">
+					<img src="{{ asset('assets/images/logout.png') }}" alt="Déconnexion" class="power-icon">
 					DÉCONNEXION
 				</a>
 			</li>
+
 		</ul>
 	</div>
 </nav>

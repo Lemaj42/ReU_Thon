@@ -1,14 +1,3 @@
-/* Styles généraux */
-body {
-    font-family: 'Roboto', sans-serif;
-    background-color: #fff;
-    margin: 0;
-    padding: 60px 0 0;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
 .container {
     flex: 1;
     width: 100%;
@@ -21,25 +10,22 @@ body {
 /* Conteneur des réunions */
 .meeting-container {
     width: 100%;
-    max-width: 1200px;
     margin: 0 auto;
     padding: 0 1rem;
+    
 }
 
 /* Titre principal */
 .meeting-container h1 {
     text-align: center;
     font-size: 2rem;
-    margin: 2rem 0;
+    margin: 5rem 0;
     text-transform: uppercase;
     color: #370617;
 }
 
 /* Grille des cartes de réunion */
 .meeting-cards {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 1rem;
     margin-bottom: 2rem;
     width: 100%;
 }
@@ -55,6 +41,7 @@ body {
     flex-direction: column;
     justify-content: space-between;
     height: 100%;
+    margin-bottom: 1rem;
 }
 
 .card:hover {
@@ -66,10 +53,6 @@ body {
 .card-body,
 .card-footer {
     padding: 1rem;
-}
-
-.card-header {
-    border-bottom: 1px solid #FF8800;
 }
 
 .card-title {
@@ -132,16 +115,8 @@ body {
 
 /* Media queries */
 @media (max-width: 768px) {
-    body {
-        padding-top: 0;
-    }
-
     .meeting-container h1 {
         font-size: 1.8rem;
-    }
-
-    .meeting-cards {
-        grid-template-columns: 1fr;
     }
 
     .card-title,
@@ -151,5 +126,20 @@ body {
     .card-info,
     .btn-MeetinDetails {
         font-size: 1rem;
+    }
+}
+
+@media (max-width: 576px) {
+    .meeting-container h1 {
+        font-size: 1.5rem;
+    }
+
+    .card-title,
+    .card-subtitle,
+    .card-section-title,
+    .card-text,
+    .card-info,
+    .btn-MeetinDetails {
+        font-size: 0.9rem;
     }
 }

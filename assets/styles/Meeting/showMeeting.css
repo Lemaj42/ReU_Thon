@@ -1,19 +1,7 @@
-body {
-    background-color: #fff;
-    font-family: 'Roboto', sans-serif;
-    margin: 0;
-    padding: 0;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    padding-top: 60px;
-    /* Espace pour la navbar fixe */
-}
-
 .Tittle {
     text-align: center;
     font-size: 2rem;
-    margin: 2rem;
+    margin: 5rem;
     text-transform: uppercase;
 }
 

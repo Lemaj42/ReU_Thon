@@ -29,6 +29,9 @@ class Booking
     #[ORM\Column(type: 'string', length: 255, nullable: true)]
     private ?string $chosenDate = null;
 
+    #[ORM\Column(type: 'boolean')]
+    private bool $isConfirmed = false;
+
     // Getters et setters...
 
     public function getId(): ?int
@@ -77,6 +80,17 @@ class Booking
     public function setChosenDate(?string $chosenDate): static
     {
         $this->chosenDate = $chosenDate;
+        return $this;
+    }
+
+    public function isConfirmed(): bool
+    {
+        return $this->isConfirmed;
+    }
+
+    public function setIsConfirmed(bool $isConfirmed): self
+    {
+        $this->isConfirmed = $isConfirmed;
         return $this;
     }
 }

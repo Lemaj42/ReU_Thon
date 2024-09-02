@@ -2,8 +2,10 @@
 
 {% block stylesheets %}
 	{{ parent() }}
-	<link rel="stylesheet" href="{{ asset('styles/showMeeting.css') }}">
+	<link rel="stylesheet" href="{{ asset('styles/Meeting/showMeeting.css') }}">
+
 {% endblock %}
+
 
 {% block title %}DÉTAILS DE LA RÉUNION
 {% endblock %}
@@ -57,16 +59,20 @@
 
 		<div class="row mt-4">
 			<div class="col-md-12 btn-container">
-				<a href="{{ path('app_meeting_edit', {'id': meeting.id}) }}" class="btn-action btn-modify">Modifier</a>
-				<form method="post" action="{{ path('app_meeting_delete', {'id': meeting.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette réunion ?');" style="display:inline-block;">
-					<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ meeting.id) }}">
-					<button type="submit" class="btn-action btn-delete">Supprimer</button>
-				</form>
+				{% if is_granted('ROLE_ADMIN') %}
+					<a href="{{ path('app_meeting_edit', {'id': meeting.id}) }}" class="btn-action btn-modify">Modifier</a>
+					<form method="post" action="{{ path('app_meeting_delete', {'id': meeting.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette réunion ?');" style="display:inline-block;">
+						<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ meeting.id) }}">
+						<button type="submit" class="btn-action btn-delete">Supprimer</button>
+					</form>
+				{% endif %}
 			</div>
 		</div>
 
-		<div class="col-md-6">
-			<a href="{{ path('app_meeting_index') }}" class="btn btn-details w-100">Retour à la liste</a>
+		<div class="row mt-4">
+			<div class="col-md-6">
+				<a href="{{ path('app_meeting_index') }}" class="btn btn-details w-100">Retour à la liste</a>
+			</div>
 		</div>
 
 		<div class="col-lg-4 mb-4">

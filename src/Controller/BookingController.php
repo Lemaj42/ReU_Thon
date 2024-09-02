@@ -7,14 +7,19 @@ use App\Entity\Meeting;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
 class BookingController extends AbstractController
 {
     #[Route('/booking', name: 'app_booking_vote_email', methods: ['GET'])]
-    public function voteByEmail(int $meetingId, int $userId, string $date, EntityManagerInterface $entityManager): Response
+    public function voteByEmail(EntityManagerInterface $entityManager, Request $request): Response
     {
+        $meetingId = $request->query->get('meetingId');
+        $userId = $request->query->get('userId');
+        $date = $request->query->get('date');
+
         $meeting = $entityManager->getRepository(Meeting::class)->find($meetingId);
         $user = $entityManager->getRepository(User::class)->find($userId);
 

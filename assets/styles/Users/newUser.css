@@ -1,17 +1,3 @@
-.text-center {
-    text-align: center;
-    margin: 1rem;
-}
-
-.text-link {
-    color: #000000;
-    font-size: 1rem;
-}
-
-.text-link:hover {
-    text-decoration: underline;
-}
-
 .container {
     flex: 1;
     width: 90%;
@@ -45,7 +31,6 @@
     transform: perspective(1000px) rotateX(2deg) rotateY(2deg) scale(1.02);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
 }
-
 .card-header,
 .card-body {
     padding: 1.2rem;
@@ -72,13 +57,16 @@
 
 .form-control {
     width: 100%;
-    padding: 0.8rem;
-    font-size: 1rem;
+    height: 60px;
+    /* Même hauteur que les boutons */
+    padding: 0 1rem;
+    /* Ajusté pour correspondre aux boutons */
+    font-size: 1.2rem;
+    /* Même taille de police que les boutons */
     border: 1px solid #370617;
-    border-radius: 5px;
+    border-radius: 8px;
+    /* Même border-radius que les boutons */
     background-color: #fff;
-    height: 50px;
-    /* Hauteur fixe pour les inputs */
     box-sizing: border-box;
     /* Inclut padding et border dans la hauteur */
 }
@@ -95,14 +83,12 @@
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: 50px;
-    /* Même hauteur que les inputs */
+    height: 60px;
+    /* Inchangé */
     padding: 0 1rem;
-    font-size: 1rem;
-    /* Même taille de police que les inputs */
+    font-size: 1.2rem;
     text-decoration: none;
-    border-radius: 5px;
-    /* Même border-radius que les inputs */
+    border-radius: 8px;
     border: none;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
@@ -141,7 +127,7 @@
     .btn-details,
     .form-group label,
     .form-control {
-        font-size: 1rem;
-        /* Taille de police cohérente */
+        font-size: 1.1rem;
+        /* Taille de police cohérente pour les petits écrans */
     }
 }

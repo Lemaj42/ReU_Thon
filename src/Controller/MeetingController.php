@@ -34,7 +34,7 @@ class MeetingController extends AbstractController
 
     // Crée une nouvelle réunion
     #[Route('/new', name: 'app_meeting_new', methods: ['GET', 'POST'])]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted('ROLE_ADMIN')]
     public function new(
         Request $request,
         EntityManagerInterface $entityManager,

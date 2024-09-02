@@ -1,20 +1,43 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello BookingController!{% endblock %}
+{% block title %}Réunions et Réservations
+{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+	<h1>Réunions et Réservations</h1>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+	{% for meeting in meetings %}
+		<h2>{{ meeting.title }}</h2>
+		<p>Date proposée :
+			{{ meeting.date|date('Y-m-d H:i') }}</p>
+		{% if meeting.alternativeDate %}
+			<p>Date alternative :
+				{{ meeting.alternativeDate|date('Y-m-d H:i') }}</p>
+		{% endif %}
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>/home/garage404/Documents/ReU_Thon/src/Controller/BookingController.php</code></li>
-        <li>Your template at <code>/home/garage404/Documents/ReU_Thon/templates/booking/index.html.twig</code></li>
-    </ul>
-</div>
+		{% if meeting.isConfirmed %}
+			<p>Date confirmée :
+				{{ meeting.confirmedDate|date('Y-m-d H:i') }}</p>
+		{% else %}
+			<a href="{{ path('app_confirm_meeting', {'id': meeting.id}) }}">Confirmer cette réunion</a>
+		{% endif %}
+
+		<h3>Réservations :</h3>
+		<ul>
+			{% for booking in meeting.bookings %}
+				<li>
+					{{ booking.user.email }}
+					- Date choisie :
+					{{ booking.chosenDate|date('Y-m-d H:i') }}
+					{% if booking.isConfirmed %}
+						(Confirmé)
+					{% endif %}
+				</li>
+			{% else %}
+				<li>Aucune réservation pour cette réunion.</li>
+			{% endfor %}
+		</ul>
+	{% else %}
+		<p>Aucune réunion trouvée.</p>
+	{% endfor %}
 {% endblock %}

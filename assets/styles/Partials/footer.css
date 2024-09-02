@@ -2,10 +2,9 @@
     background-color: #DC2F02;
     color: white;
     display: flex;
-    /* align-items: center; */
     justify-content: center;
     padding: 10px 20px;
-    height: 60px;
+    height: auto;
     left: 0;
     right: 0;
     bottom: 0;
@@ -20,7 +19,7 @@
     max-width: 1200px;
     margin: 0 auto;
     display: flex;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
 }
 
@@ -40,12 +39,11 @@
     margin-right: 10px;
 }
 
-.footer-nav .nav-list {
+.footer-nav {
     display: flex;
     list-style: none;
     margin: 0;
     padding: 0;
-    justify-content: center;
 }
 
 .footer-nav .nav-item {
@@ -78,16 +76,18 @@
 @media (max-width: 768px) {
     .footer-container {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
     }
 
-    .footer-nav .nav-list {
-        flex-direction: column;
-        align-items: flex-start;
-        width: 100%;
+    .footer-nav {
+        margin-top: 10px;
     }
 
     .footer-nav .nav-item {
-        margin: 10px 0;
+        margin: 0 10px;
+    }
+
+    .footer-nav .nav-item:not(:first-child)::before {
+        content: none;
     }
 }

@@ -1,14 +1,3 @@
-/* Styles généraux */
-body {
-    background-color: #fff;
-    font-family: 'Roboto', sans-serif;
-    margin: 0;
-    padding: 60px 0 0;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-}
-
 .container {
     flex: 1;
     width: 90%;
@@ -24,7 +13,6 @@ body {
     font-size: 2rem;
     margin: 2rem 0;
     text-transform: uppercase;
-    color: #370617;
 }
 
 /* Styles de la carte */
@@ -53,7 +41,7 @@ body {
 }
 
 .card-title {
-    font-size: 1.8rem;
+    font-size: 2rem;
     color: #370617;
     margin: 0;
     text-align: center;
@@ -63,40 +51,23 @@ body {
 /* Styles des formulaires */
 .form-group {
     margin-bottom: 1.5rem;
+    position: relative;
 }
 
-.form-row {
-    margin-bottom: 1rem;
-}
-
-.form-label {
-    font-size: 1.2rem;
+.form-group label {
+    font-size: 1.3rem;
     margin-bottom: 0.5rem;
     display: block;
     color: #370617;
-    font-weight: bold;
 }
 
 .form-control {
     width: 100%;
     padding: 0.8rem;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     border-radius: 5px;
     border: 1px solid #ccc;
     box-sizing: border-box;
-    background-color: #fff;
-    transition: border-color 0.3s ease, box-shadow 0.3s ease;
-}
-
-.form-control:focus {
-    border-color: #370617;
-    outline: none;
-    box-shadow: 0 0 0 2px rgba(55, 6, 23, 0.2);
-}
-
-/* Styles spécifiques pour les champs de date */
-input[type="date"].form-control {
-    padding: 0.7rem;
 }
 
 /* Styles des boutons */
@@ -146,32 +117,13 @@ input[type="date"].form-control {
     width: 100%;
 }
 
-/* Styles pour les messages d'erreur du formulaire */
-.form-error-message {
-    color: #DC2F02;
-    font-size: 0.9rem;
-    margin-top: 0.3rem;
-}
-
 /* Media queries */
 @media (max-width: 768px) {
 
     .card-body,
     .btn-details,
-    .form-label,
+    .form-group label,
     .form-control {
-        font-size: 1rem;
-    }
-
-    .card-title {
-        font-size: 1.5rem;
-    }
-
-    .Tittle {
-        font-size: 1.8rem;
-    }
-
-    .button-group {
-        flex-direction: column;
+        font-size: 1.1rem;
     }
 }

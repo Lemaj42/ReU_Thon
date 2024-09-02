@@ -1,9 +1,14 @@
+{% block stylesheets %}
+	<link rel="stylesheet" href="{{ asset('styles/Partials/footer.css') }}">
+{% endblock stylesheets %}
+
 <footer class="site-footer">
+
 	<div class="footer-container">
 		<a href="{{ path('app_meeting_index') }}" class="footer-brand">
 			<img src="{{ asset('assets/images/logo.svg') }}" alt="Logo" class="footer-logo">
 		</a>
-		<ul class="footer-nav nav-list">
+		<ul class="footer-nav">
 			<li class="nav-item">
 				<a href="#" class="footer-link">CONTACT</a>
 			</li>

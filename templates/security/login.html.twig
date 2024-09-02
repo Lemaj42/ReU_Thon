@@ -2,7 +2,7 @@
 
 {% block stylesheets %}
 	{{ parent() }}
-	<link rel="stylesheet" href="{{ asset('styles/showMeeting.css') }}">
+	<link rel="stylesheet" href="{{ asset('styles/Users/login.css') }}">
 {% endblock %}
 
 {% block title %}Connexion
@@ -46,7 +46,9 @@
 
 							<div class="action-buttons">
 								<button type="submit" class="btn btn-details">Connecte-toi</button>
-								<a class="btn btn-details" href="{{ path('app_register') }}">Pas encore inscrit ?</a>
+							</div>
+							<div class="text-center">
+								<a href="{{ path('app_register') }}" class="text-link">Pas encore inscrit ?</a>
 							</div>
 						</form>
 					</div>
