@@ -8,7 +8,7 @@
 }
 
 /* Titre principal */
-.Tittle {
+.Title {
     text-align: center;
     font-size: 2rem;
     margin: 2rem 0;
@@ -19,19 +19,15 @@
 .card {
     background-color: #FFAA00;
     border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    box-shadow: 
+        0 8px 16px rgba(0, 0, 0, 0.1),
+        0 16px 32px rgba(0, 0, 0, 0.1),
+        0 4px 8px rgba(255, 255, 255, 0.1) inset;
     overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
     width: 100%;
     margin-bottom: 2rem;
     padding: 1.5rem;
     position: relative;
-}
-
-.card:hover {
-    transform: perspective(1000px) rotateX(5deg) rotateY(5deg) scale(1.05);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .card-header,
@@ -40,7 +36,7 @@
     padding: 1.2rem;
 }
 
-.card-title {
+.card-Title {
     font-size: 2rem;
     color: #370617;
     margin: 0;

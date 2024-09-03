@@ -11,8 +11,11 @@
 
 {% block body %}
 	<section class="meeting-container container">
-		<h1 class="Tittle text-center">VOTE POUR LES PROCHAINES RÉUNIONS</h1>
-
+		<h1 class="Title text-center">VOTEZ POUR LES PROCHAINES RÉUNIONS</h1>
+		<p class="Description text-center">
+			<strong>Vous trouverez ci-dessous la liste des réunions à venir.</strong>
+			<strong>Vous pouvez voter pour les dates qui vous conviennent le mieux.</strong>
+		</p>
 		<div class="meeting-cards row">
 			{% for meeting in meetings %}
 				<article class="card col-12 col-md-6 col-lg-4 mb-4">
@@ -39,7 +42,7 @@
 						</p>
 					</div>
 					<div class="card-footer">
-						<a href="{{ path('app_meeting_show', {'id': meeting.id}) }}" class="btn-MeetinDetails flex-grow">VOIR DÉTAILS</a>
+						<a href="{{ path('app_meeting_show', {'id': meeting.id}) }}" class="btn-MeetingDetails flex-grow">VOIR DÉTAILS</a>
 					</div>
 				</article>
 			{% else %}

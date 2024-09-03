@@ -55,13 +55,13 @@
     padding: 1rem;
 }
 
-.card-title {
+.card-Title {
     font-size: 1.1rem;
     color: #370617;
     margin: 0;
 }
 
-.card-subtitle {
+.card-subTitle {
     font-size: 1.3rem;
     color: #370617;
     margin: 0.5rem 0 0;
@@ -72,7 +72,7 @@
     flex-grow: 1;
 }
 
-.card-section-title {
+.card-section-Title {
     font-size: 1rem;
     color: #370617;
     margin-bottom: 0.5rem;
@@ -92,7 +92,7 @@
 }
 
 /* Bouton de détails */
-.btn-MeetinDetails {
+.btn-MeetingDetails {
     display: inline-flex;
     justify-content: center;
     align-items: center;
@@ -105,10 +105,10 @@
     transition: background-color 0.3s ease, transform 0.3s ease;
     background-color: #370617;
     color: white;
-    width: 100%;
+    width: 60%;
 }
 
-.btn-MeetinDetails:hover {
+.btn-MeetingDetails:hover {
     background-color: #DC2F02;
     transform: translateY(-2px);
 }
@@ -119,12 +119,12 @@
         font-size: 1.8rem;
     }
 
-    .card-title,
-    .card-subtitle,
-    .card-section-title,
+    .card-Title,
+    .card-subTitle,
+    .card-section-Title,
     .card-text,
     .card-info,
-    .btn-MeetinDetails {
+    .btn-MeetingDetails {
         font-size: 1rem;
     }
 }
@@ -134,12 +134,12 @@
         font-size: 1.5rem;
     }
 
-    .card-title,
-    .card-subtitle,
-    .card-section-title,
+    .card-Title,
+    .card-subTitle,
+    .card-section-Title,
     .card-text,
     .card-info,
-    .btn-MeetinDetails {
+    .btn-MeetingDetails {
         font-size: 0.9rem;
     }
 }

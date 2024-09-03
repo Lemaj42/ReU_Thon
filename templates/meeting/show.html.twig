@@ -3,16 +3,15 @@
 {% block stylesheets %}
 	{{ parent() }}
 	<link rel="stylesheet" href="{{ asset('styles/Meeting/showMeeting.css') }}">
+{% endblock stylesheets %}
 
-{% endblock %}
-
-
-{% block title %}DÉTAILS DE LA RÉUNION
+{% block title %}
+	DÉTAILS DE LA RÉUNION
 {% endblock %}
 
 {% block body %}
 	<div class="container my-5">
-		<h1 class="Tittle mb-4">DÉTAILS DE LA RÉUNION</h1>
+		<h1 class="Title mb-4">DÉTAILS DE LA RÉUNION</h1>
 
 		<div class="row">
 			<div class="col-lg-8 mb-4">
@@ -58,20 +57,22 @@
 		</div>
 
 		<div class="row mt-4">
-			<div class="col-md-12 btn-container">
-				{% if is_granted('ROLE_ADMIN') %}
-					<a href="{{ path('app_meeting_edit', {'id': meeting.id}) }}" class="btn-action btn-modify">Modifier</a>
-					<form method="post" action="{{ path('app_meeting_delete', {'id': meeting.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette réunion ?');" style="display:inline-block;">
-						<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ meeting.id) }}">
-						<button type="submit" class="btn-action btn-delete">Supprimer</button>
-					</form>
-				{% endif %}
+			<div class="col-md-12">
+				<div class="btn-container d-flex">
+					{% if is_granted('ROLE_ADMIN') %}
+						<a href="{{ path('app_meeting_edit', {'id': meeting.id}) }}" class="btn-action btn-modify flex-grow-1 me-2">Modifier</a>
+						<form method="post" action="{{ path('app_meeting_delete', {'id': meeting.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette réunion ?');" class="flex-grow-1">
+							<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ meeting.id) }}">
+							<button type="submit" class="btn-action btn-delete w-100">Supprimer</button>
+						</form>
+					{% endif %}
+				</div>
 			</div>
 		</div>
 
 		<div class="row mt-4">
 			<div class="col-md-6">
-				<a href="{{ path('app_meeting_index') }}" class="btn btn-details w-100">Retour à la liste</a>
+				<button onclick="window.location.href='{{ path('app_meeting_index') }}'" class="btn btn-date">Retour à la liste</button>
 			</div>
 		</div>
 
@@ -80,6 +81,7 @@
 		</div>
 	</div>
 {% endblock %}
+
 {% block javascripts %}
 	{{ parent() }}
 	<script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap" async defer></script>

@@ -9,6 +9,7 @@ use App\Form\BookingType;
 use App\Repository\BookingRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
@@ -47,13 +48,27 @@ class BookingController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_booking_show', methods: ['GET'])]
-    public function show(Booking $booking): Response
-    {
-        return $this->render('booking/show.html.twig', [
-            'booking' => $booking,
-        ]);
-    }
+    // #[Route('/{id}', name: 'app_booking_show', methods: ['GET'])]
+    // public function show($id, EntityManagerInterface $entityManager, Request $request): Response
+    // {
+    //     if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+    //         // L'utilisateur n'est pas connecté, on le redirige vers la page de connexion
+    //         return new RedirectResponse($this->generateUrl('app_login'));
+    //     }
+    //     $meetingId = $request->query->get('meetingId');
+    //     $booking = $entityManager->getRepository(Booking::class)->find($meetingId);
+
+    //     if (!$booking) {
+    //         throw $this->createNotFoundException('La réservation demandée n\'existe pas.');
+    //     }
+
+    //     // L'utilisateur est connecté et la réservation existe, on affiche la page
+    //     return $this->render('booking/show.html.twig', [
+    //         'booking' => $booking,
+    //         'meetingId' => $meetingId,
+    //     ]);
+    // }
+
 
     #[Route('/{id}/edit', name: 'app_booking_edit', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_ADMIN')]

@@ -1,6 +1,6 @@
 .text-center {
     text-align: center;
-    margin: 1rem;
+    margin-top: 1rem;
 }
 
 .text-link {
@@ -36,7 +36,7 @@
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
     width: 100%;
-    margin-bottom: 2rem;
+    /* margin-bottom: 2rem; */
     padding: 1.5rem;
     position: relative;
 }

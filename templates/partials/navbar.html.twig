@@ -5,7 +5,7 @@
 <nav class="navbar">
 	<div class="navbar-container">
 		<a href="{{ path('app_meeting_index') }}" class="navbar-brand">
-			<img src="{{ asset('assets/images/logo.svg') }}" alt="Logo" class="navbar-logo">
+			<img src="{{ asset('images/logo.svg') }}" alt="Logo" class="navbar-logo">
 			ACCUEIL
 		</a>
 
@@ -21,16 +21,28 @@
 					<a href="{{ path('app_meeting_new') }}" class="nav-link">RÉUNIONS +</a>
 				</li>
 			{% endif %}
+			{% if is_granted('ROLE_ADMIN') %}
+				<li class="nav-item">
+					<a href="{{ path('app_booking_index') }}" class="nav-link">BOOKING</a>
+				</li>
+			{% endif %}
+
 			<li class="nav-item">
-				<a href="{{ path('app_user_profile') }}" class="nav-link">PROFIL</a>
-			</li>
-			<li class="nav-item">
-				<a href="{{ path('app_logout') }}" class="nav-link">
-					<img src="{{ asset('assets/images/logout.png') }}" alt="Déconnexion" class="power-icon">
-					DÉCONNEXION
+				<a href="{{ path('app_user_profile') }}" class="nav-link">
+					PROFIL
+					{% if app.user and app.user.firstName is defined %}
+						:
+						{{ app.user.firstName }}
+					{% endif %}
 				</a>
 			</li>
 
+			<li class="nav-item">
+				<a href="{{ path('app_logout') }}" class="nav-link">
+					<img src="{{ asset('images/logout.png') }}" alt="Déconnexion" class="power-icon">
+					DÉCONNEXION
+				</a>
+			</li>
 		</ul>
 	</div>
 </nav>

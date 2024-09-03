@@ -1,4 +1,4 @@
-.Tittle {
+.Title {
     text-align: center;
     font-size: 2rem;
     margin: 5rem;
@@ -31,15 +31,8 @@
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
     width: 100%;
     margin-bottom: 2rem;
-}
-
-.card:hover {
-    transform: perspective(1000px) rotateX(5deg) rotateY(5deg) scale(1.05);
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
 }
 
 .card-header,
@@ -54,7 +47,7 @@
     z-index: 1;
 }
 
-.card-title {
+.card-Title {
     font-size: 2rem;
     color: #370617;
     margin: 0;
@@ -62,7 +55,7 @@
     text-transform: uppercase;
 }
 
-.card-subtitle {
+.card-subTitle {
     font-size: 2rem;
     color: #370617;
     margin: 0.5rem 0;
@@ -76,7 +69,7 @@
     font-size: 1.2rem;
 }
 
-.card-section-title {
+.card-section-Title {
     font-size: 1.2rem;
     color: #000;
     margin-bottom: 0.5rem;
@@ -99,85 +92,80 @@
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    width: 340px;
-    /* Largeur ajustée pour les boutons */
+    width: 100%;
     height: 55px;
-    /* Hauteur ajustée pour les boutons */
     font-size: 1rem;
-    /* Taille de police ajustée */
     text-decoration: none;
     border-radius: 8px;
     border: none;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    margin: 0.5rem 0.25rem;
-    /* Marge ajustée pour un bon espacement entre les boutons */
+    transition: background-color 0.3s ease;
+    margin: 0.5rem 0;
     text-align: center;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
     background-color: #370617;
-    /* Couleur de fond par défaut */
     color: white;
 }
 
 .btn-date:hover {
-    transform: translateY(-2px);
     background-color: #DC2F02;
-    /* Couleur de fond au survol */
+}
+
+.btn-container {
+    display: flex !important;
+    flex-direction: row !important;
+    gap: 1rem;
+    width: 100%;
 }
 
 .btn-action {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    width: 340px;
-    /* Largeur ajustée pour les boutons d'action */
+    flex: 1;
     height: 55px;
-    /* Hauteur ajustée pour les boutons d'action */
     font-size: 1rem;
-    /* Taille de police ajustée */
     text-decoration: none;
     border-radius: 8px;
     border: none;
     cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    margin: 0.5rem 0.25rem;
-    /* Marge ajustée pour un bon espacement entre les boutons */
-    text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    transition: background-color 0.3s ease;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.btn-modify,
+.btn-delete {
+    width: 100%;
+}
+
+form {
+    flex: 1;
+    margin: 0;
 }
 
 .btn-modify {
     background-color: #370617;
-    /* Couleur de fond pour le bouton Modifier */
+    color: white;
+}
+
+.btn-delete {
+    background-color: #9D0208;
     color: white;
 }
 
 .btn-modify:hover {
     background-color: #DC2F02;
-    /* Couleur de fond au survol pour le bouton Modifier */
-}
-
-.btn-delete {
-    background-color: #9D0208;
-    /* Couleur de fond pour le bouton Supprimer */
-    color: white;
 }
 
 .btn-delete:hover {
     background-color: #6A040F;
-    /* Couleur de fond au survol pour le bouton Supprimer */
 }
 
 .card-footer .btn-container {
     display: flex;
-    justify-content: center;
-    /* Centrer les boutons sous la carte */
-    gap: 10px;
-    /* Espace entre les boutons */
+    justify-content: space-between;
+    gap: 1rem;
     margin-top: 10px;
 }
 
@@ -193,20 +181,27 @@
 @media (max-width: 768px) {
     body {
         padding-top: 0;
-        /* Supprimez l'espace pour la navbar fixe sur mobile */
     }
 
     .navbar {
         position: static;
-        /* La navbar n'est plus fixe sur mobile */
     }
 
-    .card-subtitle {
+    .card-subTitle {
         font-size: 1.3rem;
     }
 
     .btn-details {
         padding: 0.4rem 0.8rem;
         font-size: 0.9rem;
+    }
+
+    .btn-action {
+        width: 100%;
+        margin: 0.5rem 0;
+    }
+
+    .btn-container {
+        flex-direction: column !important;
     }
 }

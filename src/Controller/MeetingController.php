@@ -157,7 +157,7 @@ class MeetingController extends AbstractController
         return $this->redirectToRoute('app_meeting_index', [], Response::HTTP_SEE_OTHER);
     }
 
-    // Vote pour une date de réunion
+    // Vote 
     #[Route('/{id}/vote', name: 'app_meeting_vote', methods: ['POST'])]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function vote(Meeting $meeting, Request $request, EntityManagerInterface $entityManager): Response
@@ -165,7 +165,7 @@ class MeetingController extends AbstractController
         $user = $this->getUser();
         $dateChosen = $request->request->get('date'); // La date est récupérée comme une chaîne de caractères
 
-        // Vérifie si l'utilisateur a déjà voté pour cette réunion
+        // Vérif voté
         $existingBooking = $entityManager->getRepository(Booking::class)->findOneBy([
             'user' => $user,
             'meeting' => $meeting,
