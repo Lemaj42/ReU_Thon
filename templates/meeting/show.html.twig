@@ -22,34 +22,33 @@
 					<div class="card-body">
 						<h3 class="h5">Détails :</h3>
 						<p>{{ meeting.detail }}</p>
-						<ul class="list-unstyled">
-							<li>
-								<strong>Date principale :</strong>
-								{{ meeting.date ? meeting.date|date('d/m/Y H:i') : 'Non définie' }}
-							</li>
-							{% if meeting.alternativeDate %}
-								<li>
-									<strong>Date alternative :</strong>
-									{{ meeting.alternativeDate|date('d/m/Y H:i') }}
-								</li>
-							{% endif %}
-							<li>
-								<strong>Lieu :</strong>
-								{{ meeting.place }}
-							</li>
-						</ul>
+						{# <ul class="list-unstyled">
+																									<li>
+																										<strong>Date principale :</strong>
+																										{{ meeting.date ? meeting.date|date('d/m/Y H:i') : 'Non définie' }}
+																									</li>
+																									{% if meeting.alternativeDate %}
+																										<li>
+																											<strong>Date alternative :</strong>
+																											{{ meeting.alternativeDate|date('d/m/Y H:i') }}
+																										</li>
+																									{% endif %}
+																									<li>
+																										<strong>Lieu :</strong>
+																										{{ meeting.place }}
+																									</li>
+																								</ul> #}
 					</div>
 					<div class="card-footer">
 						{% if not hasVoted %}
-							<form action="{{ path('app_meeting_vote', {'id': meeting.id}) }}" method="POST" class="btn-container">
-								<button type="submit" name="date" value="{{ meeting.date|date('Y-m-d H:i:s') }}" class="btn-date">Choisir la date principale</button>
-								{% if meeting.alternativeDate %}
-									<button type="submit" name="date" value="{{ meeting.alternativeDate|date('Y-m-d H:i:s') }}" class="btn-date">Choisir la date alternative</button>
-								{% endif %}
-							</form>
+							{# <form action="{{ path('app_meeting_vote', {'id': meeting.id}) }}" method="POST" class="btn-container"><button type="submit" name="date" value="{{ meeting.date|date('Y-m-d H:i:s') }}" class="btn-date">Choisir la date principale</button> #}
+							{# {% if meeting.alternativeDate %}
+																								<button type="submit" name="date" value="{{ meeting.alternativeDate|date('Y-m-d H:i:s') }}" class="btn-date">Choisir la date alternative</button>
+																							{% endif %} #}
+							{# </form> #}
 						{% else %}
 							<p>Vous avez déjà voté pour cette réunion. Date choisie :
-								{{ chosenDate|date('d/m/Y H:i') }}</p>
+								{{ vote.booking.date|date('d/m/Y H:i') }}</p>
 						{% endif %}
 					</div>
 				</article>

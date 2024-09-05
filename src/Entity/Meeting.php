@@ -22,12 +22,6 @@ class Meeting
     #[ORM\Column(length: 255)]
     private ?string $detail = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $date = null;
-
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
-    private ?\DateTimeInterface $alternativeDate = null;
-
     #[ORM\Column(length: 255)]
     private ?string $place = null;
 
@@ -67,28 +61,6 @@ class Meeting
     public function setDetail(string $detail): static
     {
         $this->detail = $detail;
-        return $this;
-    }
-
-    public function getDate(): ?\DateTimeInterface
-    {
-        return $this->date;
-    }
-
-    public function setDate(\DateTimeInterface $date): static
-    {
-        $this->date = $date;
-        return $this;
-    }
-
-    public function getAlternativeDate(): ?\DateTimeInterface
-    {
-        return $this->alternativeDate;
-    }
-
-    public function setAlternativeDate(?\DateTimeInterface $alternativeDate): static
-    {
-        $this->alternativeDate = $alternativeDate;
         return $this;
     }
 

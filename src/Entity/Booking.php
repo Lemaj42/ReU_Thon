@@ -3,6 +3,10 @@
 namespace App\Entity;
 
 use App\Repository\BookingRepository;
+use DateTime;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\UX\Turbo\Attribute\Broadcast;
 
@@ -15,50 +19,29 @@ class Booking
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $answer = null;
-
-    #[ORM\ManyToOne(inversedBy: 'bookings')]
-    #[ORM\JoinColumn(nullable: false)]
-    private ?User $user = null;
-
     #[ORM\ManyToOne(inversedBy: 'bookings')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Meeting $meeting = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private ?string $chosenDate = null;
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?\DateTimeInterface $date = null;
 
-    #[ORM\Column(type: 'boolean')]
-    private bool $isConfirmed = false;
+    /**
+     * @var Collection<int, Vote>
+     */
+    #[ORM\OneToMany(targetEntity: Vote::class, mappedBy: 'booking', orphanRemoval: true)]
+    private Collection $votes;
+
+    public function __construct()
+    {
+        $this->votes = new ArrayCollection();
+    }
 
     // Getters et setters...
 
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getAnswer(): ?string
-    {
-        return $this->answer;
-    }
-
-    public function setAnswer(string $answer): static
-    {
-        $this->answer = $answer;
-        return $this;
-    }
-
-    public function getUser(): ?User
-    {
-        return $this->user;
-    }
-
-    public function setUser(?User $user): static
-    {
-        $this->user = $user;
-        return $this;
     }
 
     public function getMeeting(): ?Meeting
@@ -72,25 +55,44 @@ class Booking
         return $this;
     }
 
-    public function getChosenDate(): ?string
+    public function getDate(): ?DateTime
     {
-        return $this->chosenDate;
+        return $this->date;
     }
 
-    public function setChosenDate(?string $chosenDate): static
+    public function setDate(?DateTime $date): static
     {
-        $this->chosenDate = $chosenDate;
+        $this->date = $date;
         return $this;
     }
 
-    public function isConfirmed(): bool
+    /**
+     * @return Collection<int, Vote>
+     */
+    public function getVotes(): Collection
     {
-        return $this->isConfirmed;
+        return $this->votes;
     }
 
-    public function setIsConfirmed(bool $isConfirmed): self
+    public function addVote(Vote $vote): static
     {
-        $this->isConfirmed = $isConfirmed;
+        if (!$this->votes->contains($vote)) {
+            $this->votes->add($vote);
+            $vote->setBooking($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVote(Vote $vote): static
+    {
+        if ($this->votes->removeElement($vote)) {
+            // set the owning side to null (unless already changed)
+            if ($vote->getBooking() === $this) {
+                $vote->setBooking(null);
+            }
+        }
+
         return $this;
     }
 }

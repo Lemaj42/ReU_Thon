@@ -1,0 +1,16 @@
+<h1>Meeting creation</h1>
+
+
+<p>Bonjour
+	{{ user.firstname }},</p>
+<p>Une nouvelle réunion a été programmée par
+	{{ meeting.owner.firstname }}
+	veuillez choisir le crénaux qui vous convient:</p>
+
+<ul>
+	{% for booking in arrayBookingUrl  %}
+		<li>
+			<a href={{booking.url}}>{{booking.date|date('d/m/Y H:i')}}</a>
+		</li>
+	{% endfor %}
+</ul>

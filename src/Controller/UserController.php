@@ -5,15 +5,19 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Form\UserType;
 use App\Form\RegisterFormType;
+use App\Form\SetPasswordFormType;
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 use Symfony\Component\Security\Http\Attribute\IsGranted;
+use Symfony\Component\Mime\Email;
 
 #[Route('/user')]
 class UserController extends AbstractController
@@ -23,6 +27,46 @@ class UserController extends AbstractController
     {
         return $this->render('user/index.html.twig', [
             'users' => $userRepository->findAll(),
+        ]);
+    }
+    #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function new(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer): Response
+    {
+        $user = new User();
+        $form = $this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            // Générer un token unique pour la création du mot de passe
+            $token = bin2hex(random_bytes(32));
+            $user->setResetToken($token);
+
+            // Définir un mot de passe temporaire (il sera changé par l'utilisateur)
+            $user->setPassword('temp_password');
+
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+            // Générer l'URL pour la création du mot de passe
+            $url = $this->generateUrl('app_user_set_password', ['token' => $token], UrlGeneratorInterface::ABSOLUTE_URL);
+
+            // Envoyer l'e-mail
+            $email = (new Email())
+                ->from('your-email@example.com')
+                ->to($user->getEmail())
+                ->subject('Créez votre mot de passe')
+                ->html("<p>Cliquez sur ce lien pour créer votre mot de passe : <a href=\"{$url}\">Créer mon mot de passe</a></p>");
+
+            $mailer->send($email);
+
+            $this->addFlash('success', 'Nouvel utilisateur créé avec succès! Un e-mail a été envoyé pour la création du mot de passe.');
+            return $this->redirectToRoute('app_user_index');
+        }
+
+        return $this->render('user/new.html.twig', [
+            'user' => $user,
+            'form' => $form->createView(),
         ]);
     }
 

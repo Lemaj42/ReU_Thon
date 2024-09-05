@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Booking;
 use App\Entity\Meeting;
 use App\Entity\User;
+use App\Entity\Vote;
 use App\Form\BookingType;
 use App\Repository\BookingRepository;
 use Doctrine\ORM\EntityManagerInterface;
@@ -26,49 +27,6 @@ class BookingController extends AbstractController
             'bookings' => $bookingRepository->findAll(),
         ]);
     }
-
-    #[Route('/new', name: 'app_booking_new', methods: ['GET', 'POST'])]
-    #[IsGranted('ROLE_ADMIN')]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $booking = new Booking();
-        $form = $this->createForm(BookingType::class, $booking);
-        $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()) {
-            $entityManager->persist($booking);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('app_booking_index', [], Response::HTTP_SEE_OTHER);
-        }
-
-        return $this->render('booking/new.html.twig', [
-            'booking' => $booking,
-            'form' => $form,
-        ]);
-    }
-
-    // #[Route('/{id}', name: 'app_booking_show', methods: ['GET'])]
-    // public function show($id, EntityManagerInterface $entityManager, Request $request): Response
-    // {
-    //     if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
-    //         // L'utilisateur n'est pas connecté, on le redirige vers la page de connexion
-    //         return new RedirectResponse($this->generateUrl('app_login'));
-    //     }
-    //     $meetingId = $request->query->get('meetingId');
-    //     $booking = $entityManager->getRepository(Booking::class)->find($meetingId);
-
-    //     if (!$booking) {
-    //         throw $this->createNotFoundException('La réservation demandée n\'existe pas.');
-    //     }
-
-    //     // L'utilisateur est connecté et la réservation existe, on affiche la page
-    //     return $this->render('booking/show.html.twig', [
-    //         'booking' => $booking,
-    //         'meetingId' => $meetingId,
-    //     ]);
-    // }
-
 
     #[Route('/{id}/edit', name: 'app_booking_edit', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_ADMIN')]
@@ -104,33 +62,26 @@ class BookingController extends AbstractController
     #[Route('/vote-email', name: 'app_booking_vote_email', methods: ['GET'])]
     public function voteByEmail(EntityManagerInterface $entityManager, Request $request): Response
     {
-        $meetingId = $request->query->get('meetingId');
+        $bookingId = $request->query->get('bookingId');
         $userId = $request->query->get('userId');
-        $date = $request->query->get('date');
-
-        $meeting = $entityManager->getRepository(Meeting::class)->find($meetingId);
+        $booking = $entityManager->getRepository(Booking::class)->find($bookingId);
         $user = $entityManager->getRepository(User::class)->find($userId);
 
-        if (!$meeting || !$user) {
+        if (!$booking || !$user) {
             throw $this->createNotFoundException('Le meeting ou l\'utilisateur n\'existe pas.');
         }
 
         // Vérifie si l'utilisateur a déjà voté pour ce meeting
-        $existingBooking = $entityManager->getRepository(Booking::class)->findOneBy([
+        $existingVote = $entityManager->getRepository(Vote::class)->findOneBy([
             'user' => $user,
-            'meeting' => $meeting,
+            'booking' => $booking,
         ]);
 
-        if (!$existingBooking) {
-            $booking = new Booking();
-            $booking->setUser($user);
-            $booking->setMeeting($meeting);
-            $booking->setChosenDate($date);
-
-            // Assurez-vous que 'answer' est défini
-            $booking->setAnswer('Vote enregistré');  // Exemple de valeur par défaut
-
-            $entityManager->persist($booking);
+        if (!$existingVote) {
+            $vote = new Vote();
+            $vote->setUser($user);
+            $vote->setBooking($booking);
+            $entityManager->persist($vote);
         }
 
         $entityManager->flush();
@@ -139,6 +90,6 @@ class BookingController extends AbstractController
         $this->addFlash('success', 'Votre vote a été enregistré.');
 
         // Redirige vers la page de confirmation ou autre
-        return $this->redirectToRoute('app_meeting_show', ['id' => $meetingId]);
+        return $this->redirectToRoute('app_meeting_show', ['id' => $booking->getMeeting()->getId()]);
     }
 }

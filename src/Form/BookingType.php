@@ -7,6 +7,7 @@ use App\Entity\Meeting;
 use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -15,16 +16,11 @@ class BookingType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('answer')
-            ->add('chosenDate')
-            ->add('isConfirmed')
-            ->add('user', EntityType::class, [
-                'class' => User::class,
-                'choice_label' => 'id',
-            ])
-            ->add('meeting', EntityType::class, [
-                'class' => Meeting::class,
-                'choice_label' => 'id',
+            ->add('date', DateTimeType::class, [
+                'label' => 'Date alternative :',
+                'widget' => 'single_text',
+                'required' => false,
+                'by_reference' => false,
             ])
         ;
     }

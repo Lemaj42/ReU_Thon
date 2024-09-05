@@ -26,12 +26,6 @@
 							<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
 						{% endfor %}
 
-						{# Affichage de l'erreur de mot de passe non correspondant #}
-						{% if form.plainPassword.vars.errors|length > 0 %}
-							{% for error in form.plainPassword.vars.errors %}
-								<div class="alert alert-danger" role="alert">{{ error.message }}</div>
-							{% endfor %}
-						{% endif %}
 
 						<div class="form-group">
 							{{ form_row(form.firstname, {'attr': {'class': 'form-control'}}) }}
@@ -42,12 +36,7 @@
 						<div class="form-group">
 							{{ form_row(form.email, {'attr': {'class': 'form-control'}}) }}
 						</div>
-						<div class="form-group">
-							{{ form_row(form.plainPassword.first, {'attr': {'class': 'form-control'}}) }}
-						</div>
-						<div class="form-group">
-							{{ form_row(form.plainPassword.second, {'attr': {'class': 'form-control'}}) }}
-						</div>
+
 					</div>
 					<div class="card-footer">
 						<div class="action-buttons">

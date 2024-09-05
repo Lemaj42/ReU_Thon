@@ -23,24 +23,24 @@
 						<h5 class="card-title">Objet de la réunion :</h5>
 						<h2 class="card-subtitle">{{ meeting.title }}</h2>
 					</div>
-					<div class="card-body">
-						<h5 class="card-section-title">Détail de la réunion :</h5>
-						<p class="card-text">{{ meeting.detail }}</p>
-						<p class="card-info">
-							<strong>Date principale :</strong>
-							{{ meeting.date ? meeting.date|date('d/m/Y') : 'Non définie' }}
-						</p>
-						{% if meeting.alternativeDate %}
-							<p class="card-info">
-								<strong>Date alternative :</strong>
-								{{ meeting.alternativeDate|date('d/m/Y') }}
-							</p>
-						{% endif %}
-						<p class="card-info">
-							<strong>Lieu :</strong>
-							{{ meeting.place }}
-						</p>
-					</div>
+					{# <div class="card-body">
+											<h5 class="card-section-title">Détail de la réunion :</h5>
+											<p class="card-text">{{ meeting.detail }}</p>
+											<p class="card-info">
+												<strong>Date principale :</strong>
+												{{ meeting.date ? meeting.date|date('d/m/Y') : 'Non définie' }}
+											</p>
+											{% if meeting.alternativeDate %}
+												<p class="card-info">
+													<strong>Date alternative :</strong>
+													{{ meeting.alternativeDate|date('d/m/Y') }}
+												</p>
+											{% endif %}
+											<p class="card-info">
+												<strong>Lieu :</strong>
+												{{ meeting.place }}
+											</p>
+										</div> #}
 					<div class="card-footer">
 						<a href="{{ path('app_meeting_show', {'id': meeting.id}) }}" class="btn-MeetingDetails flex-grow">VOIR DÉTAILS</a>
 					</div>
