@@ -60,8 +60,11 @@ class UserController extends AbstractController
 
             $mailer->send($email);
 
+            // Message de succès
             $this->addFlash('success', 'Nouvel utilisateur créé avec succès! Un e-mail a été envoyé pour la création du mot de passe.');
-            return $this->redirectToRoute('app_user_index');
+
+            // Redirection vers la page des réunions au lieu de la liste des utilisateurs
+            return $this->redirectToRoute('app_meeting_index');
         }
 
         return $this->render('user/new.html.twig', [
@@ -69,6 +72,7 @@ class UserController extends AbstractController
             'form' => $form->createView(),
         ]);
     }
+
 
     #[Route('/profile', name: 'app_user_profile', methods: ['GET'])]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]

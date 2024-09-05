@@ -1,5 +1,23 @@
 {% block stylesheets %}
 	<link rel="stylesheet" href="{{ asset('styles/Partials/footer.css') }}">
+	<style>
+		.accordion-content {
+			display: none;
+			padding-left: 20px;
+		}
+		.accordion-content.active {
+			display: block;
+		}
+		.nav-item.has-submenu > .nav-link::after {
+			content: '\25BC';
+			margin-left: 5px;
+			display: inline-block;
+			transition: transform 0.3s ease;
+		}
+		.nav-item.has-submenu.active > .nav-link::after {
+			transform: rotate(180deg);
+		}
+	</style>
 {% endblock stylesheets %}
 
 <nav class="navbar">
@@ -20,10 +38,16 @@
 				<li class="nav-item">
 					<a href="{{ path('app_meeting_new') }}" class="nav-link">RÉUNIONS +</a>
 				</li>
-			{% endif %}
-			{% if is_granted('ROLE_ADMIN') %}
-				<li class="nav-item">
-					<a href="{{ path('app_booking_index') }}" class="nav-link">BOOKING</a>
+				<li class="nav-item has-submenu">
+					<a href="#" class="nav-link accordion-toggle">USER</a>
+					<ul class="accordion-content">
+						<li>
+							<a href="{{ path('app_user_new') }}" class="nav-link">Créer un utilisateur</a>
+						</li>
+						<li>
+							<a href="{{ path('app_user_index') }}" class="nav-link">Liste des utilisateurs</a>
+						</li>
+					</ul>
 				</li>
 			{% endif %}
 
@@ -46,3 +70,20 @@
 		</ul>
 	</div>
 </nav>
+
+<script>
+	document.addEventListener('DOMContentLoaded', function () {
+const accordionToggles = document.querySelectorAll('.accordion-toggle');
+
+accordionToggles.forEach(toggle => {
+toggle.addEventListener('click', function (e) {
+e.preventDefault();
+const parent = this.closest('.has-submenu');
+const content = parent.querySelector('.accordion-content');
+
+parent.classList.toggle('active');
+content.classList.toggle('active');
+});
+});
+});
+</script>

@@ -1,44 +1,52 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-	<link rel="stylesheet" href="{{ asset('styles/index.css') }}">
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('styles/Meeting/meeting.css') }}">
 {% endblock %}
 
-{% block title %}Login
+{% block title %}Gestion des utilisateurs
 {% endblock %}
 
 {% block body %}
-	<div class="login-container">
-		<div class="login-box">
-			<div class="login-content">
-				<div class="login-header">
-					<h1>Hello,
-						<strong>welcome!</strong>
-					</h1>
-				</div>
-				{# Pas besoin de cette page le /register créer un user #}
-				{# {{ form_start(loginForm) }}
-												<div class="form-group">
-													{{ form_row(loginForm.email, {'attr': {'placeholder': 'Email address'}}) }}
-												</div>
-												<div class="form-group">
-													{{ form_row(loginForm.password, {'attr': {'placeholder': 'Password'}}) }}
-												</div>
-												<div class="options">
-													<div class="remember-me">
-														<input type="checkbox" id="remember-me">
-														<label for="remember-me">Remember me</label>
-													</div>
-													<a href="#" class="forgot-password">Forget password?</a>
-												</div>
-												<div class="login-buttons">
-													<button type="submit" class="btn btn-login">Login</button>
-													<!-- Lien vers la page d'édition (signup) -->
-													<a href="{{ path('app_user_new') }}" class="btn btn-signup">Sign up</a>
-												</div>
-												{{ form_end(loginForm) }} #}
-			</div>
-			<div class="login-image"></div>
+	<section class="user-container container">
+		<h1 class="Title">GESTION DES UTILISATEURS</h1>
+		<p class="Description text-center">
+			<strong>Vous trouverez ci-dessous la liste des utilisateurs enregistrés.</strong>
+			<strong>Vous pouvez modifier ou supprimer les utilisateurs si nécessaire.</strong>
+		</p>
+		<div class="user-cards row">
+			{% for user in users %}
+				<article class="card col-12 col-md-6 col-lg-4 mb-4">
+					<div class="card-header">
+						<h4 class="card-Title">Utilisateur :</h4>
+						<h5 class="card-subTitle">Prénom :
+							{{ user.firstname }}</h5>
+						<h5 class="card-subTitle">Nom :
+							{{ user.lastname }}</h5>
+					</div>
+					<div class="card-body">
+						<p class="card-info">
+							<strong>Email :</strong>
+							{{ user.email }}
+						</p>
+					</div>
+					<div class="card-footer">
+						<div class="btn-container">
+							<a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn-action btn-modify">Modifier</a>
+							<form method="post" action="{{ path('app_user_delete', {'id': user.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">
+								<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+								<button type="submit" class="btn-action btn-delete">Supprimer</button>
+							</form>
+						</div>
+					</div>
+				</article>
+			{% else %}
+				<p class="text-center">Aucun utilisateur trouvé.</p>
+			{% endfor %}
 		</div>
-	</div>
+		<div class="text-center mt-4">
+			<a href="{{ path('app_user_new') }}" class="btn-date">Créer un nouvel utilisateur</a>
+		</div>
+	</section>
 {% endblock %}

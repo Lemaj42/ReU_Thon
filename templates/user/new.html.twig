@@ -2,49 +2,36 @@
 
 {% block stylesheets %}
 	{{ parent() }}
-	<link rel="stylesheet" href="{{ asset('styles/showMeeting.css') }}">
+	<link rel="stylesheet" href="{{ asset('styles/Users/newUserAdmin.css') }}">
+
 {% endblock %}
 
-{% block title %}Créer un nouveau compte
+{% block title %}Créer un nouvel utilisateur
 {% endblock %}
 
 {% block body %}
-	<div class="container my-5">
-		<h1 class="Tittle mb-4">Créer un nouveau compte</h1>
-
-		<div class="row">
-			<div class="col-lg-8 mb-4">
-				<article class="card">
-					<div class="card-header">
-						<h2 class="card-title h3 mb-0">Inscris-toi !</h2>
+	<div class="container">
+		<h1 class="Title">Créer un nouvel utilisateur</h1>
+		<div class="card">
+			<div class="card-header">
+				<h2 class="card-Title">Détails de l'utilisateur</h2>
+			</div>
+			<div class="card-body">
+				{% include 'user/_form.html.twig' %}
+			</div>
+			<div class="card-footer">
+				<div class="action-buttons">
+					<div class="button-group">
+						<button type="submit" form="user_form" class="btn-details flex-grow">
+							<i class="fas fa-plus-circle"></i>
+							Créer l'utilisateur
+						</button>
+						<a href="{{ path('app_meeting_index') }}" class="btn-details flex-grow">
+							<i class="fas fa-times-circle"></i>
+							Annuler
+						</a>
 					</div>
-					<div class="card-body">
-						{{ form_start(form) }}
-
-						{# Affichage des messages flash #}
-						{% for flash_error in app.flashes('error') %}
-							<div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-						{% endfor %}
-
-
-						<div class="form-group">
-							{{ form_row(form.firstname, {'attr': {'class': 'form-control'}}) }}
-						</div>
-						<div class="form-group">
-							{{ form_row(form.lastname, {'attr': {'class': 'form-control'}}) }}
-						</div>
-						<div class="form-group">
-							{{ form_row(form.email, {'attr': {'class': 'form-control'}}) }}
-						</div>
-
-					</div>
-					<div class="card-footer">
-						<div class="action-buttons">
-							<button type="submit" class="btn btn-details">Créer un compte</button>
-						</div>
-					</div>
-					{{ form_end(form) }}
-				</article>
+				</div>
 			</div>
 		</div>
 	</div>

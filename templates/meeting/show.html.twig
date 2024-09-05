@@ -22,38 +22,40 @@
 					<div class="card-body">
 						<h3 class="h5">Détails :</h3>
 						<p>{{ meeting.detail }}</p>
-						{# <ul class="list-unstyled">
-																									<li>
-																										<strong>Date principale :</strong>
-																										{{ meeting.date ? meeting.date|date('d/m/Y H:i') : 'Non définie' }}
-																									</li>
-																									{% if meeting.alternativeDate %}
-																										<li>
-																											<strong>Date alternative :</strong>
-																											{{ meeting.alternativeDate|date('d/m/Y H:i') }}
-																										</li>
-																									{% endif %}
-																									<li>
-																										<strong>Lieu :</strong>
-																										{{ meeting.place }}
-																									</li>
-																								</ul> #}
 					</div>
+					<div class="card-body">
+						<h3 class="h5">Adresse :</h3>
+						<p>{{ meeting.place }}</p>
+					</div>
+
 					<div class="card-footer">
 						{% if not hasVoted %}
-							{# <form action="{{ path('app_meeting_vote', {'id': meeting.id}) }}" method="POST" class="btn-container"><button type="submit" name="date" value="{{ meeting.date|date('Y-m-d H:i:s') }}" class="btn-date">Choisir la date principale</button> #}
-							{# {% if meeting.alternativeDate %}
-																								<button type="submit" name="date" value="{{ meeting.alternativeDate|date('Y-m-d H:i:s') }}" class="btn-date">Choisir la date alternative</button>
-																							{% endif %} #}
-							{# </form> #}
+							<h4>Dates de vote disponibles :</h4>
+							<form action="{{ path('app_meeting_vote', {'id': meeting.id}) }}" method="POST" class="btn-container">
+								{% for booking in meeting.bookings %}
+									<button type="submit" name="date" value="{{ booking.date|date('Y-m-d H:i:s') }}" class="btn-date mb-2">
+										{{ booking.date|date('d/m/Y H:i') }}
+									</button>
+								{% endfor %}
+							</form>
+						{% elseif vote is not null and vote.booking is not null %}
+							<h3 class="Title>">
+								Vous avez déjà voté pour cette réunion.</h3>
+
+							<h3 class="Title>">Date choisie :
+								{{ vote.booking.date|date('d/m/Y à H:i') }}</h3>
 						{% else %}
-							<p>Vous avez déjà voté pour cette réunion. Date choisie :
-								{{ vote.booking.date|date('d/m/Y H:i') }}</p>
+							<p>Une erreur s'est produite lors de la récupération des informations de vote.</p>
 						{% endif %}
 					</div>
 				</article>
 			</div>
+
+			<div class="col-lg-4 mb-4">
+				<div id="map"></div>
+			</div>
 		</div>
+
 
 		<div class="row mt-4">
 			<div class="col-md-12">
@@ -69,18 +71,14 @@
 			</div>
 		</div>
 
+
 		<div class="row mt-4">
 			<div class="col-md-6">
 				<button onclick="window.location.href='{{ path('app_meeting_index') }}'" class="btn btn-date">Retour à la liste</button>
 			</div>
 		</div>
-
-		<div class="col-lg-4 mb-4">
-			<div id="map"></div>
-		</div>
 	</div>
 {% endblock %}
-
 {% block javascripts %}
 	{{ parent() }}
 	<script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap" async defer></script>
