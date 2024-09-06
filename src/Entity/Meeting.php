@@ -32,6 +32,13 @@ class Meeting
     #[ORM\OneToMany(mappedBy: 'meeting', targetEntity: Booking::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $bookings;
 
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
+    private ?\DateTimeInterface $votingDeadline = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: false)]
+    private ?\DateTimeInterface $finalDate = null;
+
+
     public function __construct()
     {
         $this->bookings = new ArrayCollection();
@@ -109,5 +116,24 @@ class Meeting
         }
         return $this;
     }
+    public function getVotingDeadline(): ?\DateTimeInterface
+    {
+        return $this->votingDeadline;
+    }
 
+    public function setVotingDeadline(?\DateTimeInterface $votingDeadline): self
+    {
+        $this->votingDeadline = $votingDeadline;
+        return $this;
+    }
+    public function getFinalDate(): ?\DateTimeInterface
+    {
+        return $this->finalDate;
+    }
+
+    public function setFinalDate(?\DateTimeInterface $finalDate): self
+    {
+        $this->finalDate = $finalDate;
+        return $this;
+    }
 }

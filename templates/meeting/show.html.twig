@@ -3,15 +3,14 @@
 {% block stylesheets %}
 	{{ parent() }}
 	<link rel="stylesheet" href="{{ asset('styles/Meeting/showMeeting.css') }}">
-{% endblock stylesheets %}
+{% endblock %}
 
-{% block title %}
-	DÉTAILS DE LA RÉUNION
+{% block title %}Détails de la réunion
 {% endblock %}
 
 {% block body %}
 	<div class="container my-5">
-		<h1 class="Title mb-4">DÉTAILS DE LA RÉUNION</h1>
+		<h1 class="mb-4">Détails de la réunion</h1>
 
 		<div class="row">
 			<div class="col-lg-8 mb-4">
@@ -22,63 +21,60 @@
 					<div class="card-body">
 						<h3 class="h5">Détails :</h3>
 						<p>{{ meeting.detail }}</p>
-					</div>
-					<div class="card-body">
 						<h3 class="h5">Adresse :</h3>
 						<p>{{ meeting.place }}</p>
+						{% if meeting.finalDate %}
+							<h3 class="h5">Date finale :</h3>
+							<p>{{ meeting.finalDate|date('d/m/Y à H:i') }}</p>
+						{% endif %}
 					</div>
-
 					<div class="card-footer">
-						{% if not hasVoted %}
-							<h4>Dates de vote disponibles :</h4>
-							<form action="{{ path('app_meeting_vote', {'id': meeting.id}) }}" method="POST" class="btn-container">
-								{% for booking in meeting.bookings %}
-									<button type="submit" name="date" value="{{ booking.date|date('Y-m-d H:i:s') }}" class="btn-date mb-2">
-										{{ booking.date|date('d/m/Y H:i') }}
-									</button>
-								{% endfor %}
-							</form>
-						{% elseif vote is not null and vote.booking is not null %}
-							<h3 class="Title>">
-								Vous avez déjà voté pour cette réunion.</h3>
-
-							<h3 class="Title>">Date choisie :
-								{{ vote.booking.date|date('d/m/Y à H:i') }}</h3>
+						{% if meeting.votingDeadline > date() %}
+							{% if not hasVoted %}
+								<h4>Dates de vote disponibles :</h4>
+								<form action="{{ path('app_meeting_vote', {'id': meeting.id}) }}" method="POST" class="btn-container">
+									{% for booking in meeting.bookings %}
+										<button type="submit" name="date" value="{{ booking.date|date('Y-m-d H:i:s') }}" class="btn btn-outline-primary mb-2">
+											{{ booking.date|date('d/m/Y H:i') }}
+										</button>
+									{% endfor %}
+								</form>
+							{% elseif vote is not null and vote.booking is not null %}
+								<h4>Vous avez déjà voté pour cette réunion.</h4>
+								<p>Date choisie :
+									{{ vote.booking.date|date('d/m/Y à H:i') }}</p>
+							{% endif %}
 						{% else %}
-							<p>Une erreur s'est produite lors de la récupération des informations de vote.</p>
+							<p>La période de vote est terminée.</p>
 						{% endif %}
 					</div>
 				</article>
 			</div>
 
 			<div class="col-lg-4 mb-4">
-				<div id="map"></div>
+				<div id="map" style="height: 300px;"></div>
 			</div>
 		</div>
 
-
 		<div class="row mt-4">
 			<div class="col-md-12">
-				<div class="btn-container d-flex">
+				<div class="d-flex justify-content-between">
+					<a href="{{ path('app_meeting_index') }}" class="btn btn-secondary">Retour à la liste</a>
 					{% if is_granted('ROLE_ADMIN') %}
-						<a href="{{ path('app_meeting_edit', {'id': meeting.id}) }}" class="btn-action btn-modify flex-grow-1 me-2">Modifier</a>
-						<form method="post" action="{{ path('app_meeting_delete', {'id': meeting.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette réunion ?');" class="flex-grow-1">
-							<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ meeting.id) }}">
-							<button type="submit" class="btn-action btn-delete w-100">Supprimer</button>
-						</form>
+						<div>
+							<a href="{{ path('app_meeting_edit', {'id': meeting.id}) }}" class="btn btn-primary me-2">Modifier</a>
+							<form method="post" action="{{ path('app_meeting_delete', {'id': meeting.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette réunion ?');" style="display: inline-block;">
+								<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ meeting.id) }}">
+								<button type="submit" class="btn btn-danger">Supprimer</button>
+							</form>
+						</div>
 					{% endif %}
 				</div>
 			</div>
 		</div>
-
-
-		<div class="row mt-4">
-			<div class="col-md-6">
-				<button onclick="window.location.href='{{ path('app_meeting_index') }}'" class="btn btn-date">Retour à la liste</button>
-			</div>
-		</div>
 	</div>
 {% endblock %}
+
 {% block javascripts %}
 	{{ parent() }}
 	<script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap" async defer></script>
@@ -87,8 +83,6 @@
 const address = "{{ meeting.place }}";
 const geocoder = new google.maps.Geocoder();
 const mapElement = document.getElementById('map');
-
-mapElement.style.height = '300px'; // Set default height
 
 geocoder.geocode({
 address: address

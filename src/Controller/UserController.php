@@ -139,7 +139,7 @@ class UserController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     public function editRole(Request $request, User $user, EntityManagerInterface $entityManager): Response
     {
-        $newRoles = $request->request->get('roles', ['ROLE_USER']);
+        $newRoles = $request->request->get('roles', 'ROLE_USER');
         if (!is_array($newRoles)) {
             $newRoles = [$newRoles];
         }

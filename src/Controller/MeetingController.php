@@ -50,14 +50,29 @@ class MeetingController extends AbstractController
         $user = $this->getUser();
         $meeting->setOwner($user);
 
+        // Définir une valeur par défaut pour finalDate
+        $meeting->setFinalDate(new \DateTime()); // Ou toute autre valeur par défaut appropriée
+
         $form = $this->createForm(MeetingType::class, $meeting);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $meeting->getBookings()->map(function (Booking $booking) use ($entityManager, $meeting) {
+            // Trier les bookings par date
+            $bookings = $meeting->getBookings()->toArray();
+            usort($bookings, function (Booking $a, Booking $b) {
+                return $a->getDate() <=> $b->getDate();
+            });
+
+            // Définir la date de fin de vote (7 jours avant la première date proposée)
+            $firstBookingDate = $bookings[0]->getDate();
+            $votingDeadline = (clone $firstBookingDate)->modify('-7 days');
+            $meeting->setVotingDeadline($votingDeadline);
+
+            foreach ($bookings as $booking) {
                 $booking->setMeeting($meeting);
                 $entityManager->persist($booking);
-            });
+            }
+
             $entityManager->persist($meeting);
             $entityManager->flush();
 
@@ -65,8 +80,6 @@ class MeetingController extends AbstractController
             $users = $userRepository->findAll();
             foreach ($users as $recipient) {
                 $arrayBookingUrl = [];
-                $bookings = $meeting->getBookings()->getValues();
-
                 foreach ($bookings as $booking) {
                     $url = $urlGenerator->generate('app_booking_vote_email', [
                         'bookingId' => $booking->getId(),
@@ -79,15 +92,13 @@ class MeetingController extends AbstractController
                     ->from('fabien@example.com')
                     ->to($recipient->getEmail())
                     ->subject('Nouvelle réunion : ' . $meeting->getTitle())
-
-                    // path of the Twig template to render
                     ->htmlTemplate('emails/vote_email.html.twig')
                     ->context([
                         'meeting' => $meeting,
                         'arrayBookingUrl' => $arrayBookingUrl,
-                        'user' => $recipient
+                        'user' => $recipient,
+                        'votingDeadline' => $votingDeadline
                     ]);
-
 
                 $mailer->send($email);
             }
@@ -102,30 +113,39 @@ class MeetingController extends AbstractController
         ]);
     }
 
-    // Affiche les détails d'une réunion
-    #[Route('/{id}', name: 'app_meeting_show', methods: ['GET'])]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function show(Meeting $meeting, EntityManagerInterface $entityManager): Response
+    // Nouvelle méthode pour finaliser la date de la réunion
+    #[Route('/{id}/finalize', name: 'app_meeting_finalize', methods: ['GET'])]
+    #[IsGranted('ROLE_ADMIN')]
+    public function finalizeMeetingDate(Meeting $meeting, EntityManagerInterface $entityManager, VoteRepository $voteRepository): Response
     {
-        $user = $this->getUser();
-        $vote = $entityManager->getRepository(Vote::class)->findBy([
-            'user' => $user,
-            'booking' => $meeting->getBookings()->toArray()
-        ]);
+        $now = new \DateTime();
+        if ($now < $meeting->getVotingDeadline()) {
+            $this->addFlash('error', 'La période de vote n\'est pas encore terminée.');
+            return $this->redirectToRoute('app_meeting_show', ['id' => $meeting->getId()]);
+        }
 
-        $hasVoted = !empty($vote);
+        $bookings = $meeting->getBookings();
+        $mostVotedBooking = null;
+        $maxVotes = -1;
 
-        $googleMapsApiKey = $_ENV['GOOGLE_MAPS_API_KEY'] ?? null;
+        foreach ($bookings as $booking) {
+            $voteCount = $voteRepository->count(['booking' => $booking]);
+            if ($voteCount > $maxVotes) {
+                $maxVotes = $voteCount;
+                $mostVotedBooking = $booking;
+            }
+        }
 
-        return $this->render('meeting/show.html.twig', [
-            'meeting' => $meeting,
-            'hasVoted' => $hasVoted,
-            'vote' => $hasVoted ? $vote[0] : null,
-            'google_maps_api_key' => $googleMapsApiKey,
-        ]);
+        if ($mostVotedBooking) {
+            $meeting->setFinalDate($mostVotedBooking->getDate());
+            $entityManager->flush();
+            $this->addFlash('success', 'La date finale de la réunion a été déterminée.');
+        } else {
+            $this->addFlash('error', 'Aucune date n\'a été choisie. Veuillez sélectionner une date manuellement.');
+        }
+
+        return $this->redirectToRoute('app_meeting_show', ['id' => $meeting->getId()]);
     }
-
-
 
     // Modifie une réunion existante
     #[Route('/{id}/edit', name: 'app_meeting_edit', methods: ['GET', 'POST'])]
@@ -161,6 +181,27 @@ class MeetingController extends AbstractController
         return $this->redirectToRoute('app_meeting_index', [], Response::HTTP_SEE_OTHER);
     }
 
+    #[Route('/{id}', name: 'app_meeting_show', methods: ['GET'])]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function show(Meeting $meeting, VoteRepository $voteRepository): Response
+    {
+        $user = $this->getUser();
+        $vote = $voteRepository->findBy([
+            'user' => $user,
+            'booking' => $meeting->getBookings()->toArray()
+        ]);
+
+        $hasVoted = !empty($vote);
+
+        $googleMapsApiKey = $_ENV['GOOGLE_MAPS_API_KEY'] ?? null;
+
+        return $this->render('meeting/show.html.twig', [
+            'meeting' => $meeting,
+            'hasVoted' => $hasVoted,
+            'vote' => $hasVoted ? $vote[0] : null,
+            'google_maps_api_key' => $googleMapsApiKey,
+        ]);
+    }
     // Vote 
     #[Route('/{id}/vote', name: 'app_meeting_vote', methods: ['POST'])]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]

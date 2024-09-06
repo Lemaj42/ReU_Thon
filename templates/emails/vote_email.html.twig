@@ -1,16 +1,75 @@
-<h1>Meeting creation</h1>
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8">
+		<title>Nouvelle réunion :
+			{{ meeting.title }}</title>
+		<style>
+			body {
+				font-family: Arial, sans-serif;
+				line-height: 1.6;
+				color: #333;
+			}
+			h1 {
+				color: #2c3e50;
+			}
+			.important {
+				font-weight: bold;
+				color: #e74c3c;
+			}
+			ul {
+				list-style-type: none;
+				padding: 0;
+			}
+			li {
+				margin-bottom: 10px;
+			}
+			a {
+				color: #3498db;
+				text-decoration: none;
+			}
+			a:hover {
+				text-decoration: underline;
+			}
+		</style>
+	</head>
+	<body>
+		<h1>Nouvelle réunion :
+			{{ meeting.title }}</h1>
 
+		<p>Bonjour
+			{{ user.firstname }},</p>
 
-<p>Bonjour
-	{{ user.firstname }},</p>
-<p>Une nouvelle réunion a été programmée par
-	{{ meeting.owner.firstname }}
-	veuillez choisir le crénaux qui vous convient:</p>
+		<p>Une nouvelle réunion intitulée "<strong>{{ meeting.title }}</strong>" a été programmée par
+			<strong>{{ meeting.owner.firstname }}
+				{{ meeting.owner.lastname }}</strong>.</p>
 
-<ul>
-	{% for booking in arrayBookingUrl  %}
-		<li>
-			<a href={{booking.url}}>{{booking.date|date('d/m/Y H:i')}}</a>
-		</li>
-	{% endfor %}
-</ul>
+		<p>Détails de la réunion :</p>
+		<ul>
+			<li>
+				<strong>Lieu :</strong>
+				{{ meeting.place }}</li>
+			<li>
+				<strong>Description :</strong>
+				{{ meeting.detail }}</li>
+		</ul>
+
+		<p class="important">Veuillez choisir le créneau qui vous convient avant le
+			{{ votingDeadline|date('d/m/Y à H:i') }}.</p>
+
+		<p>Voici les créneaux proposés :</p>
+		<ul>
+			{% for booking in arrayBookingUrl %}
+				<li>
+					<a href="{{ booking.url }}">{{ booking.date|date('d/m/Y à H:i') }}</a>
+				</li>
+			{% endfor %}
+		</ul>
+
+		<p>La date finale de la réunion sera déterminée en fonction des votes de tous les participants.</p>
+
+		<p>Merci de votre participation !</p>
+
+		<p>Cordialement,<br>L'équipe d'organisation</p>
+	</body>
+</html>
