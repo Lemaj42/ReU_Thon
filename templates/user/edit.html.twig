@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modifier mon profil
+{% block title %}Modifier le profil
 {% endblock %}
 
 {% block stylesheets %}
@@ -11,7 +11,7 @@
 {% block body %}
 	<div id="overlay" class="overlay d-none"></div>
 	<div class="container">
-		<h1 class="Tittle">Modifier mon profil</h1>
+		<h1 class="Tittle">Modifier le profil</h1>
 		<div class="card">
 			<div class="card-header">
 				<h2 class="card-title">Informations personnelles</h2>
@@ -36,33 +36,34 @@
 					{{ form_errors(form.email) }}
 				</div>
 
-				<div class="action-buttons">
-					<div class="button-group">
-						<button type="button" id="toggle-password" class="btn-details flex-grow">
-							<i class="fas fa-key"></i>
-							Modifier le mot de passe
-						</button>
-						<button type="button" id="delete-account-btn" class="btn-details btn-delete flex-grow">
-							<i class="fas fa-trash-alt"></i>
-							Supprimer mon compte
-						</button>
-
-					</div>
-				</div>
-
-				<div id="password-fields" style="display: none;">
-					<div class="form-group">
-						{{ form_label(form.plainPassword.first) }}
-						{{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control'}}) }}
-						{{ form_errors(form.plainPassword.first) }}
+				{% if app.user.id == user.id %}
+					<div class="action-buttons">
+						<div class="button-group">
+							<button type="button" id="toggle-password" class="btn-details flex-grow">
+								<i class="fas fa-key"></i>
+								Modifier le mot de passe
+							</button>
+							<button type="button" id="delete-account-btn" class="btn-details btn-delete flex-grow">
+								<i class="fas fa-trash-alt"></i>
+								Supprimer mon compte
+							</button>
+						</div>
 					</div>
 
-					<div class="form-group">
-						{{ form_label(form.plainPassword.second) }}
-						{{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control'}}) }}
-						{{ form_errors(form.plainPassword.second) }}
+					<div id="password-fields" style="display: none;">
+						<div class="form-group">
+							{{ form_label(form.plainPassword.first) }}
+							{{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control'}}) }}
+							{{ form_errors(form.plainPassword.first) }}
+						</div>
+
+						<div class="form-group">
+							{{ form_label(form.plainPassword.second) }}
+							{{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control'}}) }}
+							{{ form_errors(form.plainPassword.second) }}
+						</div>
 					</div>
-				</div>
+				{% endif %}
 
 				<div class="action-buttons">
 					<div class="button-group">
@@ -70,7 +71,7 @@
 							<i class="fas fa-save"></i>
 							Enregistrer les modifications
 						</button>
-						<a href="{{ path('app_user_profile', {'id': app.user.id}) }}" class="btn-details flex-grow">
+						<a href="{{ path('app_user_profile', {'id': user.id}) }}" class="btn-details flex-grow">
 							<i class="fas fa-arrow-left"></i>
 							Retour au profil
 						</a>
@@ -81,31 +82,36 @@
 		</div>
 	</div>
 
-	<!-- Notification de suppression -->
-	<div id="delete-confirmation" class="card delete-confirmation d-none">
-		<div class="card-header">
-			<h5>Confirmation de suppression</h5>
-		</div>
-		<div class="card-body">
-			<p>Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.</p>
-			<div class="d-flex justify-content-end">
-				<button id="cancel-delete" class="btn-details">Annuler</button>
-				<form id="delete-account-form" method="post" action="{{ path('app_user_delete', {'id': app.user.id}) }}">
-					<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ app.user.id) }}">
-					<button type="submit" class="btn-details">Confirmer la suppression</button>
-				</form>
+	{% if app.user.id == user.id %}
+		<!-- Notification de suppression -->
+		<div id="delete-confirmation" class="card delete-confirmation d-none">
+			<div class="card-header">
+				<h5>Confirmation de suppression</h5>
+			</div>
+			<div class="card-body">
+				<p>Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.</p>
+				<div class="d-flex justify-content-end">
+					<button id="cancel-delete" class="btn-details">Annuler</button>
+					<form id="delete-account-form" method="post" action="{{ path('app_user_delete', {'id': user.id}) }}">
+						<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+						<button type="submit" class="btn-details">Confirmer la suppression</button>
+					</form>
+				</div>
 			</div>
 		</div>
-	</div>
+	{% endif %}
 {% endblock %}
 
 {% block javascripts %}
 	{{ parent() }}
 	<script>
-		document.addEventListener('DOMContentLoaded', function () { // Toggle password fields
+		document.addEventListener('DOMContentLoaded', function (){
+{% if app.user.id == user.id %}
+// Toggle password fields
 var toggleButton = document.getElementById('toggle-password');
 var passwordFields = document.getElementById('password-fields');
 
+if (toggleButton && passwordFields) {
 toggleButton.addEventListener('click', function () {
 if (passwordFields.style.display === 'none') {
 passwordFields.style.display = 'block';
@@ -115,6 +121,7 @@ passwordFields.style.display = 'none';
 toggleButton.innerHTML = '<i class="fas fa-key"></i> Modifier le mot de passe';
 }
 });
+}
 
 // Delete account confirmation
 var deleteBtn = document.getElementById('delete-account-btn');
@@ -122,6 +129,7 @@ var deleteConfirmation = document.getElementById('delete-confirmation');
 var cancelDeleteBtn = document.getElementById('cancel-delete');
 var overlay = document.getElementById('overlay');
 
+if (deleteBtn && deleteConfirmation && cancelDeleteBtn && overlay) {
 deleteBtn.addEventListener('click', function () {
 deleteConfirmation.classList.remove('d-none');
 overlay.classList.remove('d-none');
@@ -131,6 +139,8 @@ cancelDeleteBtn.addEventListener('click', function () {
 deleteConfirmation.classList.add('d-none');
 overlay.classList.add('d-none');
 });
+}
+{% endif %}
 });
 	</script>
 {% endblock %}

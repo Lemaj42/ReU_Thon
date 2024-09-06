@@ -63,8 +63,7 @@ class UserController extends AbstractController
             // Message de succès
             $this->addFlash('success', 'Nouvel utilisateur créé avec succès! Un e-mail a été envoyé pour la création du mot de passe.');
 
-            // Redirection vers la page des réunions au lieu de la liste des utilisateurs
-            return $this->redirectToRoute('app_meeting_index');
+            return $this->redirectToRoute('app_user_index');
         }
 
         return $this->render('user/new.html.twig', [
