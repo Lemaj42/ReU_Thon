@@ -99,6 +99,26 @@
     margin-right: 5px;
 }
 
+.accordion-content {
+    display: none;
+    padding-left: 20px;
+}
+
+.accordion-content.active {
+    display: block;
+}
+
+.nav-item.has-submenu>.nav-link::after {
+    content: '\25BC';
+    margin-left: 5px;
+    display: inline-block;
+    transition: transform 0.3s ease;
+}
+
+.nav-item.has-submenu.active>.nav-link::after {
+    transform: rotate(180deg);
+}
+
 /* Responsive pour tablettes */
 @media (max-width: 1024px) and (min-width: 769px) {
     .navbar {

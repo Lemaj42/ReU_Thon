@@ -111,7 +111,6 @@
 var toggleButton = document.getElementById('toggle-password');
 var passwordFields = document.getElementById('password-fields');
 
-if (toggleButton && passwordFields) {
 toggleButton.addEventListener('click', function () {
 if (passwordFields.style.display === 'none') {
 passwordFields.style.display = 'block';
@@ -121,7 +120,6 @@ passwordFields.style.display = 'none';
 toggleButton.innerHTML = '<i class="fas fa-key"></i> Modifier le mot de passe';
 }
 });
-}
 
 // Delete account confirmation
 var deleteBtn = document.getElementById('delete-account-btn');
@@ -129,7 +127,6 @@ var deleteConfirmation = document.getElementById('delete-confirmation');
 var cancelDeleteBtn = document.getElementById('cancel-delete');
 var overlay = document.getElementById('overlay');
 
-if (deleteBtn && deleteConfirmation && cancelDeleteBtn && overlay) {
 deleteBtn.addEventListener('click', function () {
 deleteConfirmation.classList.remove('d-none');
 overlay.classList.remove('d-none');
@@ -138,9 +135,7 @@ overlay.classList.remove('d-none');
 cancelDeleteBtn.addEventListener('click', function () {
 deleteConfirmation.classList.add('d-none');
 overlay.classList.add('d-none');
-});
-}
-{% endif %}
+});{% endif %}
 });
 	</script>
 {% endblock %}

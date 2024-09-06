@@ -22,10 +22,12 @@
 					<p class="card-text">{{ meeting.detail }}</p>
 					<h3 class="card-section-Title">Adresse :</h3>
 					<p class="card-text">{{ meeting.place }}</p>
-					{% if meeting.finalDate %}
-						<h3 class="card-section-Title">Date finale :</h3>
+					{% if meeting.finalDate is not null %}
+						<h3 class="card-section-Title">Date finale de la réunion :</h3>
 						<p class="card-text">{{ meeting.finalDate|date('d/m/Y à H:i') }}</p>
 					{% endif %}
+					<h3 class="card-section-Title">Date de fin de vote :</h3>
+					<p class="card-text">{{ meeting.votingDeadline|date('d/m/Y à H:i') }}</p>
 				</div>
 				<div class="card-footer">
 					{% if meeting.votingDeadline > date() %}
@@ -52,7 +54,12 @@
 			<div id="map"></div>
 
 			<div class="btn-container">
-				<a href="{{ path('app_meeting_index') }}" class="btn-action btn-modify">Retour à la liste</a>
+				{% if is_granted('ROLE_ADMIN') and meeting.votingDeadline <= date() %}
+					<a href="{{ path('app_meeting_archive') }}" class="btn-action btn-modify">Retour aux archives</a>
+				{% else %}
+					<a href="{{ path('app_meeting_index') }}" class="btn-action btn-modify">Retour à la liste</a>
+				{% endif %}
+
 				{% if is_granted('ROLE_ADMIN') %}
 					<a href="{{ path('app_meeting_edit', {'id': meeting.id}) }}" class="btn-action btn-modify">Modifier</a>
 					<form method="post" action="{{ path('app_meeting_delete', {'id': meeting.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette réunion ?');">

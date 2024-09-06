@@ -30,9 +30,32 @@ class MeetingController extends AbstractController
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function index(MeetingRepository $meetingRepository): Response
     {
-        $meetings = $meetingRepository->findAll();
+        $now = new \DateTime();
+        $meetings = $meetingRepository->createQueryBuilder('m')
+            ->where('m.votingDeadline > :now')
+            ->setParameter('now', $now)
+            ->getQuery()
+            ->getResult();
+
         return $this->render('meeting/index.html.twig', [
             'meetings' => $meetings,
+        ]);
+    }
+
+    #[Route('/archive', name: 'app_meeting_archive', methods: ['GET'])]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function archive(MeetingRepository $meetingRepository): Response
+    {
+        $now = new \DateTime();
+        $archivedMeetings = $meetingRepository->createQueryBuilder('m')
+            ->where('m.votingDeadline <= :now')
+            ->setParameter('now', $now)
+            ->orderBy('m.votingDeadline', 'DESC')
+            ->getQuery()
+            ->getResult();
+
+        return $this->render('meeting/archive.html.twig', [
+            'archivedMeetings' => $archivedMeetings,
         ]);
     }
 
@@ -50,9 +73,6 @@ class MeetingController extends AbstractController
         $user = $this->getUser();
         $meeting->setOwner($user);
 
-        // Définir une valeur par défaut pour finalDate
-        $meeting->setFinalDate(new \DateTime()); // Ou toute autre valeur par défaut appropriée
-
         $form = $this->createForm(MeetingType::class, $meeting);
         $form->handleRequest($request);
 
@@ -67,6 +87,10 @@ class MeetingController extends AbstractController
             $firstBookingDate = $bookings[0]->getDate();
             $votingDeadline = (clone $firstBookingDate)->modify('-7 days');
             $meeting->setVotingDeadline($votingDeadline);
+
+            // Calculer la date finale 15 minutes après la date de fin de vote
+            $finalDate = (clone $votingDeadline)->modify('+15 minutes');
+            $meeting->setFinalDate($finalDate);
 
             foreach ($bookings as $booking) {
                 $booking->setMeeting($meeting);
