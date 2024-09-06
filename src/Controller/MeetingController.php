@@ -172,13 +172,14 @@ class MeetingController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     public function delete(Request $request, Meeting $meeting, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $meeting->getId(), $request->request->get('_token'))) {
-            $entityManager->remove($meeting);
-            $entityManager->flush();
-            $this->addFlash('success', 'Réunion supprimée avec succès.');
-        }
 
-        return $this->redirectToRoute('app_meeting_index', [], Response::HTTP_SEE_OTHER);
+        $entityManager->remove($meeting);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Réunion supprimée avec succès.');
+
+        return $this->redirectToRoute('app_meeting_index');
+
     }
 
     #[Route('/{id}', name: 'app_meeting_show', methods: ['GET'])]

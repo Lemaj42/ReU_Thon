@@ -11,7 +11,6 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\UX\Turbo\Attribute\Broadcast;
 
 #[ORM\Entity(repositoryClass: BookingRepository::class)]
-#[Broadcast(entity: "booking")]
 class Booking
 {
     #[ORM\Id]
