@@ -54,8 +54,13 @@
 				{{ meeting.detail }}</li>
 		</ul>
 
-		<p class="important">Veuillez choisir le créneau qui vous convient avant le
-			{{ votingDeadline|date('d/m/Y à H:i') }}.</p>
+		{# Vérification si la variable votingDeadline existe pour éviter toute erreur #}
+		{% if votingDeadline is defined %}
+			<p class="important">Veuillez choisir le créneau qui vous convient avant le
+				{{ votingDeadline|date('d/m/Y à H:i') }}.</p>
+		{% else %}
+			<p class="important">Veuillez choisir le créneau qui vous convient avant la date limite des votes.</p>
+		{% endif %}
 
 		<p>Voici les créneaux proposés :</p>
 		<ul>

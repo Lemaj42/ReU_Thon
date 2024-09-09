@@ -23,30 +23,34 @@
 					<h3 class="card-section-Title">Adresse :</h3>
 					<p class="card-text">{{ meeting.place }}</p>
 					{% if meeting.finalDate is not null %}
-						<h3 class="card-section-Title">Date finale de la réunion :</h3>
+						<h3 class="card-subTitle">Date finale de la réunion :</h3>
+
 						<p class="card-text">{{ meeting.finalDate|date('d/m/Y à H:i') }}</p>
+					{% else %}
+						<h3 class="card-section-Title">Date de fin de vote :</h3>
+						<p class="card-text">{{ meeting.votingDeadline|date('d/m/Y à H:i') }}</p>
 					{% endif %}
-					<h3 class="card-section-Title">Date de fin de vote :</h3>
-					<p class="card-text">{{ meeting.votingDeadline|date('d/m/Y à H:i') }}</p>
 				</div>
 				<div class="card-footer">
-					{% if meeting.votingDeadline > date() %}
-						{% if not hasVoted %}
-							<h4 class="card-subTitle">Dates de vote disponibles :</h4>
-							<form action="{{ path('app_meeting_vote', {'id': meeting.id}) }}" method="POST" class="btn-container">
-								{% for booking in meeting.bookings %}
-									<button type="submit" name="date" value="{{ booking.date|date('Y-m-d H:i:s') }}" class="btn-date">
-										{{ booking.date|date('d/m/Y H:i') }}
-									</button>
-								{% endfor %}
-							</form>
-						{% elseif vote is not null and vote.booking is not null %}
-							<h4 class="card-subTitle">Vous avez déjà voté pour cette réunion.</h4>
-							<p class="card-info">Date choisie :
-								{{ vote.booking.date|date('d/m/Y à H:i') }}</p>
+					{% if meeting.finalDate is null %}
+						{% if meeting.votingDeadline > date() %}
+							{% if not hasVoted %}
+								<h4 class="card-subTitle">Dates de vote disponibles :</h4>
+								<form action="{{ path('app_meeting_vote', {'id': meeting.id}) }}" method="POST" class="btn-container">
+									{% for booking in meeting.bookings %}
+										<button type="submit" name="date" value="{{ booking.date|date('Y-m-d H:i:s') }}" class="btn-date">
+											{{ booking.date|date('d/m/Y H:i') }}
+										</button>
+									{% endfor %}
+								</form>
+							{% elseif vote is not null and vote.booking is not null %}
+								<h4 class="card-subTitle">Vous avez déjà voté pour cette réunion.</h4>
+								<p class="card-info">Date choisie :
+									{{ vote.booking.date|date('d/m/Y à H:i') }}</p>
+							{% endif %}
+						{% else %}
+							<p class="card-info">La période de vote est terminée.</p>
 						{% endif %}
-					{% else %}
-						<p class="card-info">La période de vote est terminée.</p>
 					{% endif %}
 				</div>
 			</article>
@@ -66,6 +70,12 @@
 						<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ meeting.id) }}">
 						<button type="submit" class="btn-action btn-delete">Supprimer</button>
 					</form>
+					{% if meeting.finalDate is null %}
+						<form action="{{ path('app_meeting_close_votes', {'id': meeting.id}) }}" method="post">
+							<input type="hidden" name="_token" value="{{ csrf_token('close_votes' ~ meeting.id) }}">
+							<button type="submit" class="btn-action btn-modify">Clôturer les votes</button>
+						</form>
+					{% endif %}
 				{% endif %}
 			</div>
 		</div>

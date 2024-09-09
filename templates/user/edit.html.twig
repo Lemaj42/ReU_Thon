@@ -6,6 +6,23 @@
 {% block stylesheets %}
 	{{ parent() }}
 	<link rel="stylesheet" href="{{ asset('styles/Users/editProfile.css') }}">
+	<style>
+		.password-input-group {
+			position: relative;
+			display: flex;
+			align-items: center;
+		}
+		.password-input {
+			flex-grow: 1;
+		}
+		.toggle-password-visibility {
+			position: absolute;
+			right: 10px;
+			background: none;
+			border: none;
+			cursor: pointer;
+		}
+	</style>
 {% endblock %}
 
 {% block body %}
@@ -53,13 +70,23 @@
 					<div id="password-fields" style="display: none;">
 						<div class="form-group">
 							{{ form_label(form.plainPassword.first) }}
-							{{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control'}}) }}
+							<div class="password-input-group">
+								{{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control password-input'}}) }}
+								<button type="button" class="toggle-password-visibility" data-target="{{ form.plainPassword.first.vars.id }}">
+									<i class="fas fa-eye"></i>
+								</button>
+							</div>
 							{{ form_errors(form.plainPassword.first) }}
 						</div>
 
 						<div class="form-group">
 							{{ form_label(form.plainPassword.second) }}
-							{{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control'}}) }}
+							<div class="password-input-group">
+								{{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control password-input'}}) }}
+								<button type="button" class="toggle-password-visibility" data-target="{{ form.plainPassword.second.vars.id }}">
+									<i class="fas fa-eye"></i>
+								</button>
+							</div>
 							{{ form_errors(form.plainPassword.second) }}
 						</div>
 					</div>
@@ -105,28 +132,43 @@
 {% block javascripts %}
 	{{ parent() }}
 	<script>
-		document.addEventListener('DOMContentLoaded', function (){
-{% if app.user.id == user.id %}
-// Toggle password fields
+		document.addEventListener('DOMContentLoaded', function () {
 var toggleButton = document.getElementById('toggle-password');
 var passwordFields = document.getElementById('password-fields');
-
-toggleButton.addEventListener('click', function () {
-if (passwordFields.style.display === 'none') {
-passwordFields.style.display = 'block';
-toggleButton.innerHTML = '<i class="fas fa-times"></i> Annuler la modification du mot de passe';
-} else {
-passwordFields.style.display = 'none';
-toggleButton.innerHTML = '<i class="fas fa-key"></i> Modifier le mot de passe';
-}
-});
-
-// Delete account confirmation
 var deleteBtn = document.getElementById('delete-account-btn');
 var deleteConfirmation = document.getElementById('delete-confirmation');
 var cancelDeleteBtn = document.getElementById('cancel-delete');
 var overlay = document.getElementById('overlay');
 
+if (toggleButton) {
+toggleButton.addEventListener('click', function () {
+if (passwordFields.style.display === 'none') {
+passwordFields.style.display = 'block';
+this.innerHTML = '<i class="fas fa-times"></i> Annuler la modification du mot de passe';
+} else {
+passwordFields.style.display = 'none';
+this.innerHTML = '<i class="fas fa-key"></i> Modifier le mot de passe';
+}
+});
+}
+
+var toggleVisibilityButtons = document.querySelectorAll('.toggle-password-visibility');
+toggleVisibilityButtons.forEach(function (button) {
+button.addEventListener('click', function () {
+var targetId = this.getAttribute('data-target');
+var passwordInput = document.getElementById(targetId);
+
+if (passwordInput.type === 'password') {
+passwordInput.type = 'text';
+this.innerHTML = '<i class="fas fa-eye-slash"></i>';
+} else {
+passwordInput.type = 'password';
+this.innerHTML = '<i class="fas fa-eye"></i>';
+}
+});
+});
+
+if (deleteBtn && deleteConfirmation && cancelDeleteBtn && overlay) {
 deleteBtn.addEventListener('click', function () {
 deleteConfirmation.classList.remove('d-none');
 overlay.classList.remove('d-none');
@@ -135,7 +177,8 @@ overlay.classList.remove('d-none');
 cancelDeleteBtn.addEventListener('click', function () {
 deleteConfirmation.classList.add('d-none');
 overlay.classList.add('d-none');
-});{% endif %}
+});
+}
 });
 	</script>
 {% endblock %}
