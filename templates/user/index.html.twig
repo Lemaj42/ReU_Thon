@@ -1,52 +1,64 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Gestion des utilisateurs | Nom du Site
+{% endblock %}
+
+{% block meta %}
+	<meta name="description" content="Gérez les utilisateurs enregistrés. Modifiez ou supprimez les comptes utilisateurs si nécessaire.">
+{% endblock %}
+
 {% block stylesheets %}
 	{{ parent() }}
 	<link rel="stylesheet" href="{{ asset('styles/Meeting/meeting.css') }}">
 {% endblock %}
 
-{% block title %}Gestion des utilisateurs
-{% endblock %}
-
 {% block body %}
-	<section class="user-container container">
-		<h1 class="Title">GESTION DES UTILISATEURS</h1>
-		<p class="Description text-center">
-			<strong>Vous trouverez ci-dessous la liste des utilisateurs enregistrés.</strong>
-			<strong>Vous pouvez modifier ou supprimer les utilisateurs si nécessaire.</strong>
+	<main class="content-wrapper d-flex flex-column min-vh-100">
+		<h1 class="page-title">Gestion des utilisateurs</h1>
+		<p class="description">
+			Vous trouverez ci-dessous la liste des utilisateurs enregistrés.
+																																																									            Vous pouvez modifier ou supprimer les utilisateurs si nécessaire.
 		</p>
-		<div class="user-cards row">
+		<div class="row g-4 flex-grow-1">
 			{% for user in users %}
-				<article class="card col-12 col-md-6 col-lg-4 mb-4">
-					<div class="card-header">
-						<h4 class="card-Title">Utilisateur :</h4>
-						<h5 class="card-subTitle">Prénom :
-							{{ user.firstname }}</h5>
-						<h5 class="card-subTitle">Nom :
-							{{ user.lastname }}</h5>
+				<div class="col-12 col-md-6 col-lg-4">
+					<article class="card">
+						<div class="card-header">
+							<h2 class="card-title">
+								<strong>Profile de</strong>
+								{{ user.firstname }}
+							</div>
+							<div class="card-body">
+								<p class="mb-0">
+									<strong>Nom :</strong>
+									{{ user.lastname }}
+								</p>
+								<p class="mb-0">
+									<strong>Prénom :</strong>
+									{{ user.firstname }}
+								</p>
+								<p class="mb-0">
+									<strong>Email :</strong>
+									{{ user.email }}
+								</p>
+							</div>
+							<div class="card-footer">
+								<div class="d-flex justify-content-between">
+									<a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-meeting-details btn-modify">Modifier</a>
+									<form method="post" action="{{ path('app_user_delete', {'id': user.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">
+										<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+										<button type="submit" class="btn btn-meeting-details btn-delete">Supprimer</button>
+									</form>
+								</div>
+							</div>
+						</article>
 					</div>
-					<div class="card-body">
-						<p class="card-info">
-							<strong>Email :</strong>
-							{{ user.email }}
-						</p>
-					</div>
-					<div class="card-footer">
-						<div class="btn-container">
-							<a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn-action btn-modify">Modifier</a>
-							<form method="post" action="{{ path('app_user_delete', {'id': user.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">
-								<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
-								<button type="submit" class="btn-action btn-delete">Supprimer</button>
-							</form>
-						</div>
-					</div>
-				</article>
-			{% else %}
-				<p class="text-center">Aucun utilisateur trouvé.</p>
-			{% endfor %}
-		</div>
-		<div class="text-center mt-4">
-			<a href="{{ path('app_user_new') }}" class="btn-date">Créer un nouvel utilisateur</a>
-		</div>
-	</section>
-{% endblock %}
+				{% else %}
+					<p class="text-center">Aucun utilisateur trouvé.</p>
+				{% endfor %}
+			</div>
+			<div class="text-center mt-5 mb-4">
+				<a href="{{ path('app_user_new') }}" class="btn btn-meeting-details btn-back">Créer un nouvel utilisateur</a>
+			</div>
+		</main>
+	{% endblock %}

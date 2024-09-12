@@ -1,6 +1,6 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des Réunions | Nom du Site
+{% block title %}Liste des Réunions
 {% endblock %}
 
 {% block meta %}
@@ -14,8 +14,6 @@
 
 {% block body %}
 	<main>
-		<h1 class="visually-hidden">Liste des Réunions</h1>
-
 		<section class="carousel-section" aria-label="Carrousel d'images">
 			<div id="meetingCarousel" class="carousel slide" data-bs-ride="carousel">
 				<div class="carousel-indicators">
@@ -23,7 +21,7 @@
 						<button type="button" data-bs-target="#meetingCarousel" data-bs-slide-to="{{ i }}" {% if i == 0 %} class="active" aria-current="true" {% endif %} aria-label="Diapositive {{ i+1 }}"></button>
 					{% endfor %}
 				</div>
-				<div class="carousel-inner">
+				<div class="carousel-inner">class="carousel-control-prev-icon"
 					{% for i in 0..2 %}
 						<div class="carousel-item {% if i == 0 %}active{% endif %}">
 							<img src="{{ asset('images/Carrousel/Telethon' ~ (i+1) ~ '.jpg') }}" class="d-block w-100" alt="Image du Téléthon {{ i+1 }}" width="1200" height="600" loading="lazy">
@@ -31,11 +29,11 @@
 					{% endfor %}
 				</div>
 				<button class="carousel-control-prev" type="button" data-bs-target="#meetingCarousel" data-bs-slide="prev">
-					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+					<span class="carousel-control" aria-hidden="true"></span>
 					<span class="visually-hidden">Précédent</span>
 				</button>
 				<button class="carousel-control-next" type="button" data-bs-target="#meetingCarousel" data-bs-slide="next">
-					<span class="carousel-control-next-icon" aria-hidden="true"></span>
+					<span class="carousel-control" aria-hidden="true"></span>
 					<span class="visually-hidden">Suivant</span>
 				</button>
 			</div>
@@ -54,6 +52,14 @@
 								<div class="card-header">
 									<h3 class="card-title">{{ meeting.title }}</h3>
 								</div>
+								<div class="card-body">
+									<p class="mb-0">
+										<strong>Fin des votes :</strong>
+										<time datetime="{{ meeting.votingDeadline|date('Y-m-d\\TH:i') }}">
+											{{ meeting.votingDeadline|date('d/m/Y H:i') }}
+										</time>
+									</p>
+								</div>
 								<div class="card-footer">
 									<a href="{{ path('app_meeting_show', {'id': meeting.id}) }}" class="btn btn-meeting-details">Voir détails</a>
 								</div>
@@ -65,8 +71,8 @@
 				</div>
 			</div>
 		</section>
-		<section class="meeting-container meeting-container--colored" aria-labelledby="planned-meetings">
 
+		<section class="meeting-container meeting-container--colored" aria-labelledby="planned-meetings">
 			<div class="meeting-container__content">
 				<h2 id="planned-meetings">Réunions planifiées</h2>
 				<p class="description">

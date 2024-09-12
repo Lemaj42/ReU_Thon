@@ -1,46 +1,54 @@
 {% extends 'base.html.twig' %}
 
-{% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('styles/Meeting/meeting.css') }}">
-{% endblock stylesheets %}
+{% block title %}Réunions Archivées | Nom du Site
+{% endblock %}
 
-{% block title %}
-    Réunions Archivées
+{% block meta %}
+	<meta name="description" content="Consultez la liste des réunions passées. Retrouvez les détails des événements précédents.">
+{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('styles/Meeting/meeting.css') }}">
 {% endblock %}
 
 {% block body %}
-    <section class="meeting-container container">
-        <h1 class="Title text-center">RÉUNIONS ARCHIVÉES</h1>
-        <p class="Description text-center">
-            <strong>Vous trouverez ci-dessous la liste des réunions passées.</strong>
-        </p>
-        <div class="meeting-cards row">
-            {% set hasArchivedMeetings = false %}
-            {% for meeting in archivedMeetings %}
-                {% if meeting.finalDate is not null and meeting.finalDate < date() %}
-                    {% set hasArchivedMeetings = true %}
-                    <article class="card col-12 col-md-6 col-lg-4 mb-4">
-                        <div class="card-header">
-                            <h5 class="card-title">Objet de la réunion :</h5>
-                            <h2 class="card-subtitle">{{ meeting.title }}</h2>
-                        </div>
-                        <div class="card-footer">
-                            <p class="card-info">
-                                <strong>Date finale :</strong>
-                                {{ meeting.finalDate|date('d/m/Y H:i') }}
-                            </p>
-                            <a href="{{ path('app_meeting_show', {'id': meeting.id}) }}" class="btn-MeetingDetails flex-grow">VOIR DÉTAILS</a>
-                        </div>
-                    </article>
-                {% endif %}
-            {% endfor %}
-            {% if not hasArchivedMeetings %}
-                <p class="text-center">Aucune réunion archivée trouvée.</p>
-            {% endif %}
-        </div>
-        <div class="text-center mt-4">
-            <a href="{{ path('app_meeting_index') }}" class="btn-MeetingDetails center">RETOUR AUX RÉUNIONS ACTIVES</a>
-        </div>
-    </section>
+	<main class="content-wrapper">
+		<h1 class="page-title">Réunions Archivées</h1>
+		<p class="description">
+			Vous trouverez ci-dessous la liste des réunions passées.
+		</p>
+		<div class="row g-4">
+			{% set hasArchivedMeetings = false %}
+			{% for meeting in archivedMeetings %}
+				{% if meeting.finalDate is not null and meeting.finalDate < date() %}
+					{% set hasArchivedMeetings = true %}
+					<div class="col-12 col-md-6 col-lg-4">
+						<article class="card">
+							<div class="card-header">
+								<h2 class="card-title">{{ meeting.title }}</h2>
+							</div>
+							<div class="card-body">
+								<p class="mb-0">
+									<strong>Date finale :</strong>
+									<time datetime="{{ meeting.finalDate|date('Y-m-d\\TH:i') }}">
+										{{ meeting.finalDate|date('d/m/Y H:i') }}
+									</time>
+								</p>
+							</div>
+							<div class="card-footer">
+								<a href="{{ path('app_meeting_show', {'id': meeting.id}) }}" class="btn btn-meeting-details">Voir détails</a>
+							</div>
+						</article>
+					</div>
+				{% endif %}
+			{% endfor %}
+			{% if not hasArchivedMeetings %}
+				<p class="text-center">Aucune réunion archivée trouvée.</p>
+			{% endif %}
+		</div>
+		<div class="text-center mt-5 mb-4">
+			<a href="{{ path('app_meeting_index') }}" class="btn btn-meeting-details btn-back">Retour aux réunions actives</a>
+		</div>
+	</main>
 {% endblock %}
