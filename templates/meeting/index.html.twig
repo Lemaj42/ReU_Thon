@@ -1,53 +1,103 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}Liste des Réunions | Nom du Site
+{% endblock %}
+
+{% block meta %}
+	<meta name="description" content="Votez pour les prochaines réunions et consultez les réunions planifiées. Participez activement à l'organisation de nos événements.">
+{% endblock %}
+
 {% block stylesheets %}
 	{{ parent() }}
 	<link rel="stylesheet" href="{{ asset('styles/Meeting/meeting.css') }}">
-{% endblock stylesheets %}
-
-{% block title %}
-	Liste des Réunions
 {% endblock %}
 
 {% block body %}
-	<section class="meeting-container container">
-		<h1 class="Title text-center">VOTEZ POUR LES PROCHAINES RÉUNIONS</h1>
-		<p class="Description text-center">
-			<strong>Vous trouverez ci-dessous la liste des réunions à venir.</strong>
-			<strong>Vous pouvez voter pour les dates qui vous conviennent le mieux.</strong>
-		</p>
-		<div class="meeting-cards row">
-			{% for meeting in meetings %}
-				<article class="card col-12 col-md-6 col-lg-4 mb-4">
-					<div class="card-header">
-						<h5 class="card-title">Objet de la réunion :</h5>
-						<h2 class="card-subtitle">{{ meeting.title }}</h2>
-					</div>
-					{# <div class="card-body">
-																					<h5 class="card-section-title">Détail de la réunion :</h5>
-																					<p class="card-text">{{ meeting.detail }}</p>
-																					<p class="card-info">
-																						<strong>Date principale :</strong>
-																						{{ meeting.date ? meeting.date|date('d/m/Y') : 'Non définie' }}
-																					</p>
-																					{% if meeting.alternativeDate %}
-																						<p class="card-info">
-																							<strong>Date alternative :</strong>
-																							{{ meeting.alternativeDate|date('d/m/Y') }}
-																						</p>
-																					{% endif %}
-																					<p class="card-info">
-																						<strong>Lieu :</strong>
-																						{{ meeting.place }}
-																					</p>
-																				</div> #}
-					<div class="card-footer">
-						<a href="{{ path('app_meeting_show', {'id': meeting.id}) }}" class="btn-MeetingDetails flex-grow">VOIR DÉTAILS</a>
-					</div>
-				</article>
-			{% else %}
-				<p>Aucune réunion trouvée.</p>
-			{% endfor %}
-		</div>
-	</section>
+	<main>
+		<h1 class="visually-hidden">Liste des Réunions</h1>
+
+		<section class="carousel-section" aria-label="Carrousel d'images">
+			<div id="meetingCarousel" class="carousel slide" data-bs-ride="carousel">
+				<div class="carousel-indicators">
+					{% for i in 0..2 %}
+						<button type="button" data-bs-target="#meetingCarousel" data-bs-slide-to="{{ i }}" {% if i == 0 %} class="active" aria-current="true" {% endif %} aria-label="Diapositive {{ i+1 }}"></button>
+					{% endfor %}
+				</div>
+				<div class="carousel-inner">
+					{% for i in 0..2 %}
+						<div class="carousel-item {% if i == 0 %}active{% endif %}">
+							<img src="{{ asset('images/Carrousel/Telethon' ~ (i+1) ~ '.jpg') }}" class="d-block w-100" alt="Image du Téléthon {{ i+1 }}" width="1200" height="600" loading="lazy">
+						</div>
+					{% endfor %}
+				</div>
+				<button class="carousel-control-prev" type="button" data-bs-target="#meetingCarousel" data-bs-slide="prev">
+					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+					<span class="visually-hidden">Précédent</span>
+				</button>
+				<button class="carousel-control-next" type="button" data-bs-target="#meetingCarousel" data-bs-slide="next">
+					<span class="carousel-control-next-icon" aria-hidden="true"></span>
+					<span class="visually-hidden">Suivant</span>
+				</button>
+			</div>
+		</section>
+
+		<section class="meeting-container" aria-labelledby="upcoming-meetings">
+			<div class="meeting-container__content">
+				<h2 id="upcoming-meetings">Votez pour les prochaines réunions</h2>
+				<p class="description">
+					Vous trouverez ci-dessous la liste des réunions à venir. Vous pouvez voter pour les dates qui vous conviennent le mieux.
+				</p>
+				<div class="row g-4">
+					{% for meeting in meetings|filter(m => m.finalDate is null) %}
+						<div class="col-12 col-md-6 col-lg-4">
+							<article class="card">
+								<div class="card-header">
+									<h3 class="card-title">{{ meeting.title }}</h3>
+								</div>
+								<div class="card-footer">
+									<a href="{{ path('app_meeting_show', {'id': meeting.id}) }}" class="btn btn-meeting-details">Voir détails</a>
+								</div>
+							</article>
+						</div>
+					{% else %}
+						<p class="text-center">Aucune réunion en attente de vote.</p>
+					{% endfor %}
+				</div>
+			</div>
+		</section>
+		<section class="meeting-container meeting-container--colored" aria-labelledby="planned-meetings">
+
+			<div class="meeting-container__content">
+				<h2 id="planned-meetings">Réunions planifiées</h2>
+				<p class="description">
+					Voici la liste des réunions dont la date a été finalisée et les votes sont clos.
+				</p>
+				<div class="row g-4">
+					{% set plannedMeetings = meetings|filter(m => m.finalDate is not null and m.finalDate > date()) %}
+					{% for meeting in plannedMeetings %}
+						<div class="col-12 col-md-6 col-lg-4">
+							<article class="card">
+								<div class="card-header">
+									<h3 class="card-title">{{ meeting.title }}</h3>
+								</div>
+								<div class="card-body">
+									<p class="mb-0">
+										<strong>Date finale :</strong>
+										<time datetime="{{ meeting.finalDate|date('Y-m-d\\TH:i') }}">
+											{{ meeting.finalDate|date('d/m/Y H:i') }}
+										</time>
+									</p>
+								</div>
+								<div class="card-footer">
+									<a href="{{ path('app_meeting_show', {'id': meeting.id}) }}" class="btn btn-meeting-details">Voir détails</a>
+								</div>
+							</article>
+						</div>
+					{% else %}
+						<p class="text-center">Aucune réunion planifiée à venir.</p>
+					{% endfor %}
+				</div>
+			</div>
+		</section>
+	</main>
 {% endblock %}

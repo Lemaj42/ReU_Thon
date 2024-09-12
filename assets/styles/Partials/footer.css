@@ -1,31 +1,12 @@
+/* Styles pour le footer */
 .site-footer {
     background-color: #DC2F02;
     color: white;
-    display: flex;
-    justify-content: center;
-    padding: 10px 20px;
-    height: auto;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    position: relative;
-    text-align: center;
-    width: 100%;
-    margin-bottom: 0;
-}
-
-.footer-container {
-    width: 100%;
-    max-width: 1200px;
-    margin: 0 auto;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
+    padding: 1.25rem 0;
+    margin-top: auto;
 }
 
 .footer-brand {
-    display: flex;
-    align-items: center;
     color: white;
     text-decoration: none;
     font-weight: 700;
@@ -33,28 +14,33 @@
     letter-spacing: 0.5px;
 }
 
+.footer-brand:hover {
+    color: white;
+    opacity: 0.8;
+}
+
 .footer-logo {
     width: 30px;
     height: 30px;
-    margin-right: 10px;
+    margin-right: 0.625rem;
 }
 
 .footer-nav {
-    display: flex;
-    list-style: none;
-    margin: 0;
     padding: 0;
 }
 
 .footer-nav .nav-item {
-    margin-left: 20px;
     position: relative;
+}
+
+.footer-nav .nav-item:not(:first-child) {
+    margin-left: 1.25rem;
 }
 
 .footer-nav .nav-item:not(:first-child)::before {
     content: "•";
     position: absolute;
-    left: -10px;
+    left: -0.75rem;
     color: white;
 }
 
@@ -63,51 +49,27 @@
     text-decoration: none;
     font-weight: 700;
     font-size: 1rem;
-    display: flex;
-    align-items: center;
-    transition: opacity 0.3s ease;
     letter-spacing: 0.3px;
+    transition: opacity 0.3s ease;
 }
 
 .footer-link:hover {
+    color: white;
     opacity: 0.8;
 }
 
+/* Styles responsives */
 @media (max-width: 768px) {
-    .footer-container {
-        flex-direction: column;
-        align-items: center;
-    }
-
     .footer-nav {
-        margin-top: 10px;
+        justify-content: center;
+        margin-top: 0.9375rem;
     }
 
     .footer-nav .nav-item {
-        margin: 0 10px;
+        margin: 0.3125rem 0.625rem;
     }
 
     .footer-nav .nav-item:not(:first-child)::before {
         content: none;
     }
-
-                		.accordion-content {
-                		    display: none;
-                		    padding-left: 20px;
-                		}
-            
-                		.accordion-content.active {
-                		    display: block;
-                		}
-            
-                		.nav-item.has-submenu>.nav-link::after {
-                		    content: '\25BC';
-                		    margin-left: 5px;
-                		    display: inline-block;
-                		    transition: transform 0.3s ease;
-                		}
-            
-                		.nav-item.has-submenu.active>.nav-link::after {
-                		    transform: rotate(180deg);
-                		}
 }

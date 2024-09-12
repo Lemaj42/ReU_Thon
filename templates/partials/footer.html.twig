@@ -1,23 +1,31 @@
 {% block stylesheets %}
 	<link rel="stylesheet" href="{{ asset('styles/Partials/footer.css') }}">
-{% endblock stylesheets %}
+{% endblock %}
 
 <footer class="site-footer">
-
-	<div class="footer-container">
-		<a href="{{ path('app_meeting_index') }}" class="footer-brand">
-			<img src="{{ asset('images/logo.svg') }}" alt="Logo" class="footer-logo">
-		</a>
-		<ul class="footer-nav">
-			<li class="nav-item">
-				<a href="#" class="footer-link">CONTACT</a>
-			</li>
-			<li class="nav-item">
-				<a href="#" class="footer-link">POLITIQUE DES COOKIES</a>
-			</li>
-			<li class="nav-item">
-				<a href="#" class="footer-link">BLABLA</a>
-			</li>
-		</ul>
+	<div class="container">
+		<div class="row align-items-center">
+			<div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
+				<a href="{{ path('app_meeting_index') }}" class="footer-brand d-inline-flex align-items-center">
+					<img src="{{ asset('images/logo.svg') }}" alt="Logo" class="footer-logo">
+					<span>NOM DU SITE</span>
+				</a>
+			</div>
+			<div class="col-md-6 text-center text-md-end">
+				<nav>
+					<ul class="footer-nav list-unstyled d-flex flex-wrap justify-content-center justify-content-md-end">
+						<li class="nav-item">
+							<a href="{{ path('app_meeting_index') }}" class="footer-link">CONTACT</a>
+						</li>
+						<li class="nav-item">
+							<a href="{{ path('app_meeting_index') }}" class="footer-link">POLITIQUE DES COOKIES</a>
+						</li>
+						<li class="nav-item">
+							<a href="{{ path('app_meeting_index') }}" class="footer-link">BLABLA</a>
+						</li>
+					</ul>
+				</nav>
+			</div>
+		</div>
 	</div>
 </footer>

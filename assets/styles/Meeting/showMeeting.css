@@ -1,3 +1,18 @@
+/* Variables */
+:root {
+    --primary-color: #FFAA00;
+    --secondary-color: #370617;
+    --danger-color: #9D0208;
+    --hover-color: #DC2F02;
+    --text-color: #000;
+    --white: #fff;
+}
+
+/* Styles généraux */
+body {
+    font-size: 16px;
+}
+
 .Title {
     text-align: center;
     font-size: 2rem;
@@ -5,29 +20,32 @@
     text-transform: uppercase;
 }
 
+/* Layout */
 .container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
     padding: 1rem;
     box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
 }
 
 .meeting-container {
     width: 100%;
     max-width: 600px;
     margin: 1rem auto;
+    padding: 1rem;
+    box-sizing: border-box;
     display: flex;
     flex-direction: column;
     align-items: center;
     text-align: center;
 }
 
+/* Card styles */
 .card {
-    background-color: #FFAA00;
+    background-color: var(--primary-color);
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     overflow: hidden;
@@ -38,56 +56,43 @@
 .card-header,
 .card-body,
 .card-footer {
-    padding: 1rem;
-}
-
-.card-header {
-    background-color: #FFAA00;
+    padding: 0.75rem 1rem;
     position: relative;
     z-index: 1;
 }
 
 .card-Title {
     font-size: 2rem;
-    color: #370617;
+    color: var(--secondary-color);
     margin: 0;
     text-align: center;
     text-transform: uppercase;
 }
 
 .card-subTitle {
-    font-size: 2rem;
-    color: #370617;
-    margin: 0.5rem 0;
+    font-size: 1.5rem;
+    color: var(--secondary-color);
+    margin: 0.25rem 0;
     text-align: center;
 }
 
 .card-body {
-    background-color: #FFAA00;
-    position: relative;
-    z-index: 1;
     font-size: 1.2rem;
 }
 
 .card-section-Title {
     font-size: 1.2rem;
-    color: #000;
-    margin-bottom: 0.5rem;
+    color: var(--text-color);
+    margin-bottom: 0.25rem;
 }
 
 .card-text,
 .card-info {
-    margin-bottom: 0.75rem;
-    color: #000;
+    margin-bottom: 0.5rem;
+    color: var(--text-color);
 }
 
-.card-footer {
-    background-color: #FFAA00;
-    text-align: center;
-    position: relative;
-    z-index: 1;
-}
-
+/* Buttons */
 .btn-date {
     display: inline-flex;
     justify-content: center;
@@ -105,19 +110,20 @@
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    background-color: #370617;
-    color: white;
+    background-color: var(--secondary-color);
+    color: var(--white);
 }
 
 .btn-date:hover {
-    background-color: #DC2F02;
+    background-color: var(--hover-color);
 }
 
 .btn-container {
-    display: flex !important;
-    flex-direction: row !important;
+    display: flex;
+    flex-direction: row;
     gap: 1rem;
     width: 100%;
+    margin-top: 0.5rem;
 }
 
 .btn-action {
@@ -145,30 +151,24 @@ form {
 }
 
 .btn-modify {
-    background-color: #370617;
-    color: white;
+    background-color: var(--secondary-color);
+    color: var(--white);
 }
 
 .btn-delete {
-    background-color: #9D0208;
-    color: white;
+    background-color: var(--danger-color);
+    color: var(--white);
 }
 
 .btn-modify:hover {
-    background-color: #DC2F02;
+    background-color: var(--hover-color);
 }
 
 .btn-delete:hover {
     background-color: #6A040F;
 }
 
-.card-footer .btn-container {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-    margin-top: 10px;
-}
-
+/* Map */
 #map {
     width: 100%;
     height: 300px;
@@ -202,6 +202,6 @@ form {
     }
 
     .btn-container {
-        flex-direction: column !important;
+        flex-direction: column;
     }
 }

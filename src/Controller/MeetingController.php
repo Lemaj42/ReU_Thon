@@ -9,8 +9,8 @@ use App\Entity\Vote;
 use App\Form\MeetingType;
 use App\Repository\BookingRepository;
 use App\Repository\UserRepository;
-use App\Repository\MeetingRepository;
 use App\Repository\VoteRepository;
+use App\Repository\MeetingRepository; // Add this line
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -30,7 +30,7 @@ class MeetingController extends AbstractController
     {
         $now = new \DateTime();
         $meetings = $meetingRepository->createQueryBuilder('m')
-            ->where('m.votingDeadline > :now OR m.finalDate IS NULL')
+            ->where('m.votingDeadline > :now OR (m.finalDate IS NOT NULL AND m.finalDate > :now)')
             ->setParameter('now', $now)
             ->orderBy('m.votingDeadline', 'ASC')
             ->getQuery()
@@ -47,9 +47,10 @@ class MeetingController extends AbstractController
     {
         $now = new \DateTime();
         $archivedMeetings = $meetingRepository->createQueryBuilder('m')
-            ->where('m.votingDeadline <= :now')
+            ->where('m.finalDate IS NOT NULL')
+            ->andWhere('m.finalDate < :now')
             ->setParameter('now', $now)
-            ->orderBy('m.votingDeadline', 'DESC')
+            ->orderBy('m.finalDate', 'DESC')
             ->getQuery()
             ->getResult();
 
