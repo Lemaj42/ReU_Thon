@@ -30,6 +30,16 @@ class UserController extends AbstractController
             'users' => $userRepository->findAll(),
         ]);
     }
+
+    #[Route('/contact', name: 'app_user_contact')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function create(UserRepository $userRepository): Response
+    {
+        return $this->render('autres/contact.html.twig', [
+            'users' => $userRepository->findAll(),
+        ]);
+    }
+
     #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_ADMIN')]
     public function new(Request $request, EntityManagerInterface $entityManager, MailerInterface $mailer): Response

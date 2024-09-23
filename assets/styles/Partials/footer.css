@@ -57,19 +57,38 @@
     color: white;
     opacity: 0.8;
 }
+.site-footer {
+    z-index: 1030;
+    /* Le footer doit avoir un z-index supérieur pour apparaître par-dessus la navbar */
+}
 
-/* Styles responsives */
+/* Fusion de la navbar et du footer en responsive */
 @media (max-width: 768px) {
-    .footer-nav {
+    .site-footer {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1030;
+        /* Assurez-vous que le footer soit bien au-dessus des autres éléments */
+        padding: 0.5rem;
+        background-color: #DC2F02;
+        display: none;
+        /* Même couleur que la navbar */
+    }
+
+    .site-footer .footer-nav {
         justify-content: center;
-        margin-top: 0.9375rem;
+        flex-direction: row;
+        /* Les liens du footer en ligne horizontale */
     }
 
-    .footer-nav .nav-item {
-        margin: 0.3125rem 0.625rem;
+    .site-footer .footer-nav .nav-item {
+        margin: 0 10px;
     }
 
-    .footer-nav .nav-item:not(:first-child)::before {
-        content: none;
+    .site-footer .footer-logo {
+        display: none;
+        /* Masquer le logo si l'espace est limité */
     }
 }

@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+{% block meta %}
+	<meta name="description" content="Contactez notre équipe pour obtenir des informations sur nos activités et nos événements.">
+{% endblock %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('styles/Autres/contact.css') }}">
+{% endblock %}
+
+
+{% block title %}Contact
+{% endblock %}
+
+{% block body %}
+	<div class="container justify-content-center mt-5">
+		<h1 class="text-center mt-5">Contactez-nous</h1>
+		<p class="text-center mt-5">Voici les informations pour contacter notre équipe :</p>
+
+		<div class="row justify-content-center text-center mt-5">
+
+			<div class="col-md-8">
+				<div class="mb-5">
+					<label for="name" class="form-label">Nom</label>
+					<p class="form-control-static">Colette</p>
+				</div>
+				<div class="mb-5">
+					<label for="email" class="form-label">Email</label>
+					<p class="form-control-static">colette@afm.fr</p>
+				</div>
+				<div class="mb-5">
+					<label for="phone" class="form-label">Téléphone</label>
+					<p class="form-control-static">06 08 09 14 15</p>
+				</div>
+				<div class="mb-5">
+					<label for="address" class="form-label">Adresse</label>
+					<p class="form-control-static">Andrézieux-Bouthéon</p>
+				</div>
+			</div>
+		</div>
+	</div>
+{% endblock %}

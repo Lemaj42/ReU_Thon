@@ -3,51 +3,74 @@
 {% endblock stylesheets %}
 
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
-    <div class="container-fluid">
-        <a class="navbar-brand" href="{{ path('app_meeting_index') }}">
-            <img src="{{ asset('images/logo.svg') }}" alt="Logo" class="d-inline-block align-top">
-            ACCUEIL
-        </a>
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-            <ul class="navbar-nav ms-auto">
-                {% if is_granted('ROLE_ADMIN') %}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="reunionsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            RÉUNIONS
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="reunionsDropdown">
-                            <li><a class="dropdown-item" href="{{ path('app_meeting_new') }}">Créer une réunion</a></li>
-                            <li><a class="dropdown-item" href="{{ path('app_meeting_archive') }}">Liste des réunions</a></li>
-                        </ul>
-                    </li>
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            USER
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="userDropdown">
-                            <li><a class="dropdown-item" href="{{ path('app_user_new') }}">Créer un utilisateur</a></li>
-                            <li><a class="dropdown-item" href="{{ path('app_user_index') }}">Liste des utilisateurs</a></li>
-                        </ul>
-                    </li>
-                {% endif %}
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_user_profile') }}">
-                        PROFIL
-                        {% if app.user and app.user.firstName is defined %}
-                            : {{ app.user.firstName }}
-                        {% endif %}
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="{{ path('app_logout') }}">
-                        <img src="{{ asset('images/logout.png') }}" alt="Déconnexion" class="power-icon">
-                        DÉCONNEXION
-                    </a>
-                </li>
-            </ul>
-        </div>
-    </div>
+	<div class="container-fluid">
+		<a class="navbar-brand" href="{{ path('app_meeting_index') }}">
+			<img src="{{ asset('images/logo.svg') }}" alt="Logo" class="d-inline-block align-top">
+			ACCUEIL
+		</a>
+		<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+			<span class="navbar-toggler-icon"></span>
+		</button>
+		<div class="collapse navbar-collapse" id="navbarNav">
+			<ul class="navbar-nav ms-auto">
+				{% if is_granted('ROLE_ADMIN') %}
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="reunionsDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+							RÉUNIONS
+						</a>
+						<ul class="dropdown-menu" aria-labelledby="reunionsDropdown">
+							<li>
+								<a class="dropdown-item" href="{{ path('app_meeting_new') }}">Créer une réunion</a>
+							</li>
+							<li>
+								<a class="dropdown-item" href="{{ path('app_meeting_archive') }}">Liste des réunions</a>
+							</li>
+						</ul>
+					</li>
+
+					<li class="nav-item dropdown">
+						<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+							USER
+						</a>
+						<ul class="dropdown-menu" aria-labelledby="userDropdown">
+							<li>
+								<a class="dropdown-item" href="{{ path('app_user_new') }}">Créer un utilisateur</a>
+							</li>
+							<li>
+								<a class="dropdown-item" href="{{ path('app_user_index') }}">Liste des utilisateurs</a>
+							</li>
+						</ul>
+					</li>
+
+					<!-- footer dans le burger menu, visibles uniquement sur mobile -->
+					<li class="nav-item d-lg-none">
+						<a href="{{ path('app_user_contact') }}" class="nav-link">CONTACT</a</li>
+
+					</li>
+					<li class="nav-item d-lg-none">
+						<a href="{{ path('app_meeting_index') }}" class="nav-link">POLITIQUE DES COOKIES</a>
+					</li>
+					<li class="nav-item d-lg-none">
+						<a href="{{ path('app_meeting_index') }}" class="nav-link">BLABLA</a>
+					</li>
+
+				{% endif %}
+				<li class="nav-item">
+					<a class="nav-link" href="{{ path('app_user_profile') }}">
+						PROFIL
+						{% if app.user and app.user.firstName is defined %}
+							:
+							{{ app.user.firstName }}
+						{% endif %}
+					</a>
+				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="{{ path('app_logout') }}">
+						<img src="{{ asset('images/logout.png') }}" alt="Déconnexion" class="power-icon">
+						DÉCONNEXION
+					</a>
+				</li>
+			</ul>
+		</div>
+	</div>
 </nav>
