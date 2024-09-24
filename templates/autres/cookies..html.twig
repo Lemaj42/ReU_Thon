@@ -1,0 +1,101 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('styles/Autres/cookies.css') }}">
+{% endblock %}
+
+{% block title %}Politique des Cookies
+{% endblock %}
+
+{% block body %}
+	<div class="container my-5">
+		<h1 class="display-4 text-center mb-5">Politique des Cookies</h1>
+
+		<section class="mb-5">
+			<h2 class="h3 mb-4">1. Introduction</h2>
+			<p>Cette politique de cookies explique comment Réu-Thon utilise des cookies et des technologies similaires sur notre site web. En accédant à notre Site, vous acceptez l'utilisation de cookies conformément à cette politique.</p>
+		</section>
+
+		<section class="mb-5">
+			<h2 class="h3 mb-4">2. Qu'est-ce qu'un cookie ?</h2>
+			<p>Un cookie est un petit fichier texte stocké sur votre appareil (ordinateur, tablette ou smartphone) lorsque vous visitez un site web. Les cookies permettent à un site web de reconnaître un utilisateur et d'améliorer son expérience en mémorisant des informations telles que les préférences et les actions effectuées sur le site.</p>
+		</section>
+
+		<div class="container my-5">
+			<h1 class="display-4 text-center mb-5">Politique des Cookies</h1>
+
+			<section class="mb-5">
+				<h2 class="h3 mb-4">3. Types de cookies utilisés</h2>
+				<p>Nous utilisons différents types de cookies sur notre Site :</p>
+				<div class="bg-transparent">
+					<ul class="list-unstyled mb-0">
+						<li class="mb-2 p-2 border-bottom">Cookies strictement nécessaires</li>
+						<li class="mb-2 p-2 border-bottom">Cookies de performance</li>
+						<li class="mb-2 p-2 border-bottom">Cookies fonctionnels</li>
+						<li class="p-2">Cookies de ciblage/publicité</li>
+					</ul>
+				</div>
+			</section>
+
+			<section class="mb-5">
+				<h2 class="h3 mb-4">4. Gestion des cookies</h2>
+				<p>Vous pouvez gérer ou désactiver les cookies via les paramètres de votre navigateur. Voici comment procéder pour les navigateurs les plus courants :</p>
+				<div class="bg-transparent p-3 border border-secondary rounded">
+					<ul class="list-unstyled mb-0">
+						<li class="mb-2">
+							<strong>Google Chrome :</strong>
+							Paramètres > Confidentialité et sécurité > Cookies et autres données des sites</li>
+						<li class="mb-2">
+							<strong>Mozilla Firefox :</strong>
+							Préférences > Vie privée et sécurité > Cookies et données de site</li>
+						<li class="mb-2">
+							<strong>Microsoft Edge :</strong>
+							Paramètres > Cookies et autorisations de site > Gérer et supprimer les cookies</li>
+						<li>
+							<strong>Safari :</strong>
+							Préférences > Confidentialité > Cookies et autres données des sites</li>
+					</ul>
+				</div>
+				<p class="mt-3 fst-italic">Veuillez noter que la désactivation de certains cookies peut affecter le bon fonctionnement du Site.</p>
+			</section>
+
+
+			<section class="mb-5">
+				<h2 class="h3 mb-4">5. Cookies tiers</h2>
+				<p>Nous pouvons autoriser des tiers, tels que des réseaux publicitaires ou des partenaires, à utiliser des cookies sur notre Site pour collecter des informations sur vos activités en ligne. Ces informations permettent de diffuser des publicités plus pertinentes et d'analyser le trafic du Site.</p>
+			</section>
+
+			<section class="mb-5">
+				<h2 class="h3 mb-4">6. Mise à jour de la politique des cookies</h2>
+				<p>Nous nous réservons le droit de modifier cette politique des cookies à tout moment. Les modifications seront publiées sur cette page avec une nouvelle date de mise à jour.</p>
+			</section>
+
+			<section class="mt-5">
+				<h2 class="h3 mb-4">Informations de contact</h2>
+				<div class="card">
+					<div class="card-body">
+						<div class="mb-3">
+							<label for="name" class="form-label fw-bold">Nom</label>
+							<p class="form-control-plaintext">Colette</p>
+						</div>
+						<div class="mb-3">
+							<label for="email" class="form-label fw-bold">Email</label>
+							<p class="form-control-plaintext">colette@afm.fr</p>
+
+						</div>
+						<div class="mb-3">
+							<label for="phone" class="form-label fw-bold">Téléphone</label>
+							<p class="form-control-plaintext">06 08 09 14 15</p>
+
+						</div>
+						<div class="mb-3">
+							<label for="address" class="form-label fw-bold">Adresse</label>
+							<p class="form-control-plaintext">Andrézieux-Bouthéon</p>
+
+						</div>
+					</div>
+				</div>
+			</section>
+		</div>
+	{% endblock %}

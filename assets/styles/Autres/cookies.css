@@ -1,0 +1,11 @@
+body {
+    background-image: url("../../images/image5.jpg");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: #000;
+    font-size: 2rem;
+    font-family: 'Roboto', sans-serif;
+    margin-top: 5rem;
+    text-align: justify;
+}

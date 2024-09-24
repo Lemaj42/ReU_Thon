@@ -4,8 +4,7 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Form\UserType;
-use App\Form\RegisterFormType;
-use App\Form\SetPasswordFormType;
+
 use App\Repository\UserRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -33,9 +32,17 @@ class UserController extends AbstractController
 
     #[Route('/contact', name: 'app_user_contact')]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function create(UserRepository $userRepository): Response
+    public function contact(UserRepository $userRepository): Response
     {
         return $this->render('autres/contact.html.twig', [
+            'users' => $userRepository->findAll(),
+        ]);
+    }
+    #[Route('/cookies', name: 'app_user_cookies')]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function cookies(UserRepository $userRepository): Response
+    {
+        return $this->render('autres/cookies..html.twig', [
             'users' => $userRepository->findAll(),
         ]);
     }

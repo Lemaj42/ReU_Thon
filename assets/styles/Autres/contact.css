@@ -1,11 +1,10 @@
 body {
-background-image: url('../images/bgContact.jpg');
+    background-image: url("../../images/bgContact.jpg");
     background-size: cover;
-    /* Pour que l'image couvre tout le fond */
     background-position: center;
-    /* Pour centrer l'image */
     background-repeat: no-repeat;
-    /* Pour éviter de répéter l'image */
-    color: #DC2F02;
+    color: #ffebee;
+    font-size: 2rem;
     font-family: 'Roboto', sans-serif;
+    margin-top: 5rem;
 }
