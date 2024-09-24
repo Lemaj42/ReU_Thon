@@ -47,23 +47,17 @@
 				</p>
 				<div class="row g-4">
 					{% for meeting in meetings|filter(m => m.finalDate is null) %}
-						<div class="col-12 col-md-6 col-lg-4">
-							<article class="card">
-								<div class="card-header">
-									<h3 class="card-title">{{ meeting.title }}</h3>
-								</div>
-								<div class="card-body">
-									<p class="mb-0">
-										<strong>Fin des votes :</strong>
-										<time datetime="{{ meeting.votingDeadline|date('Y-m-d\\TH:i') }}">
-											{{ meeting.votingDeadline|date('d/m/Y H:i') }}
-										</time>
-									</p>
-								</div>
-								<div class="card-footer">
-									<a href="{{ path('app_meeting_show', {'id': meeting.id}) }}" class="btn btn-meeting-details">Voir détails</a>
-								</div>
-							</article>
+						<div class="card">
+							<div class="content">
+								<h3 class="card-title">{{ meeting.title }}</h3>
+								<p class="mb-0">
+									<strong>Fin des votes :</strong>
+									<time datetime="{{ meeting.votingDeadline|date('Y-m-d\\TH:i') }}">
+										{{ meeting.votingDeadline|date('d/m/Y H:i') }}
+									</time>
+								</p>
+								<a href="{{ path('app_meeting_show', {'id': meeting.id}) }}" class="btn-meeting-details">Voir détails</a>
+							</div>
 						</div>
 					{% else %}
 						<p class="text-center">Aucune réunion en attente de vote.</p>
@@ -72,8 +66,10 @@
 			</div>
 		</section>
 
-		<section class="meeting-container meeting-container--colored" aria-labelledby="planned-meetings">
-			<div class="meeting-container__content">
+		<section class="archive-container" aria-labelledby="upcoming-meetings">
+			<div class="archive-container__content">
+
+
 				<h2 id="planned-meetings">Réunions planifiées</h2>
 				<p class="description">
 					Voici la liste des réunions dont la date a été finalisée et les votes sont clos.
