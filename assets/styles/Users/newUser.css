@@ -9,7 +9,7 @@
 
 .Title {
     text-align: center;
-    font-size: 2rem;
+    font-size: 1.9rem;
     margin: 2rem 0;
     text-transform: uppercase;
 }
@@ -27,10 +27,6 @@
     position: relative;
 }
 
-.card:hover {
-    transform: perspective(1000px) rotateX(2deg) rotateY(2deg) scale(1.02);
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
-}
 .card-header,
 .card-body {
     padding: 1.2rem;
