@@ -1,108 +1,110 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-    {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('styles/Meeting/showMeeting.css') }}">
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('styles/Meeting/showMeeting.css') }}">
 {% endblock %}
 
-{% block title %}Détails de la réunion{% endblock %}
+{% block title %}Détails de la réunion
+{% endblock %}
 
 {% block body %}
-    <div class="container">
-        <h1 class="Title">Détails de la réunion</h1>
+	<main>
+		<h1 class="Title">Détails de la réunion</h1>
 
-        <div class="meeting-container">
-            <article class="card">
-                <div class="card-header">
-                    <h2 class="card-Title">{{ meeting.title }}</h2>
-                </div>
-                <div class="card-body">
-                    <h3 class="card-section-Title">Détails :</h3>
-                    <p class="card-text">{{ meeting.detail }}</p>
-                    <h3 class="card-section-Title">Adresse :</h3>
-                    <p class="card-text">{{ meeting.place }}</p>
-                    {% if meeting.finalDate is not null %}
-                        <h3 class="card-subTitle">Date finale de la réunion :</h3>
-                        <p class="card-text">{{ meeting.finalDate|date('d/m/Y à H:i') }}</p>
-                    {% elseif meeting.votingDeadline <= date() %}
-                        <h3 class="card-subTitle">Date finale de la réunion :</h3>
-                        <p class="card-text">En attente de finalisation</p>
-                    {% else %}
-                        <h3 class="card-section-Title">Date de fin de vote :</h3>
-                        <p class="card-text">{{ meeting.votingDeadline|date('d/m/Y à H:i') }}</p>
-                    {% endif %}
-                </div>
-                <div class="card-footer">
-                    {% if meeting.finalDate is null %}
-                        {% if meeting.votingDeadline > date() %}
-                            {% if not hasVoted %}
-                                <h4 class="card-subTitle">Dates de vote disponibles :</h4>
-                                <form action="{{ path('app_meeting_vote', {'id': meeting.id}) }}" method="POST" class="btn-container">
-                                    {% for booking in meeting.bookings %}
-                                        <button type="submit" name="date" value="{{ booking.date|date('Y-m-d H:i:s') }}" class="btn-date">
-                                            {{ booking.date|date('d/m/Y H:i') }}
-                                        </button>
-                                    {% endfor %}
-                                </form>
-                            {% elseif vote is not null and vote.booking is not null %}
-                                <h4 class="card-subTitle">Vous avez déjà voté pour cette réunion.</h4>
-                                <p class="card-info">Date choisie : {{ vote.booking.date|date('d/m/Y à H:i') }}</p>
-                            {% endif %}
-                        {% endif %}
-                    {% endif %}
-                </div>
-            </article>
+		<div class="meeting-container">
+			<article class="card">
+				<div class="card-header">
+					<h2 class="card-Title">{{ meeting.title }}</h2>
+				</div>
+				<div class="card-body">
+					<h3 class="card-section-Title">Détails :</h3>
+					<p class="card-text">{{ meeting.detail }}</p>
+					<h3 class="card-section-Title">Adresse :</h3>
+					<p class="card-text">{{ meeting.place }}</p>
+					{% if meeting.finalDate is not null %}
+						<h3 class="card-subTitle">Date finale de la réunion :</h3>
+						<p class="card-text">{{ meeting.finalDate|date('d/m/Y à H:i') }}</p>
+					{% elseif meeting.votingDeadline <= date() %}
+						<h3 class="card-subTitle">Date finale de la réunion :</h3>
+						<p class="card-text">En attente de finalisation</p>
+					{% else %}
+						<h3 class="card-section-Title">Date de fin de vote :</h3>
+						<p class="card-text">{{ meeting.votingDeadline|date('d/m/Y à H:i') }}</p>
+					{% endif %}
+				</div>
+				<div class="card-footer">
+					{% if meeting.finalDate is null %}
+						{% if meeting.votingDeadline > date() %}
+							{% if not hasVoted %}
+								<h4 class="card-subTitle">Dates de vote disponibles :</h4>
+								<form action="{{ path('app_meeting_vote', {'id': meeting.id}) }}" method="POST" class="btn-container">
+									{% for booking in meeting.bookings %}
+										<button type="submit" name="date" value="{{ booking.date|date('Y-m-d H:i:s') }}" class="btn-date">
+											{{ booking.date|date('d/m/Y H:i') }}
+										</button>
+									{% endfor %}
+								</form>
+							{% elseif vote is not null and vote.booking is not null %}
+								<h4 class="card-subTitle">Vous avez déjà voté pour cette réunion.</h4>
+								<p class="card-info">Date choisie :
+									{{ vote.booking.date|date('d/m/Y à H:i') }}</p>
+							{% endif %}
+						{% endif %}
+					{% endif %}
+				</div>
+			</article>
 
-            <div id="map"></div>
+			<div id="map"></div>
 
-            <div class="btn-container">
-                {% if is_granted('ROLE_ADMIN') and meeting.votingDeadline <= date() %}
-                    <a href="{{ path('app_meeting_archive') }}" class="btn-action btn-modify">Retour aux archives</a>
-                {% else %}
-                    <a href="{{ path('app_meeting_index') }}" class="btn-action btn-modify">Retour à la liste</a>
-                {% endif %}
+			<div class="btn-container">
+				{% if is_granted('ROLE_ADMIN') and meeting.votingDeadline <= date() %}
+					<a href="{{ path('app_meeting_archive') }}" class="btn-action btn-modify">Retour aux archives</a>
+				{% else %}
+					<a href="{{ path('app_meeting_index') }}" class="btn-action btn-modify">Retour à la liste</a>
+				{% endif %}
 
-                {% if is_granted('ROLE_ADMIN') %}
-                    <a href="{{ path('app_meeting_edit', {'id': meeting.id}) }}" class="btn-action btn-modify">Modifier</a>
-                    <form method="post" action="{{ path('app_meeting_delete', {'id': meeting.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette réunion ?');">
-                        <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ meeting.id) }}">
-                        <button type="submit" class="btn-action btn-delete">Supprimer</button>
-                    </form>
-                    {% if meeting.finalDate is null and meeting.votingDeadline <= date() %}
-                        <form action="{{ path('app_meeting_close_votes', {'id': meeting.id}) }}" method="post">
-                            <input type="hidden" name="_token" value="{{ csrf_token('close_votes' ~ meeting.id) }}">
-                            <button type="submit" class="btn-action btn-modify">Clôturer les votes</button>
-                        </form>
-                    {% endif %}
-                {% endif %}
-            </div>
-        </div>
-    </div>
+				{% if is_granted('ROLE_ADMIN') %}
+					<a href="{{ path('app_meeting_edit', {'id': meeting.id}) }}" class="btn-action btn-modify">Modifier</a>
+					<form method="post" action="{{ path('app_meeting_delete', {'id': meeting.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette réunion ?');">
+						<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ meeting.id) }}">
+						<button type="submit" class="btn-action btn-delete">Supprimer</button>
+					</form>
+					{% if meeting.finalDate is null and meeting.votingDeadline <= date() %}
+						<form action="{{ path('app_meeting_close_votes', {'id': meeting.id}) }}" method="post">
+							<input type="hidden" name="_token" value="{{ csrf_token('close_votes' ~ meeting.id) }}">
+							<button type="submit" class="btn-action btn-modify">Clôturer les votes</button>
+						</form>
+					{% endif %}
+				{% endif %}
+			</div>
+		</div>
+	</main>
 {% endblock %}
 
 {% block javascripts %}
-    {{ parent() }}
-    <script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap" async defer></script>
-    <script>
-        function initMap() {
-            const address = "{{ meeting.place }}";
-            const geocoder = new google.maps.Geocoder();
-            const mapElement = document.getElementById('map');
+	{{ parent() }}
+	<script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap" async defer></script>
+	<script>
+		function initMap() {
+const address = "{{ meeting.place }}";
+const geocoder = new google.maps.Geocoder();
+const mapElement = document.getElementById('map');
 
-            geocoder.geocode({
-                address: address
-            }, function (results, status) {
-                if (status === 'OK') {
-                    const map = new google.maps.Map(mapElement, {
-                        zoom: 14,
-                        center: results[0].geometry.location
-                    });
-                    new google.maps.Marker({map: map, position: results[0].geometry.location, title: "Lieu de la réunion"});
-                } else {
-                    console.error('La géolocalisation de l\'adresse a échoué : ' + status);
-                    mapElement.innerHTML = '<p>Impossible de charger la carte.</p>';
-                }
-            });
-        }
-    </script>
+geocoder.geocode({
+address: address
+}, function (results, status) {
+if (status === 'OK') {
+const map = new google.maps.Map(mapElement, {
+zoom: 14,
+center: results[0].geometry.location
+});
+new google.maps.Marker({map: map, position: results[0].geometry.location, title: "Lieu de la réunion"});
+} else {
+console.error('La géolocalisation de l\'adresse a échoué : ' + status);
+mapElement.innerHTML = '<p>Impossible de charger la carte.</p>';
+}
+});
+}
+	</script>
 {% endblock %}

@@ -41,23 +41,29 @@
 
 		<section class="meeting-container" aria-labelledby="upcoming-meetings">
 			<div class="meeting-container__content">
-				<h2 id="upcoming-meetings">Votez pour les prochaines réunions</h2>
+				<h1 id="upcoming-meetings">Votez pour les prochaines réunions</h1>
 				<p class="description">
 					Vous trouverez ci-dessous la liste des réunions à venir. Vous pouvez voter pour les dates qui vous conviennent le mieux.
 				</p>
 				<div class="row g-4">
 					{% for meeting in meetings|filter(m => m.finalDate is null) %}
-						<div class="card">
-							<div class="content">
-								<h3 class="card-title">{{ meeting.title }}</h3>
-								<p class="mb-0">
-									<strong>Fin des votes :</strong>
-									<time datetime="{{ meeting.votingDeadline|date('Y-m-d\\TH:i') }}">
-										{{ meeting.votingDeadline|date('d/m/Y H:i') }}
-									</time>
-								</p>
-								<a href="{{ path('app_meeting_show', {'id': meeting.id}) }}" class="btn-meeting-details">Voir détails</a>
-							</div>
+						<div class="col-12 col-md-6 col-lg-4">
+							<article class="card">
+								<div class="card-header">
+									<h3 class="card-title">{{ meeting.title }}</h3>
+								</div>
+								<div class="card-body">
+									<p class="mb-0">
+										<strong>Fin des votes :</strong>
+										<time datetime="{{ meeting.votingDeadline|date('Y-m-d\\TH:i') }}">
+											{{ meeting.votingDeadline|date('d/m/Y H:i') }}
+										</time>
+									</p>
+								</div>
+								<div class="card-footer">
+									<a href="{{ path('app_meeting_show', {'id': meeting.id}) }}" class="btn btn-meeting-details">Voir détails</a>
+								</div>
+							</article>
 						</div>
 					{% else %}
 						<p class="text-center">Aucune réunion en attente de vote.</p>
@@ -98,6 +104,22 @@
 					{% else %}
 						<p class="text-center">Aucune réunion planifiée à venir.</p>
 					{% endfor %}
+				</div>
+			</div>
+		</section>
+		<section class="historique-container vw-100 position-relative" aria-labelledby="histoire-delegation" style="left: 50%; right: 50%; margin-left: -50vw; margin-right: -50vw;">
+			<h2 id="histoire-delegation" class="text-center mb-4">
+				<strong>L'Histoire de la délégation</strong>
+			</h2>
+			<div class="row">
+				<div class="col-12 col-md-3 d-flex justify-content-center align-items-start">
+					<img class="img-fluid rounded-circle w-100" src="{{ asset('images/bgContact.jpg') }}" alt="Photo représentative de la délégation AFM-Téléthon" style="max-width: 95%; margin: 0.5rem 6rem;">
+				</div>
+				<div class="col-12 col-md-9 ps-md-4 mf-5">
+					<h3 class="h3 fw-bold mb-3">Notre histoire</h3>
+					<p>L'histoire de notre délégation AFM-Téléthon est marquée par un engagement constant dans la lutte contre les maladies neuromusculaires. Depuis notre création, nous avons travaillé sans relâche pour soutenir la recherche et améliorer la vie des personnes atteintes de ces maladies.</p>
+					<h3 class="h3 fw-bold mb-3 mt-4">Nos actions</h3>
+					<p>Nos actions comprennent l'organisation d'événements de collecte de fonds, la sensibilisation du public aux maladies rares, et le soutien direct aux familles touchées. Nous sommes fiers de notre contribution à l'avancement de la recherche médicale et à l'amélioration de la qualité de vie des patients.</p>
 				</div>
 			</div>
 		</section>

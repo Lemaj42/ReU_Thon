@@ -3,57 +3,55 @@
 {% block stylesheets %}
 	{{ parent() }}
 	<link rel="stylesheet" href="{{ asset('styles/index.css') }}">
+	<link rel="stylesheet" href="{{ asset('styles/user-profile.css') }}">
 {% endblock %}
 
 {% block title %}
-	Détails de l'utilisateur
+	Détails du profil
 {% endblock %}
 
 {% block body %}
-	<div class="login-container">
-		<div class="login-box">
-			<div class="login-content">
-				<div class="login-header">
-					<h1>Détails de
-						<strong>Profil</strong>
-					</h1>
-				</div>
+	<div class="container user-profile">
+		<div class="profile-card">
+			<div class="profile-header">
+				<h1>Détails du
+					<strong>Profil</strong>
+				</h1>
+			</div>
 
-				<div class="card-body">
-					<table class="user-details-table">
-						<tr>
-							<th>ID</th>
-							<td>{{ user.id }}</td>
-						</tr>
-						<tr>
-							<th>Prénom</th>
-							<td>{{ user.firstname }}</td>
-						</tr>
-						<tr>
-							<th>Nom</th>
-							<td>{{ user.lastname }}</td>
-						</tr>
-						<tr>
-							<th>Email</th>
-							<td>{{ user.email }}</td>
-						</tr>
-						<tr>
-							<th>Rôles</th>
-							<td>{{ user.roles | join(', ') }}</td>
-						</tr>
-					</table>
+			<div class="profile-content">
+				<table class="profile-details">
+					<tr>
+						<th>ID</th>
+						<td>{{ user.id }}</td>
+					</tr>
+					<tr>
+						<th>Prénom</th>
+						<td>{{ user.firstname }}</td>
+					</tr>
+					<tr>
+						<th>Nom</th>
+						<td>{{ user.lastname }}</td>
+					</tr>
+					<tr>
+						<th>Email</th>
+						<td>{{ user.email }}</td>
+					</tr>
+					<tr>
+						<th>Rôles</th>
+						<td>{{ user.roles | join(', ') }}</td>
+					</tr>
+				</table>
 
-					<div class="login-buttons">
-						<a href="{{ path('app_user_index') }}" class="btn btn-signup">Retour à la liste</a>
-						<a href="{{ path('app_user_edit', { id: user.id }) }}" class="btn btn-login">Modifier</a>
-						<form method="post" action="{{ path('app_user_delete', { id: user.id }) }}" style="display:inline;">
-							<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
-							<button class="btn btn-danger">Supprimer</button>
-						</form>
-					</div>
+				<div class="profile-actions">
+					<a href="{{ path('app_user_index') }}" class="btn btn-secondary">Retour à la liste</a>
+					<a href="{{ path('app_user_edit', { id: user.id }) }}" class="btn btn-primary">Modifier</a>
+					<form method="post" action="{{ path('app_user_delete', { id: user.id }) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">
+						<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+						<button class="btn btn-danger">Supprimer</button>
+					</form>
 				</div>
 			</div>
-			<div class="login-image"></div>
 		</div>
 	</div>
 {% endblock %}

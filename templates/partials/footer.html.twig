@@ -1,28 +1,27 @@
 {% block stylesheets %}
-	<link rel="stylesheet" href="{{ asset('styles/Partials/footer.css') }}">
+	<link rel="stylesheet" href="{{ asset('styles/partials/footer.css') }}">
 {% endblock %}
 
-<footer class="site-footer">
+<footer class="site-footer py-4">
 	<div class="container">
 		<div class="row align-items-center">
 			<div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-				<a href="{{ path('app_meeting_index') }}" class="footer-brand d-inline-flex align-items-center">
-					<img src="{{ asset('images/logo.svg') }}" alt="Logo" class="footer-logo">
-					<span>ReU-Thon</span>
-
+				<a href="{{ path('app_meeting_index') }}" class="footer-brand d-inline-flex align-items-center text-decoration-none">
+					<img src="{{ asset('images/logo.svg') }}" alt="Logo" class="footer-logo me-2" width="30" height="30">
+					<span class="fs-5">ReU-Thon</span>
 				</a>
 			</div>
 			<div class="col-md-6 text-center text-md-end">
 				<nav>
-					<ul class="footer-nav list-unstyled d-flex flex-wrap justify-content-center justify-content-md-end">
-						<li class="nav-item">
-							<a href="{{ path('app_user_contact') }}" class="footer-link">CONTACT</a>
+					<ul class="footer-nav list-unstyled d-flex flex-wrap justify-content-center justify-content-md-end mb-0">
+						<li class="nav-item me-3">
+							<a href="{{ path('app_user_contact') }}" class="footer-link text-decoration-none">Contact</a>
+						</li>
+						<li class="nav-item me-3">
+							<a href="{{ path('app_user_cookies') }}" class="footer-link text-decoration-none">Politique des cookies</a>
 						</li>
 						<li class="nav-item">
-							<a href="{{ path('app_user_cookies') }}" class="footer-link">POLITIQUE DES COOKIES</a>
-						</li>
-						<li class="nav-item">
-							<a href="{{ path('app_meeting_index') }}" class="footer-link">BLABLA</a>
+							<a href="{{ path('app_meeting_index') }}" class="footer-link text-decoration-none">Accueil</a>
 						</li>
 					</ul>
 				</nav>
