@@ -129,15 +129,19 @@ class UserController extends AbstractController
 
         $form = $this->createForm(UserType::class, $user, [
             'is_edit' => true,
+            'is_current_user' => $user === $this->getUser(),
+            'is_admin' => $this->isGranted('ROLE_ADMIN'),
         ]);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             // Gestion du mot de passe
-            $plainPassword = $form->get('plainPassword')->getData();
-            if (!empty($plainPassword)) {
-                $hashedPassword = $passwordHasher->hashPassword($user, $plainPassword);
-                $user->setPassword($hashedPassword);
+            if ($form->has('plainPassword')) {
+                $plainPassword = $form->get('plainPassword')->getData();
+                if (!empty($plainPassword)) {
+                    $hashedPassword = $passwordHasher->hashPassword($user, $plainPassword);
+                    $user->setPassword($hashedPassword);
+                }
             }
 
             // Enregistrement des modifications

@@ -92,6 +92,7 @@
 					</div>
 				{% endif %}
 
+
 				<div class="action-buttons">
 					<div class="button-group">
 						<button type="submit" class="btn-details flex-grow">
@@ -140,7 +141,7 @@ var deleteConfirmation = document.getElementById('delete-confirmation');
 var cancelDeleteBtn = document.getElementById('cancel-delete');
 var overlay = document.getElementById('overlay');
 
-if (toggleButton) {
+if (toggleButton && passwordFields) {
 toggleButton.addEventListener('click', function () {
 if (passwordFields.style.display === 'none') {
 passwordFields.style.display = 'block';

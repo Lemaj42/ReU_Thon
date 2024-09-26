@@ -7,10 +7,9 @@ use App\Entity\Meeting;
 use App\Entity\User;
 use App\Entity\Vote;
 use App\Form\MeetingType;
-use App\Repository\BookingRepository;
 use App\Repository\UserRepository;
 use App\Repository\VoteRepository;
-use App\Repository\MeetingRepository; // Add this line
+use App\Repository\MeetingRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

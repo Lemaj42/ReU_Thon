@@ -50,7 +50,7 @@ class UserType extends AbstractType
             ]);
 
         // Ajout du champ mot de passe uniquement en mode édition et en option
-        if ($options['is_edit']) {
+        if ($options['is_edit'] && ($options['is_current_user'] || !$options['is_admin'])) {
             $builder->add('plainPassword', RepeatedType::class, [
                 'type' => PasswordType::class,
                 'mapped' => false,
@@ -73,6 +73,8 @@ class UserType extends AbstractType
         $resolver->setDefaults([
             'data_class' => User::class,
             'is_edit' => false,
+            'is_current_user' => false,
+            'is_admin' => false,
         ]);
     }
 }
