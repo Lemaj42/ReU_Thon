@@ -171,7 +171,7 @@ class UserController extends AbstractController
 
         $this->addFlash('success', 'Les rôles de l\'utilisateur ont été mis à jour.');
 
-        return $this->redirectToRoute('app_user_show', ['id' => $user->getId()]);
+        return $this->redirectToRoute('app_user_index', ['id' => $user->getId()]);
     }
 
     #[Route('/{id}', name: 'app_user_delete', methods: ['POST'])]

@@ -16,10 +16,10 @@
 	<main class="content-wrapper d-flex flex-column min-vh-100">
 		<div class="meeting-container">
 			<div class="meeting-container__content">
-				<h2 class="page-title">Gestion des utilisateurs</h2>
+				<h1 class="page-title">Gestion des utilisateurs</h1>
 				<p class="description">
 					Vous trouverez ci-dessous la liste des utilisateurs enregistrés.
-																																																																																																														Vous pouvez modifier ou supprimer les utilisateurs si nécessaire.
+															                    Vous pouvez modifier ou supprimer les utilisateurs si nécessaire.
 				</p>
 				<div class="table-responsive">
 					<table class="table table-striped">
@@ -42,7 +42,18 @@
 									</td>
 									<td class="align-middle">{{ user.firstname }}</td>
 									<td class="align-middle">{{ user.email }}</td>
-									<td class="align-middle">{{ user.roles ? user.roles|join(', ') : 'Utilisateur' }}</td>
+									<td class="align-middle">
+										{% if is_granted('ROLE_ADMIN') %}
+											<form method="post" action="{{ path('app_user_role_edit', {'id': user.id}) }}" class="d-inline">
+												<select name="roles" onchange="this.form.submit()">
+													<option value="ROLE_USER" {% if 'ROLE_USER' in user.roles %} selected {% endif %}>Membre</option>
+													<option value="ROLE_ADMIN" {% if 'ROLE_ADMIN' in user.roles %} selected {% endif %}>Administrateur</option>
+												</select>
+											</form>
+										{% else %}
+											{{ user.roles ? user.roles|join(', ') : 'Utilisateur' }}
+										{% endif %}
+									</td>
 									<td class="align-middle">
 										<div class="d-flex justify-content-center align-items-center h-100">
 											<a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-sm btn-meeting-details me-2">Modifier</a>
