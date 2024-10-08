@@ -84,7 +84,6 @@
 
 {% block javascripts %}
 	{{ parent() }}
-	<script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key }}&callback=initMap" async defer></script>
 	<script>
 		function initMap() {
 const address = "{{ meeting.place }}";
@@ -99,12 +98,23 @@ const map = new google.maps.Map(mapElement, {
 zoom: 14,
 center: results[0].geometry.location
 });
-new google.maps.Marker({map: map, position: results[0].geometry.location, title: "Lieu de la réunion"});
+new google.maps.marker.AdvancedMarkerElement({map: map, position: results[0].geometry.location, title: "Lieu de la réunion"});
 } else {
 console.error('La géolocalisation de l\'adresse a échoué : ' + status);
 mapElement.innerHTML = '<p>Impossible de charger la carte.</p>';
 }
 });
 }
+
+// Attendre que l'API Google Maps soit chargée
+function waitForGoogleMaps() {
+if (typeof google === 'undefined' || typeof google.maps === 'undefined') {
+setTimeout(waitForGoogleMaps, 100);
+} else {
+initMap();
+}
+}
+
+waitForGoogleMaps();
 	</script>
 {% endblock %}

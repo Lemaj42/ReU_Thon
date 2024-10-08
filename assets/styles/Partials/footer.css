@@ -24,7 +24,40 @@
     height: 30px;
     margin-right: 0.625rem;
 }
+.footer-contact {
+    font-size: 0.875rem; /* Ajuste la taille de police en fonction de tes liens */
+    color: #6c757d; /* Harmonise la couleur avec les liens s'il y a lieu */
+}
 
+.footer-link {
+    font-size: 0.875rem; /* Si la taille de tes liens est différente, ajuste ici aussi */
+    text-decoration: none;
+    color: inherit;
+}
+
+.footer-link:hover {
+    text-decoration: underline;
+    color: #007bff; /* Par exemple, un bleu pour le hover */
+}
+.footer-contact {
+    font-size: 0.875rem;
+    /* Ajuste la taille de police en fonction de tes liens */
+    color: #ffffff;
+    /* Harmonise la couleur avec les liens s'il y a lieu */
+}
+
+.footer-link {
+    font-size: 0.875rem;
+    /* Si la taille de tes liens est différente, ajuste ici aussi */
+    text-decoration: none;
+    color: inherit;
+}
+
+.footer-link:hover {
+    text-decoration: underline;
+    color: #007bff;
+    /* Par exemple, un bleu pour le hover */
+}
 .footer-nav {
     padding: 0;
 }

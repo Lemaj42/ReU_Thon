@@ -23,6 +23,7 @@ use Symfony\Component\Security\Http\Attribute\IsGranted;
 #[Route('/meeting')]
 class MeetingController extends AbstractController
 {
+    // src/Controller/MeetingController.php
     #[Route('/', name: 'app_meeting_index', methods: ['GET'])]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function index(MeetingRepository $meetingRepository): Response
@@ -35,8 +36,13 @@ class MeetingController extends AbstractController
             ->getQuery()
             ->getResult();
 
+        // Récupération de la clé Google Maps depuis les paramètres
+        $googleMapsApiKey = $this->getParameter('google_maps_api_key');
+
         return $this->render('meeting/index.html.twig', [
             'meetings' => $meetings,
+            'google_maps_api_key' => $googleMapsApiKey,
+            'GOOGLE_MAPS_API_KEY' => $googleMapsApiKey, // Ajoutez cette ligne
         ]);
     }
 

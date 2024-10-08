@@ -8,9 +8,14 @@ use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Mailer\MailerInterface;
+use Symfony\Component\Mime\Email;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
+use Symfony\Component\Security\Csrf\TokenGenerator\TokenGeneratorInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
+use Twig\Environment;
 
 class SecurityController extends AbstractController
 {
@@ -80,6 +85,57 @@ class SecurityController extends AbstractController
         return $this->render('user/set_password.html.twig', [
             'form' => $form->createView(),
         ]);
+    }
+    #[Route('/forgot-password', name: 'app_forgot_password', methods: ['GET', 'POST'])]
+    public function forgotPassword(
+        Request $request,
+        UserRepository $userRepository,
+        TokenGeneratorInterface $tokenGenerator,
+        MailerInterface $mailer,
+        EntityManagerInterface $entityManager,
+        Environment $twig // Ajout du moteur de rendu Twig
+    ): Response {
+        if ($request->isMethod('POST')) {
+            $email = $request->request->get('email');
+            $user = $userRepository->findOneBy(['email' => $email]);
+
+            if (!$user) {
+                // Ajouter un message flash en cas d'email invalide
+                $this->addFlash('error', 'Aucun utilisateur trouvé avec cet email.');
+                return $this->redirectToRoute('app_forgot_password');
+            }
+
+            // Générer un token de réinitialisation
+            $resetToken = $tokenGenerator->generateToken();
+            $user->setResetToken($resetToken);
+            $entityManager->flush();
+
+            // Créer l'URL de réinitialisation
+            $resetUrl = $this->generateUrl('app_user_set_password', ['token' => $resetToken], UrlGeneratorInterface::ABSOLUTE_URL);
+
+            // Rendre le contenu de l'email depuis le template Twig
+            $emailContent = $twig->render('emails/forgot_password.html.twig', [
+                'user' => $user,
+                'resetUrl' => $resetUrl
+            ]);
+
+            // Créer l'email en utilisant le contenu rendu par Twig
+            $email = (new Email())
+                ->from('noreply@yourdomain.com')
+                ->to($user->getEmail())
+                ->subject('Réinitialisation de votre mot de passe')
+                ->html($emailContent);
+
+            // Envoyer l'email
+            $mailer->send($email);
+
+            // Ajouter un message flash pour informer l'utilisateur que l'email a été envoyé
+            $this->addFlash('success', 'Un e-mail de réinitialisation de mot de passe a été envoyé.');
+
+            return $this->redirectToRoute('app_login');
+        }
+
+        return $this->render('security/forgot_password.html.twig');
     }
 
 }

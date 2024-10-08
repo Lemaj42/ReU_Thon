@@ -1,5 +1,5 @@
 {% block stylesheets %}
-	<link rel="stylesheet" href="{{ asset('styles/partials/footer.css') }}">
+	<link rel="stylesheet" href="{{ asset('styles/Partials/footer.css') }}">
 {% endblock %}
 
 <footer class="site-footer py-4">
@@ -27,5 +27,65 @@
 				</nav>
 			</div>
 		</div>
+
+		<div id="map-footer" style="height: 300px; width: 100%;"></div>
+		<!-- Carte pour l'adresse statique -->
+
+		<div class="row mt-4">
+			<div class="col-md-12 text-center text-md-start">
+				<p class="mb-0 footer-contact">
+					<strong>Nom :</strong>
+					Colette
+				</p>
+				<p class="mb-0 footer-contact">
+					<strong>Email :</strong>
+					<a href="mailto:colette@afm.fr" class="footer-link">colette@afm.fr</a>
+				</p>
+				<p class="mb-0 footer-contact">
+					<strong>Téléphone :</strong>
+					<a href="tel:+33608091415" class="footer-link">06 08 09 14 15</a>
+				</p>
+				<p class="mb-0 footer-contact">
+					<strong>Adresse :</strong>
+					Ecole Albert Camus, 9 Bis Impasse Albert CAMUS, 42160 ANDREZIEUX BOUTHEON
+				</p>
+			</div>
+		</div>
 	</div>
 </footer>
+
+{% block footer_javascripts %}
+	<script>
+		function initFooterMap() {
+const address = "Ecole Albert Camus, 9 Bis Impasse Albert CAMUS, 42160 ANDREZIEUX BOUTHEON";
+const geocoder = new google.maps.Geocoder();
+const mapElement = document.getElementById('map-footer');
+
+geocoder.geocode({
+address: address
+}, function (results, status) {
+if (status === 'OK') {
+const map = new google.maps.Map(mapElement, {
+zoom: 14,
+center: results[0].geometry.location
+});
+new google.maps.marker.AdvancedMarkerElement({map: map, position: results[0].geometry.location, title: "Ecole Albert Camus"});
+} else {
+console.error('La géolocalisation de l\'adresse a échoué : ' + status);
+mapElement.innerHTML = '<p>Impossible de charger la carte.</p>';
+}
+});
+}
+
+// Attendre que l'API Google Maps soit chargée
+function waitForGoogleMaps() {
+if (typeof google === 'undefined' || typeof google.maps === 'undefined') {
+setTimeout(waitForGoogleMaps, 100);
+} else {
+initFooterMap();
+}
+}
+
+waitForGoogleMaps();
+	</script>
+{% endblock %}
