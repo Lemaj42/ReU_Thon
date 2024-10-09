@@ -10,7 +10,6 @@
     --d: 700ms;
     --e: cubic-bezier(0.19, 1, 0.22, 1);
     --font-sans: 'Roboto', sans-serif;
-    --font-serif: 'Cardo', serif;
 }
 
 /* General styles */
@@ -19,7 +18,37 @@ body {
     font-family: var(--font-sans);
     color: var(--text-color);
 }
+.bg-orange {
+    background-color: #DC2F02;
+}
 
+.bg-light-orange {
+    background-color: #DC2F02;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: #DC2F02;
+}
+
+.btn-icon {
+    color: #DC2F02;
+    border: none;
+    background: none;
+}
+
+.btn-icon:hover {
+    color: #f57c00;
+}
+
+.pagination .page-link {
+    color: #DC2F02;
+}
+
+.pagination .page-item.active .page-link {
+    background-color: #DC2F02;
+    border-color: #ff9800;
+    color: white;
+}
 .content-wrapper {
     width: 100%;
     max-width: 1140px;
@@ -234,6 +263,7 @@ h2 {
 
 .btn-meeting-details {
     cursor: pointer;
+    margin-top: 1.5rem;
     padding: 0.75rem 1.5rem;
     font-size: 0.65rem;
     font-weight: bold;

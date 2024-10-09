@@ -1,10 +1,38 @@
 body {
-    background-image: url("../../images/bgContact.jpg");
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    color: #ffebee;
-    font-size: 2rem;
     font-family: 'Roboto', sans-serif;
-    margin-top: 5rem;
+    color: #333;
+}
+
+h1 {
+    color: #0056b3;
+    font-weight: 700;
+}
+
+.card {
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.contact-info {
+    display: flex;
+    align-items: center;
+}
+
+.contact-info i {
+    font-size: 1.2rem;
+    margin-right: 10px;
+    width: 25px;
+}
+
+.image-frame {
+    border: 5px solid #0056b3;
+    border-radius: 5px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+    .col-md-4 {
+        margin-top: 20px;
+    }
 }

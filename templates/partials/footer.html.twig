@@ -4,63 +4,60 @@
 
 <footer class="site-footer py-4">
 	<div class="container">
-		<div class="row align-items-center">
-			<div class="col-md-6 text-center text-md-start mb-3 mb-md-0">
-				<a href="{{ path('app_meeting_index') }}" class="footer-brand d-inline-flex align-items-center text-decoration-none">
-					<img src="{{ asset('images/logo.svg') }}" alt="Logo" class="footer-logo me-2" width="250" height="250">
-					<span class="fs-5">ReU-Thon</span>
-				</a>
-			</div>
-			<div class="col-md-6 text-center text-md-end">
+		<div class="row mt-4">
+			<div class="col-md-12">
 				<nav>
-					<ul class="footer-nav list-unstyled d-flex flex-wrap justify-content-center justify-content-md-end mb-0">
+					<ul class="footer-nav list-unstyled d-flex flex-wrap justify-content-center mb-0">
 						<li class="nav-item me-3">
-							<a href="{{ path('app_user_contact') }}" class="footer-link text-decoration-none">Contact</a>
+							<a href="{{ path('app_user_contact') }}" class="footer-link">Contact</a>
 						</li>
 						<li class="nav-item me-3">
-							<a href="{{ path('app_user_cookies') }}" class="footer-link text-decoration-none">Politique des cookies</a>
+							<a href="{{ path('app_user_cookies') }}" class="footer-link">Politique des cookies</a>
 						</li>
 						<li class="nav-item">
-							<a href="{{ path('app_meeting_index') }}" class="footer-link text-decoration-none">Accueil</a>
+							<a href="{{ path('app_meeting_index') }}" class="footer-link">Accueil</a>
 						</li>
 					</ul>
 				</nav>
 			</div>
 		</div>
 
-		<div class="row mt-4 mb-4">
-			<div class="col-md-12 text-center text-md-start">
-				<p class="mb-0 footer-contact">
-					<strong>Nom :</strong>
-					Colette
-				</p>
-				<p class="mb-0 footer-contact">
-					<strong>Email :</strong>
-					<a href="mailto:colette@afm.fr" class="footer-link">colette@afm.fr</a>
-				</p>
-				<p class="mb-0 footer-contact">
-					<strong>Téléphone :</strong>
-					<a href="tel:+33608091415" class="footer-link">06 08 09 14 15</a>
-				</p>
-				<p class="mb-0 footer-contact">
-					<strong>Adresse :</strong>
-					Ecole Albert Camus, 9 Bis Impasse Albert CAMUS, 42160 ANDREZIEUX BOUTHEON
-				</p>
+		<div class="row align-items-start">
+			<div class="col-md-6">
+				<div class="footer-contact mb-4">
+					<p class="mb-2">
+						<strong>Nom :</strong>
+						Colette</p>
+					<p class="mb-2">
+						<strong>Email :</strong>
+						<a href="mailto:colette@afm.fr" class="footer-link">colette@afm.fr</a>
+					</p>
+					<p class="mb-2">
+						<strong>Téléphone :</strong>
+						<a href="tel:+33608091415" class="footer-link">06 08 09 14 15</a>
+					</p>
+					<p class="mb-2">
+						<strong>Adresse :</strong>
+						Ecole Albert Camus, 9 Bis Impasse Albert CAMUS, 42160 ANDREZIEUX BOUTHEON</p>
+				</div>
+				<div id="map-footer" style="height: 250px; width: 100%;"></div>
+			</div>
+			<div class="col-md-6 text-center text-md-end">
+				<a href="{{ path('app_meeting_index') }}" class="footer-brand d-inline-flex flex-column align-items-center text-decoration-none">
+					<img src="{{ asset('images/logo.svg') }}" alt="Logo">
+				</a>
 			</div>
 		</div>
 
-		<div class="row mt-4 mb-4" id="map-footer" style="height: 250px; width: 45%;"></div>
 
-
-		<div class="row">
-			<div class="text-center">
-				<p>
-					© Copyright Abdelmadjid CHABANE. Tous droits réservés.
-				</p>
+		<div class="row mt-4">
+			<div class="col-md-12 ">
+				<p class="mb-0">© Copyright Abdelmadjid CHABANE. Tous droits réservés.</p>
 			</div>
 		</div>
 	</div>
 </footer>
+
 
 {% block footer_javascripts %}
 	<script>

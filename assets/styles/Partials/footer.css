@@ -1,127 +1,109 @@
-/* Styles pour le footer */
 .site-footer {
     background-color: #DC2F02;
     color: white;
-    padding: 1.25rem 0;
+    padding: 2rem 0;
     margin-top: auto;
 }
 
+.footer-nav {
+    margin-bottom: 2rem;
+}
+
+.footer-nav .nav-item {
+    margin: 0 1rem;
+    position: relative;
+}
+
+.footer-link {
+    color: white !important;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+    font-weight: 700;
+    font-size: 1rem;
+    letter-spacing: 0.3px;
+    padding: 5px 0;
+    position: relative;
+    display: inline-block;
+}
+
+.footer-link:hover {
+    opacity: 0.8;
+}
+
+.footer-link::before {
+    content: '';
+    display: block;
+    height: 3px;
+    background-color: white;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0%;
+    transition: width 250ms ease-in-out;
+}
+
+.footer-link:hover::before {
+    width: 100%;
+}
+
+.footer-contact {
+    font-size: 0.9rem;
+    line-height: 1.6;
+}
+
+.footer-contact strong {
+    font-weight: 700;
+    margin-right: 0.5rem;
+}
+
+#map-footer {
+    height: 250px;
+    width: 100%;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-top: 1rem;
+}
+
 .footer-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     color: white;
     text-decoration: none;
-    font-weight: 700;
-    font-size: 1.2rem;
-    letter-spacing: 0.5px;
+    transition: opacity 0.3s ease;
 }
 
 .footer-brand:hover {
-    color: white;
     opacity: 0.8;
 }
 
 .footer-logo {
-    width: 30px;
-    height: 30px;
-    margin-right: 0.625rem;
-}
-.footer-contact {
-    font-size: 0.875rem; /* Ajuste la taille de police en fonction de tes liens */
-    color: #6c757d; /* Harmonise la couleur avec les liens s'il y a lieu */
+    max-width: 100%;
+    height: auto;
+    margin-bottom: 1rem;
 }
 
-.footer-link {
-    font-size: 0.875rem; /* Si la taille de tes liens est différente, ajuste ici aussi */
-    text-decoration: none;
-    color: inherit;
-}
-
-.footer-link:hover {
-    text-decoration: underline;
-    color: #007bff; /* Par exemple, un bleu pour le hover */
-}
-.footer-contact {
-    font-size: 0.875rem;
-    /* Ajuste la taille de police en fonction de tes liens */
-    color: #ffffff;
-    /* Harmonise la couleur avec les liens s'il y a lieu */
-}
-
-.footer-link {
-    font-size: 0.875rem;
-    /* Si la taille de tes liens est différente, ajuste ici aussi */
-    text-decoration: none;
-    color: inherit;
-}
-
-.footer-link:hover {
-    text-decoration: underline;
-    color: #007bff;
-    /* Par exemple, un bleu pour le hover */
-}
-.footer-nav {
-    padding: 0;
-}
-
-.footer-nav .nav-item {
-    position: relative;
-}
-
-.footer-nav .nav-item:not(:first-child) {
-    margin-left: 1.25rem;
-}
-
-.footer-nav .nav-item:not(:first-child)::before {
-    content: "•";
-    position: absolute;
-    left: -0.75rem;
-    color: white;
-}
-
-.footer-link {
-    color: white;
-    text-decoration: none;
+.footer-brand span {
+    font-size: 1.4rem;
     font-weight: 700;
-    font-size: 1rem;
-    letter-spacing: 0.3px;
-    transition: opacity 0.3s ease;
 }
 
-.footer-link:hover {
-    color: white;
-    opacity: 0.8;
-}
-.site-footer {
-    z-index: 1030;
-    /* Le footer doit avoir un z-index supérieur pour apparaître par-dessus la navbar */
-}
-
-/* Fusion de la navbar et du footer en responsive */
 @media (max-width: 768px) {
     .site-footer {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-        width: 100%;
-        z-index: 1030;
-        /* Assurez-vous que le footer soit bien au-dessus des autres éléments */
-        padding: 0.5rem;
-        background-color: #DC2F02;
-        display: none;
-        /* Même couleur que la navbar */
+        text-align: center;
     }
 
-    .site-footer .footer-nav {
-        justify-content: center;
-        flex-direction: row;
-        /* Les liens du footer en ligne horizontale */
+    .footer-brand {
+        margin-top: 2rem;
     }
 
-    .site-footer .footer-nav .nav-item {
-        margin: 0 10px;
+    .footer-contact,
+    #map-footer {
+        margin-bottom: 2rem;
     }
 
-    .site-footer .footer-logo {
-        display: none;
-        /* Masquer le logo si l'espace est limité */
+    .footer-nav .nav-item {
+        margin: 0.5rem;
     }
 }

@@ -58,3 +58,60 @@ h1:after {
     margin-left: -50px;
     background-color: #DC2F02;
 }
+
+h2 {
+    position: relative;
+    padding: 0;
+    margin: 0;
+    font-family: "Raleway", sans-serif;
+    font-weight: 300;
+    font-size: 20px !important;
+    /* Réduit de 28px à 24px */
+    color: #080808;
+    -webkit-transition: all 0.4s ease 0s;
+    -o-transition: all 0.4s ease 0s;
+    transition: all 0.4s ease 0s;
+    text-align: center;
+    text-transform: uppercase;
+    padding-bottom: 4px;
+}
+h2 span {
+    display: block;
+    font-size: 0.5em;
+    line-height: 1.3;
+}
+
+h2 em {
+    font-style: normal;
+    font-weight: 600;
+}
+
+h2:before {
+    width: 20px;
+    /* Réduit */
+    height: 3px;
+    /* Réduit */
+    display: block;
+    content: "";
+    position: absolute;
+    bottom: 2px;
+    /* Ajusté */
+    left: 50%;
+    margin-left: -10px;
+    background-color: #DC2F02;
+}
+
+h2:after {
+    width: 70px;
+    /* Réduit */
+    height: 1px;
+    display: block;
+    content: "";
+    position: relative;
+    margin-top: 18px;
+    /* Réduit */
+    left: 50%;
+    margin-left: -35px;
+    background-color: #DC2F02;
+}
+
