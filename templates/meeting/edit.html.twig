@@ -20,14 +20,16 @@
 			<div class="card-body">
 				{% include 'meeting/_form.html.twig' %}
 			</div>
+
+			<div class="btn-container"></div>
 			<div class="card-footer">
 				<div class="action-buttons">
 					<div class="button-group">
-						<button type="submit" form="meeting_form" class="btn-details flex-grow">
+						<button type="submit" form="meeting_form" class="btn-details">
 							<i class="fas fa-save"></i>
 							Enregistrer les modifications
 						</button>
-						<a href="{{ path('app_meeting_show', {'id': meeting.id}) }}" class="btn-details flex-grow">
+						<a href="{{ path('app_meeting_show', {'id': meeting.id}) }}" class="btn-details">
 							<i class="fas fa-arrow-left"></i>
 							Retour aux détails
 						</a>
@@ -67,8 +69,15 @@ addTagFormDeleteLink(item);
 
 const addTagFormDeleteLink = (item) => {
 const removeFormButton = document.createElement('button');
-removeFormButton.innerText = 'Supprimer cette date';
 removeFormButton.classList.add('btn-delete');
+
+const icon = document.createElement('i');
+icon.classList.add('fas', 'fa-trash-alt');
+
+const buttonText = document.createTextNode(' Supprimer cette date');
+
+removeFormButton.appendChild(icon);
+removeFormButton.appendChild(buttonText);
 
 item.appendChild(removeFormButton);
 
@@ -78,10 +87,18 @@ item.remove();
 });
 };
 
-document.querySelectorAll('.add_item_link').forEach(btn => {
+// Styliser le bouton "Ajouter une date"
+const addItemButtons = document.querySelectorAll('.add_item_link');
+addItemButtons.forEach(btn => {
+btn.classList.add('btn-details');
+const icon = document.createElement('i');
+icon.classList.add('fas', 'fa-plus-circle');
+btn.insertBefore(icon, btn.firstChild);
+btn.insertBefore(document.createTextNode(' '), btn.firstChild.nextSibling);
 btn.addEventListener("click", addFormToCollection);
 });
 
+// Ajouter des boutons de suppression aux éléments existants
 document.querySelectorAll('ul.bookings > li').forEach((item) => {
 addTagFormDeleteLink(item);
 });

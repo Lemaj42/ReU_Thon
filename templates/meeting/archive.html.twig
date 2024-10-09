@@ -37,7 +37,9 @@
 								</p>
 							</div>
 							<div class="card-footer">
-								<a href="{{ path('app_meeting_show', {'id': meeting.id}) }}" class="btn btn-meeting-details">Voir détails</a>
+								<a href="{{ path('app_meeting_show', {'id': meeting.id}) }}" class="btn-details">
+									<i class="fas fa-eye"></i>
+									Voir détails</a>
 							</div>
 						</article>
 					</div>
@@ -47,8 +49,15 @@
 				<p class="text-center">Aucune réunion archivée trouvée.</p>
 			{% endif %}
 		</div>
-		<div class="text-center mt-5 mb-4">
-			<a href="{{ path('app_meeting_index') }}" class="btn btn-meeting-details btn-back">Retour aux réunions actives</a>
+		<div class="container">
+			<div class="row justify-content-center">
+				<div class="col-md-4 text-center mt-5 mb-4">
+					<a href="{{ path('app_meeting_index') }}" class="btn-details">
+						<i class="fas fa-arrow-left"></i>
+						Retour aux réunions actives</a>
+
+				</div>
+			</div>
 		</div>
 	</main>
 {% endblock %}

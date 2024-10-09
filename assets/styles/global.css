@@ -1,4 +1,5 @@
-body{
+/* Styles de base */
+body {
     width: 100%;
     overflow-x: hidden;
     font-family: 'Roboto', sans-serif;
@@ -8,110 +9,214 @@ body{
     display: flex;
     flex-direction: column;
 }
-h1 {
+
+/* Styles des titres */
+h1,
+h2 {
+    color: #080808;
+    text-align: center;
+    text-transform: uppercase;
     position: relative;
     padding: 0;
     margin: 0;
-    font-family: "Raleway", sans-serif;
-    font-weight: 300;
-    font-size: 40px;
-    color: #080808;
-    -webkit-transition: all 0.4s ease 0s;
-    -o-transition: all 0.4s ease 0s;
     transition: all 0.4s ease 0s;
-    text-align: center;
-    text-transform: uppercase;
-    padding-bottom: 5px;
 }
 
-h1 span {
-    display: block;
-    font-size: 0.5em;
-    line-height: 1.3;
-}
-
-h1 em {
-    font-style: normal;
-    font-weight: 600;
-}
-
-h1:before {
-    width: 28px;
-    height: 5px;
-    display: block;
-    content: "";
-    position: absolute;
-    bottom: 3px;
-    left: 50%;
-    margin-left: -14px;
-    background-color: #DC2F02;
-}
-
-h1:after {
-    width: 100px;
-    height: 1px;
-    display: block;
-    content: "";
-    position: relative;
-    margin-top: 25px;
-    left: 50%;
-    margin-left: -50px;
-    background-color: #DC2F02;
+h1 {
+    font-weight: 300;
+    font-size: 2.5rem;
+    padding-bottom: 0.3125rem;
 }
 
 h2 {
-    position: relative;
-    padding: 0;
-    margin: 0;
-    font-family: "Raleway", sans-serif;
     font-weight: 300;
-    font-size: 20px !important;
-    /* Réduit de 28px à 24px */
-    color: #080808;
-    -webkit-transition: all 0.4s ease 0s;
-    -o-transition: all 0.4s ease 0s;
-    transition: all 0.4s ease 0s;
-    text-align: center;
-    text-transform: uppercase;
-    padding-bottom: 4px;
+    font-size: 1.25rem !important;
+    padding-bottom: 0.25rem;
 }
+
+h1 span,
 h2 span {
     display: block;
     font-size: 0.5em;
     line-height: 1.3;
 }
 
+h1 em,
 h2 em {
     font-style: normal;
     font-weight: 600;
 }
 
+h1:before,
 h2:before {
-    width: 20px;
-    /* Réduit */
-    height: 3px;
-    /* Réduit */
-    display: block;
     content: "";
+    display: block;
     position: absolute;
-    bottom: 2px;
-    /* Ajusté */
     left: 50%;
-    margin-left: -10px;
     background-color: #DC2F02;
+}
+
+h1:before {
+    width: 1.75rem;
+    height: 0.3125rem;
+    bottom: 0.1875rem;
+    margin-left: -0.875rem;
+}
+
+h2:before {
+    width: 1.25rem;
+    height: 0.1875rem;
+    bottom: 0.125rem;
+    margin-left: -0.625rem;
+}
+
+h1:after,
+h2:after {
+    content: "";
+    display: block;
+    width: 6.25rem;
+    height: 0.0625rem;
+    background-color: #DC2F02;
+    position: relative;
+    left: 50%;
+    margin-left: -3.125rem;
+}
+
+h1:after {
+    margin-top: 1.5625rem;
 }
 
 h2:after {
-    width: 70px;
-    /* Réduit */
-    height: 1px;
-    display: block;
-    content: "";
-    position: relative;
-    margin-top: 18px;
-    /* Réduit */
-    left: 50%;
-    margin-left: -35px;
+    width: 4.375rem;
+    margin-top: 1.125rem;
+    margin-left: -2.1875rem;
+}
+
+/* Styles des boutons */
+
+.btn-small {
+    height: 1.5rem;
+    /* Moitié de la hauteur originale */
+    padding: 0 0.5rem;
+    /* Moitié du padding original */
+    font-size: 0.6rem;
+    /* Moitié de la taille de police originale */
+}
+
+.btn-small i {
+    font-size: 0.6rem;
+    /* Taille de l'icône ajustée */
+    margin-right: 0.25rem;
+    /* Espace entre l'icône et le texte */
+}
+
+.btn-container {
+    display: flex;
+    flex-direction: row;
+
+    justify-content: space-between;
+    /* Ou space-around si tu veux plus d'espacement */
+    align-items: center;
+    /* Aligne verticalement si nécessaire */
+    flex-wrap: wrap;
+    /* Ajoute cette option si les boutons risquent de déborder sur les petits écrans */
+}
+
+.btn-container div {
+margin-inline: 1rem;
+}
+
+.action-buttons {
+    margin-top: 1.5rem;
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+}
+
+.btn-details,
+.btn-delete {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 3rem;
+    padding: 0 1rem;
+    font-size: 1.2rem;
+    text-decoration: none;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin: 0.5rem 0;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    color: white;
+}
+
+.btn-details {
+    background-color: #370617;
+}
+
+.btn-delete {
     background-color: #DC2F02;
 }
 
+.btn-details:hover {
+    background-color: #ffb908b9;
+    transform: translateY(-0.125rem);
+}
+
+.btn-delete:hover {
+    background-color: #9D0208;
+    transform: translateY(-0.125rem);
+}
+
+.btn-details i,
+.btn-delete i {
+    margin-right: 0.5rem;
+}
+
+.flex-grow {
+    flex-grow: 1;
+    width: 100%;
+}
+
+/* Media queries */
+@media (max-width: 48rem) {
+
+    .btn-details,
+    .form-group label,
+    .form-control {
+        font-size: 1.1rem;
+    }
+}
+
+.btn-delete {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    text-decoration: none;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    margin: 0.5rem 0;
+    text-align: center;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    background-color: #DC2F02;
+    color: white;
+}
+
+.btn-delete:hover {
+    background-color: #9D0208;
+    transform: translateY(-0.125rem);
+}

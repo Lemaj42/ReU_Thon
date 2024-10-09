@@ -40,7 +40,7 @@
 								<h4 class="card-subTitle">Dates de vote disponibles :</h4>
 								<form action="{{ path('app_meeting_vote', {'id': meeting.id}) }}" method="POST" class="btn-container">
 									{% for booking in meeting.bookings %}
-										<button type="submit" name="date" value="{{ booking.date|date('Y-m-d H:i:s') }}" class="btn-date">
+										<button type="submit" name="date" value="{{ booking.date|date('Y-m-d H:i:s') }}" class="btn-details">
 											{{ booking.date|date('d/m/Y H:i') }}
 										</button>
 									{% endfor %}
@@ -58,30 +58,39 @@
 			<div id="map"></div>
 
 			<div class="btn-container">
-				{% if is_granted('ROLE_ADMIN') and meeting.votingDeadline <= date() %}
-					<a href="{{ path('app_meeting_archive') }}" class="btn-action btn-modify">Retour aux archives</a>
-				{% else %}
-					<a href="{{ path('app_meeting_index') }}" class="btn-action btn-modify">Retour à la liste</a>
-				{% endif %}
-
-				{% if is_granted('ROLE_ADMIN') %}
-					<a href="{{ path('app_meeting_edit', {'id': meeting.id}) }}" class="btn-action btn-modify">Modifier</a>
-					<form method="post" action="{{ path('app_meeting_delete', {'id': meeting.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette réunion ?');">
-						<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ meeting.id) }}">
-						<button type="submit" class="btn-action btn-delete">Supprimer</button>
-					</form>
-					{% if meeting.finalDate is null and meeting.votingDeadline <= date() %}
-						<form action="{{ path('app_meeting_close_votes', {'id': meeting.id}) }}" method="post">
-							<input type="hidden" name="_token" value="{{ csrf_token('close_votes' ~ meeting.id) }}">
-							<button type="submit" class="btn-action btn-modify">Clôturer les votes</button>
+				<div>
+					{% if is_granted('ROLE_ADMIN') and meeting.votingDeadline <= date() %}
+						<a href="{{ path('app_meeting_archive') }}" class="btn-action btn-details">Retour aux archives</a>
+					{% else %}
+						<a href="{{ path('app_meeting_index') }}" class="btn-action btn-details">
+							<i class="fas fa-arrow-left"></i>
+							Retour à la liste
+						</a>
+					{% endif %}
+				</div>
+				<div>
+					{% if is_granted('ROLE_ADMIN') %}
+						<a href="{{ path('app_meeting_edit', {'id': meeting.id}) }}" class="btn-action btn-details">
+							<i class="fas fa-edit"></i>
+							Modifier
+						</a>
+					</div>
+					<div>
+						<form method="post" action="{{ path('app_meeting_delete', {'id': meeting.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette réunion ?');" class="inline-form">
+							<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ meeting.id) }}">
+							<button type="submit" class="btn-action btn-delete">
+								<i class="fas fa-trash-alt"></i>
+								Supprimer
+							</button>
 						</form>
 					{% endif %}
-				{% endif %}
+				</div>
 			</div>
+
+
 		</div>
 	</main>
 {% endblock %}
-
 {% block javascripts %}
 	{{ parent() }}
 	<script>
