@@ -19,7 +19,7 @@
 				<h1 class="page-title">Gestion des utilisateurs</h1>
 				<p class="description">
 					Vous trouverez ci-dessous la liste des utilisateurs enregistrés.
-															                    Vous pouvez modifier ou supprimer les utilisateurs si nécessaire.
+																																																																																																																																												                    Vous pouvez modifier ou supprimer les utilisateurs si nécessaire.
 				</p>
 				<div class="table-responsive">
 					<table class="table table-striped">
@@ -55,11 +55,15 @@
 										{% endif %}
 									</td>
 									<td class="align-middle">
-										<div class="d-flex justify-content-center align-items-center h-100">
-											<a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn btn-sm btn-meeting-details me-2">Modifier</a>
+										<div class="d-flex justify-content-center ml-4 align-items-center h-100">
+											<a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn-details ml-4 flex-grow">
+												<i class="fas fa-edit"></i>
+												Modifier</a>
 											<form method="post" action="{{ path('app_user_delete', {'id': user.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">
 												<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
-												<button type="submit" class="btn btn-sm btn-meeting-details">Supprimer</button>
+												<button type="submit" class="btn-details btn-delete mr-4 flex-grow">
+													<i class="fas fa-trash-alt"></i>
+													Supprimer</button>
 											</form>
 										</div>
 									</td>
@@ -72,8 +76,15 @@
 						</tbody>
 					</table>
 				</div>
-				<div class="text-center mt-5 mb-4">
-					<a href="{{ path('app_user_new') }}" class="btn btn-meeting-details">Créer un nouvel utilisateur</a>
+
+				<div class="container">
+					<div class="row justify-content-center">
+						<div class="col-md-4 text-center mt-2 mb-1">
+							<a href="{{ path('app_user_new') }}" class="btn-details">
+								<i class="fas fa-plus-circle"></i>
+								Créer un nouvel utilisateur</a>
+						</a>
+					</div>
 				</div>
 			</div>
 		</div>

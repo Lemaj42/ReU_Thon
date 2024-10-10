@@ -48,9 +48,12 @@ class Booking
         return $this->meeting;
     }
 
-    public function setMeeting(?Meeting $meeting): static
+    public function setMeeting(?Meeting $meeting): self
     {
         $this->meeting = $meeting;
+        if ($meeting !== null && !$meeting->getBookings()->contains($this)) {
+            $meeting->addBooking($this);
+        }
         return $this;
     }
 

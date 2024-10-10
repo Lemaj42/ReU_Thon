@@ -10,6 +10,7 @@ use App\Form\MeetingType;
 use App\Repository\UserRepository;
 use App\Repository\VoteRepository;
 use App\Repository\MeetingRepository;
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -97,8 +98,15 @@ class MeetingController extends AbstractController
             $meeting->setVotingDeadline($votingDeadline);
 
             // Persistons les bookings et la réunion
-            foreach ($bookings as $booking) {
+            foreach ($meeting->getBookings() as $booking) {
                 $booking->setMeeting($meeting);  // Associe chaque booking à la réunion
+                if ($booking->getDate() === null) {
+                    $this->addFlash('error', 'Tous les bookings doivent avoir une date valide.');
+                    return $this->render('meeting/new.html.twig', [
+                        'meeting' => $meeting,
+                        'form' => $form->createView(),
+                    ]);
+                }
                 $entityManager->persist($booking);
             }
 
@@ -212,10 +220,35 @@ class MeetingController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request, Meeting $meeting, EntityManagerInterface $entityManager): Response
     {
+        $originalBookings = new ArrayCollection();
+        foreach ($meeting->getBookings() as $booking) {
+            $originalBookings->add($booking);
+        }
+
         $form = $this->createForm(MeetingType::class, $meeting);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Supprimez les bookings qui ont été retirés
+            foreach ($originalBookings as $booking) {
+                if (false === $meeting->getBookings()->contains($booking)) {
+                    $booking->setMeeting(null);
+                    $entityManager->remove($booking);
+                }
+            }
+
+            // Assurez-vous que chaque booking a une référence à ce meeting
+            foreach ($meeting->getBookings() as $booking) {
+                $booking->setMeeting($meeting);
+                if ($booking->getDate() === null) {
+                    $this->addFlash('error', 'Tous les bookings doivent avoir une date valide.');
+                    return $this->render('meeting/edit.html.twig', [
+                        'meeting' => $meeting,
+                        'form' => $form->createView(),
+                    ]);
+                }
+            }
+
             $entityManager->flush();
             $this->addFlash('success', 'Réunion mise à jour avec succès!');
             return $this->redirectToRoute('app_meeting_index', [], Response::HTTP_SEE_OTHER);

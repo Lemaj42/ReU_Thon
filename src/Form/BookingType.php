@@ -4,7 +4,6 @@ namespace App\Form;
 
 use App\Entity\Booking;
 use App\Entity\Meeting;
-use App\Entity\User;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
@@ -19,7 +18,7 @@ class BookingType extends AbstractType
             ->add('date', DateTimeType::class, [
                 'label' => 'Date alternative :',
                 'widget' => 'single_text',
-                'required' => false,
+                'required' => true, // Changez ceci à true
                 'by_reference' => false,
             ])
         ;

@@ -32,10 +32,15 @@ class BookingController extends AbstractController
     #[IsGranted('ROLE_ADMIN')]
     public function edit(Request $request, Booking $booking, EntityManagerInterface $entityManager): Response
     {
+        $originalMeeting = $booking->getMeeting(); // Stockez le Meeting original
+
         $form = $this->createForm(BookingType::class, $booking);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            if (!$booking->getMeeting()) {
+                $booking->setMeeting($originalMeeting); // Réassignez le Meeting original si aucun n'a été sélectionné
+            }
             $entityManager->flush();
 
             return $this->redirectToRoute('app_booking_index', [], Response::HTTP_SEE_OTHER);

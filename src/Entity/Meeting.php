@@ -35,9 +35,8 @@ class Meeting
     #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $votingDeadline = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: false)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, nullable: true)]
     private ?\DateTimeInterface $finalDate = null;
-
 
     public function __construct()
     {
@@ -54,7 +53,7 @@ class Meeting
         return $this->title;
     }
 
-    public function setTitle(string $title): static
+    public function setTitle(string $title): self
     {
         $this->title = $title;
         return $this;
@@ -65,7 +64,7 @@ class Meeting
         return $this->detail;
     }
 
-    public function setDetail(string $detail): static
+    public function setDetail(string $detail): self
     {
         $this->detail = $detail;
         return $this;
@@ -76,7 +75,7 @@ class Meeting
         return $this->place;
     }
 
-    public function setPlace(string $place): static
+    public function setPlace(string $place): self
     {
         $this->place = $place;
         return $this;
@@ -87,27 +86,33 @@ class Meeting
         return $this->owner;
     }
 
-    public function setOwner(?User $owner): static
+    public function setOwner(?User $owner): self
     {
         $this->owner = $owner;
         return $this;
     }
 
+    /**
+     * @return Collection<int, Booking>
+     */
     public function getBookings(): Collection
     {
         return $this->bookings;
     }
 
-    public function addBooking(Booking $booking): static
+    public function addBooking(Booking $booking): self
     {
         if (!$this->bookings->contains($booking)) {
             $this->bookings->add($booking);
+            $booking->setMeeting($this);
+        } elseif ($booking->getMeeting() !== $this) {
+            $booking->getMeeting()->removeBooking($booking);
             $booking->setMeeting($this);
         }
         return $this;
     }
 
-    public function removeBooking(Booking $booking): static
+    public function removeBooking(Booking $booking): self
     {
         if ($this->bookings->removeElement($booking)) {
             if ($booking->getMeeting() === $this) {
@@ -116,6 +121,15 @@ class Meeting
         }
         return $this;
     }
+
+    public function removeAllBookings(): self
+    {
+        foreach ($this->bookings as $booking) {
+            $this->removeBooking($booking);
+        }
+        return $this;
+    }
+
     public function getVotingDeadline(): ?\DateTimeInterface
     {
         return $this->votingDeadline;
@@ -126,6 +140,7 @@ class Meeting
         $this->votingDeadline = $votingDeadline;
         return $this;
     }
+
     public function getFinalDate(): ?\DateTimeInterface
     {
         return $this->finalDate;
