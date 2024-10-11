@@ -10,41 +10,47 @@
 {% endblock %}
 
 {% block body %}
-	<div class="container">
-		<h1 class="Tittle">PROFIL de
-			{{ app.user.firstName }}</h1>
+	<div class="user-profile-page">
+		<div class="user-profile-container">
+			<h1>Profil de
+				{{ user.firstName }}</h1>
 
-		<div class="card">
-			<div class="card-header">
-				<h2 class="card-title">Détails du profil</h2>
-			</div>
-			<div class="card-body">
-				<div class="profile-info">
-					<p>
-						<strong>Email :</strong>
-						{{ user.email }}</p>
-					<p>
-						<strong>Prénom :</strong>
-						{{ user.firstname }}</p>
-					<p>
-						<strong>Nom :</strong>
-						{{ user.lastname }}</p>
-					<p>
-						<strong>Rôles :</strong>
-						{{ user.roles | join(', ') }}</p>
+			<div class="user-profile-card">
+				<div class="user-profile-card-header">
+					<h2>Détails du profil</h2>
 				</div>
-			</div>
-			<div class="card-footer">
-				<div class="action-buttons">
-					<div class="button-group">
-						<a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn-details flex-grow">
-							<i class="fas fa-edit"></i>
-							Modifier mon profil
-						</a>
-						<a href="{{ path('app_meeting_index') }}" class="btn-details flex-grow">
-							<i class="fas fa-list"></i>
-							Retour à la liste
-						</a>
+				<div class="user-profile-card-body">
+					<div class="user-profile-info">
+						<div class="user-profile-info-item">
+							<span class="user-profile-info-label">Email :</span>
+							<span>{{ user.email }}</span>
+						</div>
+						<div class="user-profile-info-item">
+							<span class="user-profile-info-label">Prénom :</span>
+							<span>{{ user.firstname }}</span>
+						</div>
+						<div class="user-profile-info-item">
+							<span class="user-profile-info-label">Nom :</span>
+							<span>{{ user.lastname }}</span>
+						</div>
+						<div class="user-profile-info-item">
+							<span class="user-profile-info-label">Rôles :</span>
+							<span>{{ user.roles | join(', ') }}</span>
+						</div>
+					</div>
+				</div>
+				<div class="user-profile-card-footer">
+					<div class="action-buttons">
+						<div class="button-group">
+							<a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn-details">
+								<i class="fas fa-edit"></i>
+								Modifier mon profil
+							</a>
+							<a href="{{ path('app_meeting_index') }}" class="btn-details">
+								<i class="fas fa-list"></i>
+								Retour à la liste
+							</a>
+						</div>
 					</div>
 				</div>
 			</div>

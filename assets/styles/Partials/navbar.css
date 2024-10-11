@@ -115,7 +115,7 @@
     .dropdown-item {
         color: rgba(255, 255, 255, 0.8);
     }
-    
+
 }
 
 @media (min-width: 992px) {
@@ -127,23 +127,24 @@
         align-items: center;
         height: 100%;
     }
-        /* Ajustements pour la navbar quand elle fusionne avec le footer */
-        @media (max-width: 768px) {
-            .navbar {
-                background-color: transparent;
-                /* Transparente pour qu'elle semble se fondre avec le footer */
-                box-shadow: none;
-                height: auto;
-            }
-    
-            .navbar-toggler {
-                margin-bottom: 0;
-                /* Réduit l'espace entre la navbar et le footer */
-            }
-    
-            .navbar-nav {
-                justify-content: center;
-                /* Centrer la navigation */
-            }
+
+    /* Ajustements pour la navbar quand elle fusionne avec le footer */
+    @media (max-width: 768px) {
+        .navbar {
+            background-color: transparent;
+            /* Transparente pour qu'elle semble se fondre avec le footer */
+            box-shadow: none;
+            height: auto;
         }
+
+        .navbar-toggler {
+            margin-bottom: 0;
+            /* Réduit l'espace entre la navbar et le footer */
+        }
+
+        .navbar-nav {
+            justify-content: center;
+            /* Centrer la navigation */
+        }
+    }
 }

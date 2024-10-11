@@ -1,143 +1,76 @@
-.container {
-    flex: 1;
-    width: 90%;
+.meeting-page {
+    --meeting-primary-color: #370617;
+    --meeting-secondary-color: #DC2F02;
+    --meeting-bg-color: #f8f9fa;
+    --meeting-text-color: #333;
+    --meeting-danger-color: #9D0208;
+
+    padding: 2rem 0;
+    background-color: var(--meeting-bg-color);
+    color: var(--meeting-text-color);
+}
+body {
+    margin-top: 5rem;
+}
+.meeting-container {
     max-width: 900px;
     margin: 0 auto;
-    padding: 1.5rem;
-    box-sizing: border-box;
+    padding: 0 1rem;
 }
 
-/* Titre principal */
-.Title {
+.meeting-title {
     text-align: center;
-    font-size: 2rem;
-    margin: 2rem 0;
+    color: var(--meeting-primary-color);
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
     text-transform: uppercase;
 }
 
-/* Styles de la carte */
-.card {
-    background-color: #0505051a;
+.meeting-card {
+    background-color: rgba(255, 255, 255, 0.9);
     border-radius: 10px;
-    box-shadow: 
+    box-shadow:
         0 8px 16px rgba(0, 0, 0, 0.1),
         0 16px 32px rgba(0, 0, 0, 0.1),
         0 4px 8px rgba(255, 255, 255, 0.1) inset;
     overflow: hidden;
-    width: 100%;
     margin-bottom: 2rem;
+}
+
+.meeting-card-header {
+    background-color: var(--meeting-primary-color);
+    color: #fff;
     padding: 1.5rem;
-    position: relative;
 }
 
-.card-header,
-.card-body,
-.card-footer {
-    padding: 1.2rem;
-}
-
-.card-Title {
-    font-size: 2rem;
-    color: #370617;
+.meeting-card-title {
     margin: 0;
+    font-size: 2rem;
     text-align: center;
     text-transform: uppercase;
 }
 
-/* Styles des formulaires */
-.form-group {
-    margin-bottom: 1.5rem;
-    position: relative;
+.meeting-card-body {
+    padding: 1.5rem;
 }
 
-.form-group label {
+.meeting-card-footer {
+    background-color: #f1f3f5;
+    padding: 1.5rem;
+}
+
+.meeting-form-group {
+    margin-bottom: 1.5rem;
+}
+
+.meeting-form-label {
     font-size: 1.3rem;
     margin-bottom: 0.5rem;
     display: block;
-    color: #370617;
+    color: var(--meeting-primary-color);
 }
 
-.form-control {
-    width: 100%;
-    padding: 0.8rem;
-    font-size: 1.2rem;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    box-sizing: border-box;
-}
-
-/* Styles des boutons */
-.action-buttons {
-    margin-top: 1.5rem;
-}
-
-.button-group {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-}
-
-.btn-details,
-.btn-delete {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 60px;
-    padding: 0 1rem;
-    font-size: 1.2rem;
-    text-decoration: none;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    margin: 0.5rem 0;
-    text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: white;
-}
-
-.btn-details {
-    background-color: #370617;
-}
-
-.btn-delete {
-    background-color: #DC2F02;
-}
-
-.btn-details:hover {
-    background-color: #ffb908b9;
-    transform: translateY(-2px);
-}
-
-.btn-delete:hover {
-    background-color: #9D0208;
-    transform: translateY(-2px);
-}
-
-.btn-details i,
-.btn-delete i {
-    margin-right: 0.5rem;
-}
-.flex-grow {
-    flex-grow: 1;
-    width: 100%;
-}
-
-/* Media queries */
-@media (max-width: 768px) {
-
-    .card-body,
-    .btn-details,
-    .form-group label,
-    .form-control {
-        font-size: 1.1rem;
-    }
-}
-
-.form-control {
+.meeting-form-control {
     width: 100%;
     padding: 0.8rem;
     font-size: 1.2rem;
@@ -145,30 +78,62 @@
     border: 1px solid #ccc;
     box-sizing: border-box;
     height: 50px;
-    /* Augmente la hauteur des inputs */
 }
 
-.btn-delete {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    text-decoration: none;
-    border-radius: 8px;
+.meeting-actions {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.meeting-btn {
+    flex: 1;
+    min-width: 150px;
+    padding: 0.75rem 1rem;
     border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    margin: 0.5rem 0;
+    border-radius: 8px;
+    color: #fff;
     text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    background-color: #DC2F02;
-    color: white;
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    cursor: pointer;
 }
 
-.btn-delete:hover {
-    background-color: #9D0208;
+.meeting-btn-primary {
+    background-color: var(--meeting-primary-color);
+}
+
+.meeting-btn-primary:hover {
+    background-color: #ffb908b9;
     transform: translateY(-2px);
+}
+
+.meeting-btn-danger {
+    background-color: var(--meeting-secondary-color);
+}
+
+.meeting-btn-danger:hover {
+    background-color: var(--meeting-danger-color);
+    transform: translateY(-2px);
+}
+
+.meeting-btn i {
+    margin-right: 0.5rem;
+}
+
+@media (max-width: 768px) {
+    .meeting-title {
+        font-size: 2rem;
+    }
+
+    .meeting-card-title {
+        font-size: 1.8rem;
+    }
+
+    .meeting-form-label,
+    .meeting-form-control,
+    .meeting-btn {
+        font-size: 1.1rem;
+    }
 }

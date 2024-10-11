@@ -1,113 +1,63 @@
-.container {
-    flex: 1;
-    width: 90%;
+body {
+    margin-top: 5rem;
+}
+
+.user-profile-page {
+    --user-profile-primary-color: #370617;
+    --user-profile-secondary-color: #DC2F02;
+    --user-profile-bg-color: #f8f9fa;
+    --user-profile-text-color: #333;
+    padding: 2rem 0;
+    background-color: var(--user-profile-bg-color);
+    color: var(--user-profile-text-color);
+}
+
+.user-profile-container {
     max-width: 900px;
     margin: 0 auto;
-    padding: 1.5rem;
-    box-sizing: border-box;
-}
-
-/* Titre principal */
-.Tittle {
-    text-align: center;
-    font-size: 2rem;
-    margin: 2rem 0;
-    text-transform: uppercase;
-}
-
-/* Styles de la carte */
-.card {
-    background-color: #0505051a;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
-    width: 100%;
-    margin-bottom: 2rem;
-    padding: 1.5rem;
-    position: relative;
-}
-
-
-.card-header,
-.card-body,
-.card-footer {
-    padding: 1.2rem;
-}
-
-.card-title {
-    font-size: 2rem;
-    color: #370617;
-    margin: 0;
-    text-align: center;
-    text-transform: uppercase;
-}
-
-/* Styles des informations du profil */
-.profile-info p {
-    font-size: 1.2rem;
-    margin-bottom: 0.8rem;
-    color: #370617;
-}
-
-.profile-info strong {
-    font-weight: bold;
-}
-
-/* Styles des boutons */
-.action-buttons {
-    margin-top: 1.5rem;
-}
-
-.button-group {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-}
-
-.btn-details {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 60px;
     padding: 0 1rem;
-    font-size: 1.2rem;
-    text-decoration: none;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    margin: 0.5rem 0;
-    text-align: center;
-    white-space: nowrap;
+}
+
+.user-profile-card {
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: 10px;
+    box-shadow:
+        0 8px 16px rgba(0, 0, 0, 0.1),
+        0 16px 32px rgba(0, 0, 0, 0.1),
+        0 4px 8px rgba(255, 255, 255, 0.1) inset;
     overflow: hidden;
-    text-overflow: ellipsis;
-    background-color: #370617;
-    color: white;
+    margin-bottom: 2rem;
 }
 
-.btn-details:hover {
-    background-color: #DC2F02;
-    transform: translateY(-2px);
+.user-profile-card-header {
+    background-color: var(--user-profile-primary-color);
+    color: #fff;
+    padding: 1.5rem;
 }
 
-.btn-details i {
+.user-profile-card-body {
+    padding: 1.5rem;
+}
+
+.user-profile-card-footer {
+    background-color: #f1f3f5;
+    padding: 1.5rem;
+}
+
+.user-profile-info-item {
+    margin-bottom: 1rem;
+}
+
+.user-profile-info-label {
+    font-weight: bold;
     margin-right: 0.5rem;
+    color: var(--user-profile-primary-color);
 }
 
-.flex-grow {
-    flex-grow: 1;
-    width: 100%;
-}
-
-/* Media queries */
 @media (max-width: 768px) {
 
-    .card-body,
-    .btn-details,
-    .profile-info p {
+    .user-profile-info-label,
+    .user-profile-info-item {
         font-size: 1.1rem;
     }
 }

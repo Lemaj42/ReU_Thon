@@ -9,7 +9,8 @@
 
 {% block stylesheets %}
 	{{ parent() }}
-	<link rel="stylesheet" href="{{ asset('styles/Meeting/meeting.css') }}">
+	<link rel="stylesheet" href="{{ asset('styles/Meeting/userList.css') }}">
+
 {% endblock %}
 
 {% block body %}
@@ -19,7 +20,7 @@
 				<h1 class="page-title">Gestion des utilisateurs</h1>
 				<p class="description">
 					Vous trouverez ci-dessous la liste des utilisateurs enregistrés.
-																																																		                    Vous pouvez modifier ou supprimer les utilisateurs si nécessaire.
+																																																																	                    Vous pouvez modifier ou supprimer les utilisateurs si nécessaire.
 				</p>
 				<div class="table-responsive">
 					<table class="table table-striped">

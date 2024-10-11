@@ -9,24 +9,24 @@
 {% endblock %}
 
 {% block body %}
-	<div class="container">
-		<h1 class="Title">Créer une nouvelle réunion</h1>
-		<div class="card">
-			<div class="card-header">
-				<h2 class="card-Title">Détails de la réunion</h2>
-			</div>
-			<div class="card-body">
-				{% include 'meeting/_form.html.twig' %}
-			</div>
-			<div class="card-footer">
-				<div class="action-buttons">
-					<div class="button-group">
-						<button type="submit" form="meeting_form" class="btn-details flex-grow">
+	<div class="meeting-page">
+		<div class="meeting-container">
+			<h1 class="meeting-title">Créer une nouvelle réunion</h1>
+
+			<div class="meeting-card">
+				<div class="meeting-card-header">
+					<h2 class="meeting-card-title">Détails de la réunion</h2>
+				</div>
+				<div class="meeting-card-body">
+					{% include 'meeting/_form.html.twig' with {'button_label': 'Créer la réunion'} %}
+				</div>
+				<div class="meeting-card-footer">
+					<div class="meeting-actions">
+						<button type="submit" form="meeting_form" class="meeting-btn meeting-btn-primary">
 							<i class="fas fa-plus-circle"></i>
 							Créer la réunion
 						</button>
-						<a href="{{ path('app_meeting_index') }}" class="btn-delete flex-grow">
-
+						<a href="{{ path('app_meeting_index') }}" class="meeting-btn meeting-btn-danger">
 							<i class="fas fa-times-circle"></i>
 							Annuler
 						</a>
@@ -44,7 +44,7 @@
 const addFormToCollection = (e) => {
 const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
 const item = document.createElement('li');
-item.classList.add('form-group');
+item.classList.add('meeting-form-group');
 
 const dateNumber = collectionHolder.children.length + 1;
 const dateLabel = document.createElement('strong');
@@ -55,7 +55,7 @@ item.innerHTML += collectionHolder.dataset.prototype.replace(/__name__/g, collec
 
 const newInput = item.querySelector('input');
 if (newInput) {
-newInput.classList.add('form-control');
+newInput.classList.add('meeting-form-control');
 }
 
 collectionHolder.appendChild(item);
@@ -67,7 +67,7 @@ addTagFormDeleteLink(item);
 const addTagFormDeleteLink = (item) => {
 const removeFormButton = document.createElement('button');
 removeFormButton.innerText = 'Supprimer cette date';
-removeFormButton.classList.add('btn-delete');
+removeFormButton.classList.add('meeting-btn', 'meeting-btn-danger');
 
 item.appendChild(removeFormButton);
 

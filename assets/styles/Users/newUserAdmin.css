@@ -1,60 +1,77 @@
-.container {
-    flex: 1;
-    width: 90%;
-    max-width: 900px;
-    margin: 0 auto;
-    padding: 1.5rem;
-    box-sizing: border-box;
+body {
+    margin-top: 5rem;
 }
 
-.Title {
+.user-admin-page {
+    --user-admin-primary-color: #370617;
+    --user-admin-secondary-color: #DC2F02;
+    --user-admin-bg-color: #f8f9fa;
+    --user-admin-text-color: #333;
+
+    padding: 2rem 0;
+    background-color: var(--user-admin-bg-color);
+    color: var(--user-admin-text-color);
+}
+
+.user-admin-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.user-admin-title {
     text-align: center;
-    font-size: 2rem;
-    margin: 2rem 0;
+    color: var(--user-admin-primary-color);
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
     text-transform: uppercase;
 }
 
-.card {
-    background-color: #0505051a;
+.user-admin-card {
+    background-color: rgba(255, 255, 255, 0.9);
     border-radius: 10px;
-    box-shadow: 
+    box-shadow:
         0 8px 16px rgba(0, 0, 0, 0.1),
         0 16px 32px rgba(0, 0, 0, 0.1),
         0 4px 8px rgba(255, 255, 255, 0.1) inset;
     overflow: hidden;
-    width: 100%;
     margin-bottom: 2rem;
+}
+
+.user-admin-card-header {
+    background-color: var(--user-admin-primary-color);
+    color: #fff;
     padding: 1.5rem;
-    position: relative;
 }
 
-.card-header,
-.card-body,
-.card-footer {
-    padding: 1.2rem;
-}
-
-.card-Title {
-    font-size: 2rem;
-    color: #370617;
+.user-admin-card-title {
     margin: 0;
+    font-size: 2rem;
     text-align: center;
     text-transform: uppercase;
 }
 
-.form-group {
-    margin-bottom: 1.5rem;
-    position: relative;
+.user-admin-card-body {
+    padding: 1.5rem;
 }
 
-.form-group label {
+.user-admin-card-footer {
+    background-color: #f1f3f5;
+    padding: 1.5rem;
+}
+
+.user-admin-form-group {
+    margin-bottom: 1.5rem;
+}
+
+.user-admin-form-label {
     font-size: 1.3rem;
     margin-bottom: 0.5rem;
     display: block;
-    color: #370617;
+    color: var(--user-admin-primary-color);
 }
 
-.form-control {
+.user-admin-form-control {
     width: 100%;
     padding: 0.8rem;
     font-size: 1.2rem;
@@ -64,57 +81,51 @@
     height: 50px;
 }
 
-.action-buttons {
-    margin-top: 1.5rem;
-}
-
-.button-group {
+.user-admin-actions {
     display: flex;
-    justify-content: space-between;
     gap: 1rem;
+    flex-wrap: wrap;
 }
 
-.btn-details {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 60px;
-    padding: 0 1rem;
-    font-size: 1.2rem;
-    text-decoration: none;
-    border-radius: 8px;
+.user-admin-btn {
+    flex: 1;
+    min-width: 150px;
+    padding: 0.75rem 1rem;
     border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    margin: 0.5rem 0;
+    border-radius: 8px;
+    color: #fff;
     text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    background-color: #370617;
-    color: white;
+    text-decoration: none;
+    font-size: 1.2rem;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    cursor: pointer;
 }
 
-.btn-details:hover {
-    background-color: #DC2F02;
+.user-admin-btn-primary {
+    background-color: var(--user-admin-primary-color);
+}
+
+.user-admin-btn-primary:hover {
+    background-color: var(--user-admin-secondary-color);
     transform: translateY(-2px);
 }
 
-.btn-details i {
+.user-admin-btn i {
     margin-right: 0.5rem;
 }
 
-.flex-grow {
-    flex-grow: 1;
-    width: 100%;
-}
-
 @media (max-width: 768px) {
-    .card-body,
-    .btn-details,
-    .form-group label,
-    .form-control {
+    .user-admin-title {
+        font-size: 2rem;
+    }
+
+    .user-admin-card-title {
+        font-size: 1.8rem;
+    }
+
+    .user-admin-form-label,
+    .user-admin-form-control,
+    .user-admin-btn {
         font-size: 1.1rem;
     }
 }
