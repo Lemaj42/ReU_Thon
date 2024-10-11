@@ -35,14 +35,12 @@
 			{% endfor %}
 		</div>
 
-
 		{# Nouveau bloc pour le contenu en pleine largeur #}
 		{% block full_width_content %}{% endblock %}
 
 		{# Contenu principal #}
 		<main class="container"> {% block body %}{% endblock %}
 			</main>
-
 
 			{# Afficher le footer si l'utilisateur est connecté #}
 			{% if is_granted('IS_AUTHENTICATED_FULLY') %}
@@ -60,7 +58,6 @@ function initMap() {
 if (typeof initFooterMap === 'function') {
 initFooterMap();
 }
-// Ajoutez ici d'autres initialisations de carte si nécessaire
 }
 				</script>
 				<script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key() }}&callback=initMap" async defer></script>

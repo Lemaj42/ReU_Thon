@@ -3,11 +3,6 @@ body {
     color: #333;
 }
 
-h1 {
-    color: #0056b3;
-    font-weight: 700;
-}
-
 .card {
     border: none;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
@@ -25,7 +20,7 @@ h1 {
 }
 
 .image-frame {
-    border: 5px solid #0056b3;
+    border: 5px solid #b32a00;
     border-radius: 5px;
     overflow: hidden;
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);

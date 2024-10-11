@@ -60,7 +60,14 @@
 					</div>
 				{% endif %}
 				<div class="action-buttons">
-					<button type="submit" class="btn-details">Inscris-toi</button>
+					<button type="submit" class="btn-details">INSCRIVEZ-VOUS</button>
+
+				</div>
+				<div class="text-center mt-3">
+					<text>
+						Déjà inscrit :
+					</text>
+					<a href="{{ path('app_login') }}" class="text-link" style="color: #370617;">Connectez-vous</a>
 				</div>
 				{{ form_end(registrationForm) }}
 			</div>

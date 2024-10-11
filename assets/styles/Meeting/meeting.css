@@ -10,6 +10,9 @@
     --d: 700ms;
     --e: cubic-bezier(0.19, 1, 0.22, 1);
     --font-sans: 'Roboto', sans-serif;
+    --table-header-bg-color: #03071E;
+    --table-stripe-bg: #070d2d;
+    --table-border-color: #fff;
 }
 
 /* General styles */
@@ -35,7 +38,6 @@ body {
 }
 .content-wrapper {
     width: 100%;
-    max-width: 1140px;
     margin: 0 auto;
     padding: 0 1rem;
 }
@@ -83,6 +85,97 @@ body {
     border-radius: 50%;
     padding: 20px;
 }
+/* userlist container styles */
+.userlist-container {
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.table-responsive {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    border: 1px solid var(--white);
+}
+
+.table {
+    margin-bottom: 0;
+    color: var(--white);
+}
+
+.table th,
+.table td {
+    background-color: var(--table-header-bg-color);
+    border-color: var(--white);
+        color: var(--white);
+    padding: 0.5rem;
+    vertical-align: middle;
+}
+
+.table th {
+    font-weight: bold;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: var(--table-stripe-bg);
+}
+
+.table a {
+    color: var(--white);
+    text-decoration: none;
+}
+
+.table a:hover {
+    text-decoration: underline;
+}
+
+.form-select {
+    background-color: var(--white);
+    color: var(--text-color);
+    border: none;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.btn-details,
+.btn-delete {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-details i,
+.btn-delete i {
+    margin-right: 0.25rem;
+}
+
+.page-title,
+.description {
+    text-align: center;
+}
+
+.page-title {
+    margin-bottom: 1rem;
+}
+
+.description {
+    margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+    .action-buttons {
+        flex-direction: column;
+    }
+}
 /* presentation container styles */
 .presentation {
     position: relative;
@@ -97,7 +190,6 @@ body {
 
 .presentation__content {
     width: 100%;
-    max-width: 1140px;
     margin: 0 auto;
     padding: 0 1rem;
 }
@@ -117,7 +209,6 @@ body {
 
 .meeting-container__content {
     width: 100%;
-    max-width: 1140px;
     margin: 0 auto;
     padding: 0 1rem;
 }
@@ -133,7 +224,6 @@ body {
 }
 .archive-container__content {
     width: 100%;
-    max-width: 1140px;
     margin: 0 auto;
     padding: 0 1rem;
 }
@@ -362,6 +452,30 @@ body {
     .card:focus-within .content>* {
         transition-duration: 0s;
     }
+}
+/* Styles modifiés pour le lien utilisateur */
+.user-link {
+    position: relative;
+    color: var(--white);
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+}
+
+.user-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: var(--white);
+    transition: width 0.3s ease;
+}
+.user-link:hover {
+        text-decoration: none !important;
+}
+.user-link:hover::after {
+    width: 100%;
 }
 
 /* Responsive styles */

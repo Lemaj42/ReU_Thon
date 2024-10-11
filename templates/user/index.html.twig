@@ -14,29 +14,29 @@
 
 {% block body %}
 	<main class="content-wrapper d-flex flex-column min-vh-100">
-		<div class="meeting-container">
-			<div class="meeting-container__content">
+		<div class="userlist-container">
+			<div class="userlist-container__content">
 				<h1 class="page-title">Gestion des utilisateurs</h1>
 				<p class="description">
 					Vous trouverez ci-dessous la liste des utilisateurs enregistrés.
-																																																																																																																																												                    Vous pouvez modifier ou supprimer les utilisateurs si nécessaire.
+																																																		                    Vous pouvez modifier ou supprimer les utilisateurs si nécessaire.
 				</p>
 				<div class="table-responsive">
 					<table class="table table-striped">
 						<thead>
 							<tr>
-								<th class="align-middle">Nom</th>
-								<th class="align-middle">Prénom</th>
-								<th class="align-middle">Email</th>
-								<th class="align-middle">Rôle</th>
-								<th class="align-middle text-center">Actions</th>
+								<th>Nom</th>
+								<th>Prénom</th>
+								<th>Email</th>
+								<th>Rôle</th>
+								<th class="text-center">Actions</th>
 							</tr>
 						</thead>
 						<tbody>
 							{% for user in users %}
 								<tr>
 									<td class="align-middle">
-										<a href="{{ path('app_user_show', {'id': user.id}) }}" class="text-decoration-none">
+										<a href="{{ path('app_user_show', {'id': user.id}) }}" class="user-link">
 											{{ user.lastname }}
 										</a>
 									</td>
@@ -45,7 +45,7 @@
 									<td class="align-middle">
 										{% if is_granted('ROLE_ADMIN') %}
 											<form method="post" action="{{ path('app_user_role_edit', {'id': user.id}) }}" class="d-inline">
-												<select name="roles" onchange="this.form.submit()">
+												<select name="roles" onchange="this.form.submit()" class="form-select form-select-sm">
 													<option value="ROLE_USER" {% if 'ROLE_USER' in user.roles %} selected {% endif %}>Membre</option>
 													<option value="ROLE_ADMIN" {% if 'ROLE_ADMIN' in user.roles %} selected {% endif %}>Administrateur</option>
 												</select>
@@ -55,15 +55,17 @@
 										{% endif %}
 									</td>
 									<td class="align-middle">
-										<div class="d-flex justify-content-center ml-4 align-items-center h-100">
-											<a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn-details ml-4 flex-grow">
+										<div class="action-buttons">
+											<a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn-details">
 												<i class="fas fa-edit"></i>
-												Modifier</a>
+												Modifier
+											</a>
 											<form method="post" action="{{ path('app_user_delete', {'id': user.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">
 												<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
-												<button type="submit" class="btn-details btn-delete mr-4 flex-grow">
+												<button type="submit" class="btn-delete">
 													<i class="fas fa-trash-alt"></i>
-													Supprimer</button>
+													Supprimer
+												</button>
 											</form>
 										</div>
 									</td>
@@ -76,14 +78,14 @@
 						</tbody>
 					</table>
 				</div>
-
 				<div class="container">
 					<div class="row justify-content-center">
-						<div class="col-md-4 text-center mt-2 mb-1">
+						<div class="col-md-4 text-center mt-5 mb-4">
 							<a href="{{ path('app_user_new') }}" class="btn-details">
 								<i class="fas fa-plus-circle"></i>
-								Créer un nouvel utilisateur</a>
-						</a>
+								Créer un nouvel utilisateur
+							</a>
+						</div>
 					</div>
 				</div>
 			</div>

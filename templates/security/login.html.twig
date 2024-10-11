@@ -45,15 +45,15 @@
 							<input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
 
 							<div class="d-grid gap-2">
-								<button type="submit" class="btn btn-details">Connectez-vous</button>
+								<button type="submit" class="btn-details">Connectez-vous</button>
 							</div>
 
 							<div class="text-center mt-3">
-								<a href="{{ path('app_register') }}" class="text-link">Pas encore inscrit ?</a>
+								<a href="{{ path('app_register') }}" class="text-link" style="color: #370617;">Pas encore inscrit ?</a>
 							</div>
 
 							<div class="text-center mt-3">
-								<a href="{{ path('app_forgot_password') }}" class="text-link">Mot de passe oublié ?</a>
+								<a href="{{ path('app_forgot_password') }}" class="text-link" style="color: #370617;">Mot de passe oublié ?</a>
 							</div>
 						</form>
 					</div>

@@ -2,54 +2,53 @@
 
 {% block stylesheets %}
 	{{ parent() }}
-	<link rel="stylesheet" href="{{ asset('styles/index.css') }}">
-	<link rel="stylesheet" href="{{ asset('styles/user-profile.css') }}">
+	<link rel="stylesheet" href="{{ asset('styles/Users/profile.css') }}">
 {% endblock %}
 
-{% block title %}
-	Détails du profil
+{% block title %}Profil de
+	{{ user.firstname }}
 {% endblock %}
 
 {% block body %}
-	<div class="container user-profile">
-		<div class="profile-card">
-			<div class="profile-header">
-				<h1>Détails du
-					<strong>Profil</strong>
-				</h1>
+	<div class="container">
+		<h1 class="Tittle">PROFIL de
+			{{ user.firstName }}</h1>
+
+		<div class="card">
+			<div class="card-header">
+				<h2 class="card-title">Détails du profil</h2>
 			</div>
-
-			<div class="profile-content">
-				<table class="profile-details">
-					<tr>
-						<th>ID</th>
-						<td>{{ user.id }}</td>
-					</tr>
-					<tr>
-						<th>Prénom</th>
-						<td>{{ user.firstname }}</td>
-					</tr>
-					<tr>
-						<th>Nom</th>
-						<td>{{ user.lastname }}</td>
-					</tr>
-					<tr>
-						<th>Email</th>
-						<td>{{ user.email }}</td>
-					</tr>
-					<tr>
-						<th>Rôles</th>
-						<td>{{ user.roles | join(', ') }}</td>
-					</tr>
-				</table>
-
-				<div class="profile-actions">
-					<a href="{{ path('app_user_index') }}" class="btn btn-secondary">Retour à la liste</a>
-					<a href="{{ path('app_user_edit', { id: user.id }) }}" class="btn btn-primary">Modifier</a>
-					<form method="post" action="{{ path('app_user_delete', { id: user.id }) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">
-						<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
-						<button class="btn btn-danger">Supprimer</button>
-					</form>
+			<div class="card-body">
+				<div class="profile-info">
+					<p>
+						<strong>ID :</strong>
+						{{ user.id }}</p>
+					<p>
+						<strong>Email :</strong>
+						{{ user.email }}</p>
+					<p>
+						<strong>Prénom :</strong>
+						{{ user.firstname }}</p>
+					<p>
+						<strong>Nom :</strong>
+						{{ user.lastname }}</p>
+					<p>
+						<strong>Rôles :</strong>
+						{{ user.roles | join(', ') }}</p>
+				</div>
+			</div>
+			<div class="card-footer">
+				<div class="action-buttons">
+					<div class="button-group">
+						<a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn-details flex-grow">
+							<i class="fas fa-edit"></i>
+							Modifier
+						</a>
+						<a href="{{ path('app_user_index') }}" class="btn-details flex-grow">
+							<i class="fas fa-list"></i>
+							Retour à la liste
+						</a>
+					</div>
 				</div>
 			</div>
 		</div>
