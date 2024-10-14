@@ -1,13 +1,33 @@
+/* Variables globales */
+:root {
+    --navbar-height: 60px;
+    --font-sans: 'Roboto', sans-serif;
+    --primary-color: #370617;
+    --secondary-color: #DC2F02;
+    --danger-color: #750206;
+    --supp-color: #ED0000;
+    --hover-color: #DC2F02;
+    --text-color: #000;
+    --white: #fff;
+    --background-color: #f8f9fa;
+    --card-bg-color: rgba(255, 255, 255, 0.9);
+    --card-header-bg-color: rgba(255, 255, 255, 0.1);
+    --table-header-bg-color: #03071E;
+    --table-stripe-bg: #070d2d;
+    --table-border-color: #fff;
+}
+
 /* Styles de base */
 body {
-    width: 100%;
-    overflow-x: hidden;
-    font-family: 'Roboto', sans-serif;
-    background-color: #e7e2e1;
-    margin: 0;
+    font-family: var(--font-sans);
+    background-color: var(--background-color);
+    margin: 5rem 0 0 0;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
+    color: #333;
+    width: 100%;
+    overflow-x: hidden;
 }
 
 /* Styles des titres */
@@ -53,7 +73,7 @@ h2:before {
     display: block;
     position: absolute;
     left: 50%;
-    background-color: #DC2F02;
+    background-color: var(--secondary-color);
 }
 
 h1:before {
@@ -76,7 +96,7 @@ h2:after {
     display: block;
     width: 6.25rem;
     height: 0.0625rem;
-    background-color: #DC2F02;
+    background-color: var(--secondary-color);
     position: relative;
     left: 50%;
     margin-left: -3.125rem;
@@ -92,131 +112,193 @@ h2:after {
     margin-left: -2.1875rem;
 }
 
-/* Styles des boutons */
-
-.btn-small {
-    height: 1.5rem;
-    /* Moitié de la hauteur originale */
-    padding: 0 0.5rem;
-    /* Moitié du padding original */
-    font-size: 0.6rem;
-    /* Moitié de la taille de police originale */
-}
-
-.btn-small i {
-    font-size: 0.6rem;
-    /* Taille de l'icône ajustée */
-    margin-right: 0.25rem;
-    /* Espace entre l'icône et le texte */
-}
-
-.btn-container {
-    display: flex;
-    flex-direction: row;
-
-    justify-content: space-between;
-    /* Ou space-around si tu veux plus d'espacement */
+/* Boutons */
+.btn-details {
+    display: inline-flex;
+    justify-content: center;
     align-items: center;
-    /* Aligne verticalement si nécessaire */
-    flex-wrap: wrap;
-    /* Ajoute cette option si les boutons risquent de déborder sur les petits écrans */
+    border: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+    font-size: 1.2rem;
+    padding: 0.75rem 1rem;
+    text-decoration: none;
+    color: var(--white);
+    background-color: var(--secondary-color);
 }
 
-.btn-container div {
-    margin-inline: 1rem;
-}
-
-.action-buttons {
-    margin-top: 1.5rem;
-}
-
-.button-group {
-    display: flex;
-    justify-content: space-between;
-    gap: 1rem;
-}
-
-.btn-details,
 .btn-delete {
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
-    height: 3rem;
-    padding: 0 1rem;
-    font-size: 1.2rem;
-    text-decoration: none;
-    border-radius: 0.5rem;
     border: none;
+    border-radius: 0.5rem;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
-    margin: 0.5rem 0;
-    text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    color: white;
-}
-
-.btn-details {
-    background-color: #370617;
-}
-
-.btn-delete {
-    background-color: #DC2F02;
+    font-size: 1.2rem;
+    padding: 0.75rem 1rem;
+    text-decoration: none;
+    color: var(--white);
+    background-color: var(--danger-color);
+    /* Utilise la couleur danger */
 }
 
 .btn-details:hover {
-    background-color: #ffb908b9;
+    background-color: var(--hover-color);
     transform: translateY(-0.125rem);
 }
 
 .btn-delete:hover {
-    background-color: #9D0208;
+    background-color: var(--supp-color);
+    /* Utilise la couleur supp lors du hover */
     transform: translateY(-0.125rem);
+}
+
+/* Taille réduite pour certains boutons */
+.btn-small {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.6rem;
 }
 
 .btn-details i,
 .btn-delete i {
-    margin-right: 0.5rem;
+    margin-right: 0.25rem;
 }
 
-.flex-grow {
-    flex-grow: 1;
+/* Formulaires */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    font-size: 1.3rem;
+    margin-bottom: 0.5rem;
+    display: block;
+    color: var(--primary-color);
+}
+
+.form-control {
     width: 100%;
+    padding: 0.8rem;
+    font-size: 1.2rem;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    height: 50px;
+    box-sizing: border-box;
 }
 
-/* Media queries */
-@media (max-width: 48rem) {
+.form-control:focus {
+    border-color: var(--secondary-color);
+    box-shadow: 0 0 0 0.2rem rgba(220, 47, 2, 0.25);
+}
+
+/* Cartes */
+.card {
+    background-color: var(--card-bg-color);
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1), 0 16px 32px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+    margin-bottom: 2rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: perspective(1000px) rotateX(2deg) rotateY(2deg);
+    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+}
+
+.card-header {
+    background-color: var(--primary-color);
+    color: var(--white);
+    padding: 1.5rem;
+}
+
+.card-body,
+.card-footer {
+    padding: 1.5rem;
+}
+
+/* Tables */
+.table {
+    width: 100%;
+    margin-bottom: 0;
+    color: var(--text-color);
+    background-color: var(--white);
+}
+
+.table th,
+.table td {
+    padding: 1rem;
+    text-align: center;
+}
+
+.table th {
+    background-color: var(--table-header-bg-color);
+    color: var(--white);
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.table-striped tbody tr:nth-of-type(odd) {
+    background-color: var(--table-stripe-bg);
+}
+
+/* Pagination */
+.pagination {
+    display: flex;
+    justify-content: center;
+    list-style: none;
+    padding: 0;
+    margin-top: 2rem;
+}
+
+.page-link {
+    color: var(--secondary-color);
+    background-color: var(--white);
+    border: 1px solid var(--secondary-color);
+    padding: 0.5rem 1rem;
+    transition: all 0.3s ease;
+}
+
+.page-item.active .page-link,
+.page-link:hover {
+    color: var(--white);
+    background-color: var(--secondary-color);
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+
+    h1,
+    h2 {
+        font-size: 1.5rem;
+    }
+
+    .table td {
+        display: block;
+        text-align: right;
+        padding-left: 50%;
+        position: relative;
+    }
+
+    .table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 0;
+        padding-right: 10px;
+        font-weight: bold;
+        text-align: left;
+    }
 
     .btn-details,
-    .form-group label,
-    .form-control {
+    .btn-delete,
+    .form-control,
+    .form-group label {
         font-size: 1.1rem;
     }
-}
 
-.btn-delete {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    padding: 0.5rem 1rem;
-    font-size: 1rem;
-    text-decoration: none;
-    border-radius: 0.5rem;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    margin: 0.5rem 0;
-    text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    background-color: #DC2F02;
-    color: white;
-}
-
-.btn-delete:hover {
-    background-color: #9D0208;
-    transform: translateY(-0.125rem);
+    .btn-small {
+        font-size: 0.9rem;
+    }
 }

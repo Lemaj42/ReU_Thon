@@ -67,43 +67,6 @@
     /* Inclut padding et border dans la hauteur */
 }
 
-.action-buttons {
-    margin-top: 1.5rem;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-}
-
-.btn-details {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    width: 100%;
-    height: 60px;
-    /* Inchangé */
-    padding: 0 1rem;
-    font-size: 1.2rem;
-    text-decoration: none;
-    border-radius: 8px;
-    border: none;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    margin: 0.5rem 0;
-    text-align: center;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    background-color: #370617;
-    color: white;
-    box-sizing: border-box;
-    /* Inclut padding et border dans la hauteur */
-}
-
-.btn-details:hover {
-    background-color: #DC2F02;
-    transform: translateY(-2px);
-}
-
 .alert {
     padding: 1rem;
     margin-bottom: 1rem;
@@ -120,7 +83,6 @@
 @media (max-width: 768px) {
 
     .card-body,
-    .btn-details,
     .form-group label,
     .form-control {
         font-size: 1.1rem;

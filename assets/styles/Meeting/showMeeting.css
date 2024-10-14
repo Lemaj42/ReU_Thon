@@ -44,6 +44,34 @@ body {
     text-align: center;
 }
 
+/* Boutons Modifier et Supprimer (même taille) */
+.btn-action {
+
+    font-size: 0.85rem;
+    /* Même taille de texte pour les deux boutons */
+    width: 250px;
+    /* Largeur uniforme */
+    text-align: center;
+    display: inline-block;
+    margin: 0 auto;
+    /* Centrage horizontal */
+}
+
+/* Bouton Retour à la liste (largeur plus grande) */
+.btn-large {
+    max-width: 400px;
+    width: 100%;
+    padding: 0.75rem;
+    font-size: 1rem;
+    text-align: center;
+}
+
+
+/* Centrage de tous les boutons */
+.meeting-actions .w-100 a {
+    display: block;
+    margin: 0 auto;
+}
 /* Card styles */
 .card {
     background-color: var(--card-color);
@@ -96,13 +124,18 @@ body {
 
 /* Map */
 #map {
-    width: 100%;
+    width: 48%;
     height: 300px;
-    margin-top: 1rem;
+    margin: 1rem auto;
     border-radius: 10px;
     overflow: hidden;
 }
-
+.meeting-actions {
+    margin-top: 3rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
 /* Media queries */
 @media (max-width: 768px) {
     body {

@@ -54,46 +54,44 @@
 					{% endif %}
 				</div>
 			</article>
+		</div>
 
-			<div id="map"></div>
+		<div id="map"></div>
 
-			<div class="btn-container">
-				<div>
-					{% if is_granted('ROLE_ADMIN') and meeting.votingDeadline <= date() %}
-						<a href="{{ path('app_meeting_archive') }}" class="btn-action btn-details">Retour aux archives</a>
-					{% else %}
-						<a href="{{ path('app_meeting_index') }}" class="btn-action btn-details">
-							<i class="fas fa-arrow-left"></i>
-							Retour à la liste
-						</a>
-					{% endif %}
-				</div>
-				<div>
-					{% if is_granted('ROLE_ADMIN') %}
-						<a href="{{ path('app_meeting_edit', {'id': meeting.id}) }}" class="btn-action btn-details">
+		<div class="btn-container">
+			<div class="meeting-actions justify-content-center">
+				{% if is_granted('ROLE_ADMIN') %}
+					<div
+						class="d-flex gap-2">
+						<!-- Flex pour centrer et espace entre les boutons -->
+						<a
+							href="{{ path('app_meeting_edit', {'id': meeting.id}) }}" class="btn-details btn-action">
+							<!-- Ajout de la classe btn-action -->
 							<i class="fas fa-edit"></i>
 							Modifier
 						</a>
-					</div>
-					<div>
 						<form method="post" action="{{ path('app_meeting_delete', {'id': meeting.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette réunion ?');" class="inline-form">
-							<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ meeting.id) }}">
-							<button type="submit" class="btn-action btn-delete">
+							<button
+								type="submit" class="btn-delete btn-action">
+								<!-- Ajout de la classe btn-action -->
 								<i class="fas fa-trash-alt"></i>
 								Supprimer
 							</button>
 						</form>
-					{% endif %}
+					</div>
+				{% endif %}
+				<div class="w-100 mt-4">
+					<a href="{{ path('app_meeting_index') }}" class="btn-details btn-large">
+						<i class="fas fa-arrow-left"></i>
+						Retour à la liste
+					</a>
 				</div>
 			</div>
-
-
 		</div>
 	</main>
 {% endblock %}
 {% block javascripts %}
-	{{ parent() }}
-	<script>
+	{{ parent() }}<script>
 		function initMap() {
 const address = "{{ meeting.place }}";
 const geocoder = new google.maps.Geocoder();

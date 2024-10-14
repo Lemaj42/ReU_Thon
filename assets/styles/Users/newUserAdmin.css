@@ -7,10 +7,13 @@ body {
     --user-admin-secondary-color: #DC2F02;
     --user-admin-bg-color: #f8f9fa;
     --user-admin-text-color: #333;
+    --danger-color: #750206;
+    --supp-color: #ED0000;
 
     padding: 2rem 0;
     background-color: var(--user-admin-bg-color);
     color: var(--user-admin-text-color);
+    
 }
 
 .user-admin-container {
@@ -107,6 +110,15 @@ body {
 
 .user-admin-btn-primary:hover {
     background-color: var(--user-admin-secondary-color);
+    transform: translateY(-2px);
+}
+
+.user-admin-btn-secondary {
+    background-color: var(--danger-color);
+}
+
+.user-admin-btn-secondary:hover {
+    background-color: var(--supp-color);
     transform: translateY(-2px);
 }
 
