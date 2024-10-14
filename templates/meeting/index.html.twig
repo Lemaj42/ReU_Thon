@@ -21,19 +21,19 @@
 						<button type="button" data-bs-target="#meetingCarousel" data-bs-slide-to="{{ i }}" {% if i == 0 %} class="active" aria-current="true" {% endif %} aria-label="Diapositive {{ i+1 }}"></button>
 					{% endfor %}
 				</div>
-				<div class="carousel-inner">class="carousel-control-prev-icon"
-					{% for i in 0..2 %}
-						<div class="carousel-item {% if i == 0 %}active{% endif %}">
-							<img src="{{ asset('images/Carrousel/Telethon' ~ (i+1) ~ '.jpg') }}" class="d-block w-100" alt="Image du Téléthon {{ i+1 }}" width="1200" height="600" loading="lazy">
+				<div class="carousel-inner">
+					{% for i in 1..3 %}
+						<div class="carousel-item {% if i == 1 %}active{% endif %}">
+							<img src="{{ asset('images/Carrousel/Telethon' ~ i ~ '.jpg') }}" class="d-block w-100" alt="Image du Téléthon {{ i }}" width="1200" height="600" loading="lazy">
 						</div>
 					{% endfor %}
 				</div>
 				<button class="carousel-control-prev" type="button" data-bs-target="#meetingCarousel" data-bs-slide="prev">
-					<span class="carousel-control" aria-hidden="true"></span>
+					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
 					<span class="visually-hidden">Précédent</span>
 				</button>
 				<button class="carousel-control-next" type="button" data-bs-target="#meetingCarousel" data-bs-slide="next">
-					<span class="carousel-control" aria-hidden="true"></span>
+					<span class="carousel-control-next-icon" aria-hidden="true"></span>
 					<span class="visually-hidden">Suivant</span>
 				</button>
 			</div>
@@ -43,7 +43,7 @@
 			<div class="container">
 				<h1>Bienvenue sur notre site de réunions AFM-Téléthon</h1>
 				<p>Notre plateforme est dédiée à l'organisation et à la planification des réunions de notre délégation AFM-Téléthon. Ici, vous pouvez :</p>
-				<ul>
+				<ul class="list-unstyled">
 					<li>Consulter les prochaines réunions proposées</li>
 					<li>Voter pour les dates qui vous conviennent le mieux</li>
 					<li>Voir les détails des réunions planifiées</li>
@@ -54,18 +54,14 @@
 
 		<section class="meeting-container" aria-labelledby="upcoming-meetings">
 			<div class="meeting-container__content">
-				<h2 id="upcoming-meetings">Votez pour les prochaines réunions</h2>
-				<p class="description">
-					Vous trouverez ci-dessous la liste des réunions à venir. Vous pouvez voter pour les dates qui vous conviennent le mieux.
-				</p>
+				<h2 id="upcoming-meetings" class="text-center">Votez pour les prochaines réunions</h2>
+				<p class="description text-center">Vous trouverez ci-dessous la liste des réunions à venir. Vous pouvez voter pour les dates qui vous conviennent le mieux.</p>
 				<div class="row g-4">
 					{% for meeting in meetings|filter(m => m.finalDate is null) %}
 						<div class="col-12 col-md-6 col-lg-4">
-							<article class="card" style="border: 1px solid white; ">
-
+							<article class="card h-100" style="border: 1px solid white;">
 								<div class="card-header">
-									<h2 class="card-title">{{ meeting.title }}</h2>y
-
+									<h3 class="card-title">{{ meeting.title }}</h3>
 								</div>
 								<div class="card-body">
 									<p class="mb-0">
@@ -78,9 +74,9 @@
 								<div class="card-footer">
 									<a href="{{ path('app_meeting_show', {'id': meeting.id}) }}" class="btn-details">
 										<i class="fas fa-eye"></i>
-										Voir détails</a>
+										Voir détails
+									</a>
 								</div>
-
 							</article>
 						</div>
 					{% else %}
@@ -92,88 +88,88 @@
 
 		<section class="archive-container" aria-labelledby="planned-meetings">
 			<div class="archive-container__content">
-				<strong>
-					<h2 id="planned-meetings">
-						<strong>Réunions planifiées</strong>
-					</h2>
+				<h2 id="planned-meetings" class="text-center">
+					<strong>Réunions planifiées</strong>
+				</h2>
+				<p class="description text-center">Voici la liste des réunions dont la date a été finalisée et les votes sont clos.</p>
+				<div class="row g-4">
+					{% set plannedMeetings = meetings|filter(m => m.finalDate is not null and m.finalDate > date()) %}
+					{% for meeting in plannedMeetings %}
+						<div class="col-12 col-md-6 col-lg-4">
+							<article class="card h-100">
+								<div class="card-header">
+									<h3 class="card-title">{{ meeting.title }}</h3>
+								</div>
+								<div class="card-body">
+									<p class="mb-0">
+										<strong>Date finale :</strong>
+										<time datetime="{{ meeting.finalDate|date('Y-m-d\\TH:i') }}">
+											{{ meeting.finalDate|date('d/m/Y H:i') }}
+										</time>
+									</p>
+								</div>
+								<div class="card-footer">
+									<a href="{{ path('app_meeting_show', {'id': meeting.id}) }}" class="btn-details">
+										<i class="fas fa-eye"></i>
+										Voir détails
+									</a>
+								</div>
+							</article>
+						</div>
+					{% else %}
+						<p class="text-center">Aucune réunion planifiée à venir.</p>
+					{% endfor %}
+				</div>
+			</div>
+		</section>
 
-					<p class="description">
-						Voici la liste des réunions dont la date a été finalisée et les votes sont clos.
-					</p>
-					<div class="row g-4">
-						{% set plannedMeetings = meetings|filter(m => m.finalDate is not null and m.finalDate > date()) %}
-						{% for meeting in plannedMeetings %}
-							<div class="col-12 col-md-6 col-lg-4">
-								<article class="card">
-									<div class="card-header">
-										<h2 class="card-title">{{ meeting.title }}</h2>
-									</div>
-									<div class="card-body">
-										<p class="mb-0">
-											<strong>Date finale :</strong>
-											<time datetime="{{ meeting.finalDate|date('Y-m-d\\TH:i') }}">
-												{{ meeting.finalDate|date('d/m/Y H:i') }}
-											</time>
-										</p>
-									</div>
-									<div class="card-footer">
-										<a href="{{ path('app_meeting_show', {'id': meeting.id}) }}" class="btn-details">
-											<i class="fas fa-eye"></i>
-											Voir détails</a>
-									</div>
-
-
-								</article>
-							</div>
-						{% else %}
-							<p class="text-center">Aucune réunion planifiée à venir.</p>
-						{% endfor %}
+		<section class="historique-container" aria-labelledby="historique-section">
+			<div class="historique-container__content">
+				<h2 id="historique-section" class="text-center">L'Histoire de la délégation</h2>
+				<p class="description text-center">Découvrez l'histoire et les actions de notre délégation AFM-Téléthon.</p>
+				<div class="row g-4 align-items-center">
+					<div class="col-md-3 col-sm-12 mb-3 mb-md-0">
+						<img class="img-fluid rounded-circle mx-auto d-block" src="{{ asset('images/bgContact.jpg') }}" alt="Photo représentative de la délégation AFM-Téléthon" style="max-width: 95%; margin: 0.5rem auto 0.5rem 1rem;">
+					</div>
+					<div class="col-md-9 col-sm-12">
+						<h3 class="section-subtitle">Notre histoire</h3>
+						<p>L'histoire de notre délégation AFM-Téléthon est marquée par un engagement constant dans la lutte contre les maladies neuromusculaires. Depuis notre création, nous avons travaillé sans relâche pour soutenir la recherche et améliorer la vie des personnes atteintes de ces maladies.</p>
+						<h3 class="section-subtitle">Nos actions</h3>
+						<p>Nos actions comprennent l'organisation d'événements de collecte de fonds, la sensibilisation du public aux maladies rares, et le soutien direct aux familles touchées. Nous sommes fiers de notre contribution à l'avancement de la recherche médicale et à l'amélioration de la qualité de vie des patients.</p>
+					</div>
+				</div>
+				<div class="row justify-content-center">
+					<div class="col-md-4 text-center mt-5 mb-4">
+						<a href="https://don.telethon.fr/" target="_blank" rel="noopener noreferrer" class="btn-details">
+							<i class="fas fa-info-circle"></i>
+							En savoir plus
+						</a>
 					</div>
 				</div>
 			</section>
-
-
-			<section class="historique-container" aria-labelledby="historique-section">
-				<div class="historique-container__content">
-					<h2 id="historique-section">L'Histoire de la délégation</h2>
-					<p class="description">
-						Découvrez l'histoire et les actions de notre délégation AFM-Téléthon.
-					</p>
-					<div class="row g-2 align-items-center">
-						<div class="col-3">
-							<img class="img-fluid rounded-circle w-100" src="{{ asset('images/bgContact.jpg') }}" alt="Photo représentative de la délégation AFM-Téléthon" style="max-width: 95%; margin: 0.5rem auto 0.5rem 1rem;">
-						</div>
-						<div class="col-9">
-							<div class="row">
-								<div class="col-12">
-									<h3 class="section-subtitle">Notre histoire</h3>
-									<div class="content-block">
-										<p>L'histoire de notre délégation AFM-Téléthon est marquée par un engagement constant dans la lutte contre les maladies neuromusculaires. Depuis notre création, nous avons travaillé sans relâche pour soutenir la recherche et améliorer la vie des personnes atteintes de ces maladies.</p>
-									</div>
-								</div>
-								<div class="col-12">
-									<h3 class="section-subtitle">Nos actions</h3>
-									<div class="content-block">
-										<p>Nos actions comprennent l'organisation d'événements de collecte de fonds, la sensibilisation du public aux maladies rares, et le soutien direct aux familles touchées. Nous sommes fiers de notre contribution à l'avancement de la recherche médicale et à l'amélioration de la qualité de vie des patients.</p>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-
-					<div class="container">
-						<div class="row justify-content-center">
-							<div class="col-md-4 text-center mt-2 mb-1">
-								<a href="https://don.telethon.fr/?bandeau=A&compteur=0&fdd_type=DT&idm=133864&ido=7409&gad_source=1&gclid=Cj0KCQjw05i4BhDiARIsAB_2wfCBnpZBI7vC1lpMFg7uYbSXwBaEjIZX7LhpZrn_hYrBWa4YjQUG55saAmpNEALw_wcB" target="_blank" class="btn-details">
-									<i class="fas fa-info-circle"></i>
-									En savoir plus
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
-
-
 		</main>
+	{% endblock %}
+	{# Ajoutez ce script à la fin de votre template, juste avant la fermeture de la balise </body> #}
+	{% block javascripts %}
+		{{ parent() }}
+		<script>
+			document.addEventListener('DOMContentLoaded', function () {
+
+var myCarousel = document.querySelector('#meetingCarousel');
+if (myCarousel) {
+var carousel = new bootstrap.Carousel(myCarousel, {
+interval: 5000, // Changez ceci pour ajuster la vitesse de défilement
+wrap: true
+});
+
+// Débogage
+console.log('Carrousel initialisé');
+myCarousel.addEventListener('slide.bs.carousel', function () {
+console.log('Diapositive changée');
+});
+} else {
+console.error('Élément du carrousel non trouvé');
+}
+});
+		</script>
 	{% endblock %}

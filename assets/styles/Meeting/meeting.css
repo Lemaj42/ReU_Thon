@@ -26,7 +26,6 @@ body {
     background-color: #DC2F02;
 }
 
-
 .pagination .page-link {
     color: #DC2F02;
 }
@@ -36,6 +35,7 @@ body {
     border-color: #ff9800;
     color: white;
 }
+
 .content-wrapper {
     width: 100%;
     margin: 0 auto;
@@ -47,7 +47,6 @@ body {
     position: relative;
     left: -25%;
     width: 150%;
-    height: 700px;
     overflow: hidden;
     clip-path: polygon(0 0, 100% 0, 100% 92%, 0% 100%);
 }
@@ -85,6 +84,7 @@ body {
     border-radius: 50%;
     padding: 20px;
 }
+
 /* userlist container styles */
 .userlist-container {
     width: 100%;
@@ -108,7 +108,7 @@ body {
 .table td {
     background-color: var(--table-header-bg-color);
     border-color: var(--white);
-        color: var(--white);
+    color: var(--white);
     padding: 0.5rem;
     vertical-align: middle;
 }
@@ -171,11 +171,6 @@ body {
     margin-bottom: 2rem;
 }
 
-@media (max-width: 768px) {
-    .action-buttons {
-        flex-direction: column;
-    }
-}
 /* presentation container styles */
 .presentation {
     position: relative;
@@ -193,6 +188,7 @@ body {
     margin: 0 auto;
     padding: 0 1rem;
 }
+
 /* Meeting container styles */
 .meeting-container {
     background-color: #03071E;
@@ -212,22 +208,25 @@ body {
     margin: 0 auto;
     padding: 0 1rem;
 }
+
 .archive-container {
     position: relative;
-        width: 100vw;
-        left: 50%;
-        right: 50%;
-        margin-left: -50vw;
-        margin-right: -50vw;
-        padding: 3rem 0;
-        margin-top: 5rem;
+    width: 100vw;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    padding: 3rem 0;
+    margin-top: 5rem;
 }
+
 .archive-container__content {
     width: 100%;
     margin: 0 auto;
     padding: 0 1rem;
 }
-/* Styles existants modifiés pour la section historique */
+
+/* Styles for the history section */
 .historique-container {
     background-color: #03071E;
     color: #fff;
@@ -251,7 +250,6 @@ body {
     padding: 0 1rem;
 }
 
-/* Nouveaux styles pour les éléments internes de la section historique */
 .historique-title {
     text-align: center;
     margin-bottom: 1.5rem;
@@ -307,21 +305,6 @@ body {
     color: var(--white);
 }
 
-/* Styles responsives pour la section historique */
-@media (max-width: 768px) {
-    .historique-flex {
-        flex-direction: column;
-    }
-
-    .historique-image {
-        margin-bottom: 1rem;
-    }
-
-    .historique-container {
-        font-size: 1rem;
-    }
-
-}
 /* Heading styles */
 .description {
     font-size: 1.1rem;
@@ -334,13 +317,13 @@ body {
 /* Card styles */
 .card {
     background-color: #05050550;
-    margin: 4rem;;
+    margin: 1rem auto;
     position: relative;
     display: flex;
     align-items: flex-end;
     overflow: hidden;
     padding: 1rem;
-    width: 20rem;
+    width: 18rem;
     height: 25rem;
     text-align: center;
     color: var(--white);
@@ -400,7 +383,6 @@ body {
     color: var(--white);
 }
 
-
 /* Hover effects */
 @media (hover: hover) and (min-width: 768px) {
     .card::after {
@@ -453,7 +435,8 @@ body {
         transition-duration: 0s;
     }
 }
-/* Styles modifiés pour le lien utilisateur */
+
+/* Styles for user link */
 .user-link {
     position: relative;
     color: var(--white);
@@ -471,9 +454,11 @@ body {
     background-color: var(--white);
     transition: width 0.3s ease;
 }
+
 .user-link:hover {
-        text-decoration: none !important;
+    text-decoration: none !important;
 }
+
 .user-link:hover::after {
     width: 100%;
 }
@@ -484,6 +469,11 @@ body {
     .content-wrapper,
     .meeting-container__content {
         max-width: 960px;
+    }
+
+    .card {
+        width: calc(33.333% - 2rem);
+        max-width: 18rem;
     }
 }
 
@@ -506,6 +496,11 @@ body {
     .card-title {
         font-size: 1.1rem;
     }
+
+    .card {
+        width: calc(50% - 2rem);
+        max-width: 18rem;
+    }
 }
 
 @media (max-width: 768px) {
@@ -517,11 +512,13 @@ body {
 
     .carousel-section {
         clip-path: polygon(0 0, 100% 0%, 100% 97%, 0% 100%);
+        left: 0;
+        width: 100%;
     }
 
     .carousel-inner,
     .carousel-item {
-        height: 300px;
+        height: 400px;
     }
 
     h2 {
@@ -536,13 +533,44 @@ body {
         font-size: 1rem;
     }
 
+    .action-buttons {
+        flex-direction: column;
+    }
+
+    .historique-flex {
+        flex-direction: column;
+    }
+
+    .historique-image {
+        margin-bottom: 1rem;
+    }
+
+    .historique-container {
+        font-size: 1rem;
+    }
+
+    .card {
+        width: calc(100% - 2rem);
+        max-width: 18rem;
+        height: auto;
+        min-height: 20rem;
+    }
+
+    .content {
+        transform: none;
+    }
+
+    .content>* {
+        opacity: 1;
+        transform: none;
+    }
 }
 
 @media (max-width: 576px) {
 
     .carousel-inner,
     .carousel-item {
-        height: 200px;
+        height: 300px;
     }
 
     h2 {
@@ -552,6 +580,4 @@ body {
     .card-title {
         font-size: 0.9rem;
     }
-
-
 }

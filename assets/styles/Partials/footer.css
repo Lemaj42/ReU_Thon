@@ -89,6 +89,12 @@
     font-weight: 700;
 }
 
+@media (max-width: 991px) {
+    .site-footer {
+        display: none;
+    }
+}
+
 @media (max-width: 768px) {
     .site-footer {
         text-align: center;

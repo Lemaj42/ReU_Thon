@@ -9,8 +9,7 @@
 
 {% block stylesheets %}
 	{{ parent() }}
-	<link rel="stylesheet" href="{{ asset('styles/Meeting/userList.css') }}">
-
+	<link rel="stylesheet" href="{{ asset('styles/Users/userList.css') }}">
 {% endblock %}
 
 {% block body %}
@@ -20,7 +19,7 @@
 				<h1 class="page-title">Gestion des utilisateurs</h1>
 				<p class="description">
 					Vous trouverez ci-dessous la liste des utilisateurs enregistrés.
-																																																																	                    Vous pouvez modifier ou supprimer les utilisateurs si nécessaire.
+															                    Vous pouvez modifier ou supprimer les utilisateurs si nécessaire.
 				</p>
 				<div class="table-responsive">
 					<table class="table table-striped">
@@ -36,14 +35,14 @@
 						<tbody>
 							{% for user in users %}
 								<tr>
-									<td class="align-middle">
+									<td data-label="Nom" class="align-middle">
 										<a href="{{ path('app_user_show', {'id': user.id}) }}" class="user-link">
 											{{ user.lastname }}
 										</a>
 									</td>
-									<td class="align-middle">{{ user.firstname }}</td>
-									<td class="align-middle">{{ user.email }}</td>
-									<td class="align-middle">
+									<td data-label="Prénom" class="align-middle">{{ user.firstname }}</td>
+									<td data-label="Email" class="align-middle">{{ user.email }}</td>
+									<td data-label="Rôle" class="align-middle">
 										{% if is_granted('ROLE_ADMIN') %}
 											<form method="post" action="{{ path('app_user_role_edit', {'id': user.id}) }}" class="d-inline">
 												<select name="roles" onchange="this.form.submit()" class="form-select form-select-sm">
@@ -55,7 +54,7 @@
 											{{ user.roles ? user.roles|join(', ') : 'Utilisateur' }}
 										{% endif %}
 									</td>
-									<td class="align-middle">
+									<td data-label="Actions" class="align-middle">
 										<div class="action-buttons">
 											<a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn-details">
 												<i class="fas fa-edit"></i>
@@ -79,14 +78,67 @@
 						</tbody>
 					</table>
 				</div>
-				<div class="container">
-					<div class="row justify-content-center">
-						<div class="col-md-4 text-center mt-5 mb-4">
-							<a href="{{ path('app_user_new') }}" class="btn-details">
-								<i class="fas fa-plus-circle"></i>
-								Créer un nouvel utilisateur
-							</a>
-						</div>
+
+				{% if users.pageCount > 1 %}
+					<nav aria-label="Navigation des pages" class="pagination-nav">
+						<ul class="pagination">
+							{% if users.getCurrentPageNumber() > 1 %}
+								<li class="page-item">
+									<a class="page-link" href="{{ path('app_user_index', {'page': users.getCurrentPageNumber() - 1}) }}" rel="prev">
+										Précédent
+									</a>
+								</li>
+							{% else %}
+								<li class="page-item disabled">
+									<span class="page-link">
+										Précédent
+									</span>
+								</li>
+							{% endif %}
+
+							{% for page in 1..users.pageCount %}
+								{% if page == users.getCurrentPageNumber() %}
+									<li class="page-item active">
+										<span class="page-link">{{ page }}</span>
+									</li>
+								{% else %}
+									<li class="page-item">
+										<a class="page-link" href="{{ path('app_user_index', {'page': page}) }}">{{ page }}</a>
+									</li>
+								{% endif %}
+							{% endfor %}
+
+							{% if users.getCurrentPageNumber() < users.pageCount %}
+								<li class="page-item">
+									<a class="page-link" href="{{ path('app_user_index', {'page': users.getCurrentPageNumber() + 1}) }}" rel="next">
+										Suivant
+									</a>
+								</li>
+							{% else %}
+								<li class="page-item disabled">
+									<span class="page-link">
+										Suivant
+									</span>
+								</li>
+							{% endif %}
+						</ul>
+					</nav>
+				{% endif %}
+
+				<div class="pagination-info">
+					Page
+					{{ users.getCurrentPageNumber() }}
+					sur
+					{{ users.pageCount }}
+				</div>
+
+
+				<div class="row justify-content-center">
+					<div class="col-md-4 text-center mt-5 mb-4">
+						<a href="{{ path('app_user_new') }}" class="btn-details">
+							<i class="fas fa-plus-circle"></i>
+							Créer un nouvel utilisateur
+						</a>
 					</div>
 				</div>
 			</div>

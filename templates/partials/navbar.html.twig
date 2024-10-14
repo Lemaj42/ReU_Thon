@@ -27,7 +27,6 @@
 							</li>
 						</ul>
 					</li>
-
 					<li class="nav-item dropdown">
 						<a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
 							USER
@@ -41,20 +40,6 @@
 							</li>
 						</ul>
 					</li>
-
-					<!-- footer dans le burger menu, visibles uniquement sur mobile -->
-					<li class="nav-item d-lg-none">
-						<a href="{{ path('app_user_contact') }}" class="nav-link">CONTACT</a</li>
-
-					</li>
-					<li class="nav-item d-lg-none">
-						<a href="{{ path('app_user_cookies') }}" class="nav-link">POLITIQUE DES COOKIES</a>
-
-					</li>
-					<li class="nav-item d-lg-none">
-						<a href="{{ path('app_meeting_index') }}" class="nav-link">BLABLA</a>
-					</li>
-
 				{% endif %}
 				<li class="nav-item">
 					<a class="nav-link" href="{{ path('app_user_profile') }}">
@@ -65,6 +50,15 @@
 						{% endif %}
 					</a>
 				</li>
+
+				<!-- Nouveaux liens ajoutés, visibles uniquement en mode responsive -->
+				<li class="nav-item d-lg-none">
+					<a href="{{ path('app_user_contact') }}" class="nav-link">CONTACT</a>
+				</li>
+				<li class="nav-item d-lg-none">
+					<a href="{{ path('app_user_cookies') }}" class="nav-link">POLITIQUE DES COOKIES</a>
+				</li>
+
 				<li class="nav-item">
 					<a class="nav-link" href="{{ path('app_logout') }}">
 						<img src="{{ asset('images/se-deconnecter.png') }}" alt="Déconnexion" class="power-icon">
