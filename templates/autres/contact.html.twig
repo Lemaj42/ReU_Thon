@@ -19,26 +19,42 @@
 			<p class="lead text-muted mt-3">Nous sommes là pour vous aider et répondre à toutes vos questions.</p>
 		</div>
 
+		{% for message in app.flashes('success') %}
+			<div class="alert alert-success mt-3">
+				{{ message }}
+			</div>
+		{% endfor %}
+
 		<div class="row justify-content-center mt-5">
 			<div class="col-md-8">
-				<form>
+				<form method="post" action="{{ path('contact_send') }}">
+					<div class="mb-4">
+						<label for="title" class="form-label">Titre</label>
+						<select class="form-control" id="title" name="title" required>
+							<option value="Monsieur">Monsieur</option>
+							<option value="Madame">Madame</option>
+						</select>
+					</div>
+
 					<div class="mb-4">
 						<label for="name" class="form-label">Nom</label>
-						<input type="text" class="form-control" id="name" placeholder="Votre nom">
+						<input type="text" class="form-control" id="name" name="name" placeholder="Votre nom" required>
 					</div>
 
 					<div class="mb-4">
 						<label for="email" class="form-label">Email</label>
-						<input type="email" class="form-control" id="email" placeholder="Votre email">
+						<input type="email" class="form-control" id="email" name="email" placeholder="Votre email" required>
 					</div>
 
 					<div class="mb-4">
 						<label for="message" class="form-label">Message</label>
-						<textarea class="form-control" id="message" rows="4" placeholder="Votre message"></textarea>
+						<textarea class="form-control" id="message" name="message" rows="4" placeholder="Votre message" required></textarea>
 					</div>
 
-					<button type="submit" class="btn btn-primary btn-lg w-100">Envoyer</button>
+					<button type="submit" class="btn-details btn-lg w-100">Envoyer</button>
 				</form>
+
+
 			</div>
 		</div>
 
@@ -47,13 +63,16 @@
 				<h5 class="fw-bold">Coordonnées</h5>
 				<p class="mt-3">
 					<strong>Email :</strong>
-					colette@reucap.fr</p>
+					colette@reucap.fr
+				</p>
 				<p>
 					<strong>Téléphone :</strong>
-					06 08 09 14 15</p>
+					06 08 09 14 15
+				</p>
 				<p>
 					<strong>Adresse :</strong>
-					9 Bis Impasse Albert Camus, 42160 Andrézieux Bouthéon</p>
+					9 Bis Impasse Albert Camus, 42160 Andrézieux Bouthéon
+				</p>
 			</div>
 		</div>
 	</div>

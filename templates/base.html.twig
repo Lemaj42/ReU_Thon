@@ -18,7 +18,7 @@
 		{% block head %}{% endblock %}
 	</head>
 	<body>
-		{# Afficher la navbar si l'utilisateur est connecté #}
+		{# Afficher la navbar uniquement si l'utilisateur est connecté #}
 		{% if is_granted('IS_AUTHENTICATED_FULLY') %}
 			{% include 'partials/navbar.html.twig' %}
 		{% endif %}
@@ -42,10 +42,8 @@
 		<main class="container"> {% block body %}{% endblock %}
 			</main>
 
-			{# Afficher le footer si l'utilisateur est connecté #}
-			{% if is_granted('IS_AUTHENTICATED_FULLY') %}
-				{% include 'partials/footer.html.twig' %}
-			{% endif %}
+			{# Afficher le footer pour tout le monde #}
+			{% include 'partials/footer.html.twig' %}
 
 			{% block javascripts %}
 				<!-- Bootstrap 5 JS Bundle with Popper -->
@@ -62,6 +60,5 @@ initFooterMap();
 				</script>
 				<script src="https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key() }}&callback=initMap" async defer></script>
 			{% endblock %}
-
 		</body>
 	</html>

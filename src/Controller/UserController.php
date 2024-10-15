@@ -41,22 +41,19 @@ class UserController extends AbstractController
         ]);
     }
 
-    #[Route('/contact', name: 'app_user_contact')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function contact(UserRepository $userRepository): Response
-    {
-        return $this->render('autres/contact.html.twig', [
-            'users' => $userRepository->findAll(),
-        ]);
-    }
-    #[Route('/cookies', name: 'app_user_cookies')]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function cookies(UserRepository $userRepository): Response
-    {
-        return $this->render('autres/cookies..html.twig', [
-            'users' => $userRepository->findAll(),
-        ]);
-    }
+    // #[Route('/contact', name: 'app_user_contact')]
+    // public function contact(UserRepository $userRepository): Response
+    // {
+    //     return $this->render('autres/contact.html.twig', [
+    //         'users' => $userRepository->findAll(),
+    //     ]);
+    // }
+
+    // #[Route('/cookies', name: 'app_user_cookies')]
+    // public function cookies(): Response
+    // {
+    //     return $this->render('autres/cookies.html.twig');
+    // }
 
     #[Route('/new', name: 'app_user_new', methods: ['GET', 'POST'])]
     #[IsGranted('ROLE_ADMIN')]

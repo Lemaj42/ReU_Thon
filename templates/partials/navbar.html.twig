@@ -23,7 +23,7 @@
 								<a class="dropdown-item" href="{{ path('app_meeting_new') }}">Créer une réunion</a>
 							</li>
 							<li>
-								<a class="dropdown-item" href="{{ path('app_meeting_archive') }}">Liste des réunions</a>
+								<a class="dropdown-item" href="{{ path('app_meeting_archive') }}">Réunions archivées</a>
 							</li>
 						</ul>
 					</li>
@@ -53,19 +53,16 @@
 
 				<!-- Nouveaux liens ajoutés, visibles uniquement en mode responsive -->
 				<li class="nav-item d-lg-none">
-					<a href="{{ path('app_user_contact') }}" class="nav-link">CONTACT</a>
+					<ahref="{{path('app_contact')}}"class="nav-link">CONTACT</a>
 				</li>
 				<li class="nav-item d-lg-none">
-					<a href="{{ path('app_user_cookies') }}" class="nav-link">POLITIQUE DES COOKIES</a>
+					<a href="{{ path('app_cookies') }}" class="footer-link">Politique des cookies</a>
 				</li>
-
-				<li class="nav-item">
-					<a class="nav-link" href="{{ path('app_logout') }}">
-						<img src="{{ asset('images/se-deconnecter.png') }}" alt="Déconnexion" class="power-icon">
-						DÉCONNEXION
-					</a>
-				</li>
-			</ul>
-		</div>
-	</div>
-</nav>
+			</li<liclass="nav-item">
+			<a class="nav-link" href="{{ path('app_logout') }}">
+				<img src="{{ asset('images/se-deconnecter.png') }}" alt="Déconnexion" class="power-icon">
+				DÉCONNEXION
+			</a>
+		</li>
+	</ul>
+</div></div></nav>

@@ -1,0 +1,98 @@
+{# templates/emails/contact_email.html.twig #}
+
+<!DOCTYPE html>
+<html lang="fr">
+	<head>
+		<meta charset="UTF-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1.0">
+		<title>Nouveau message de contact</title>
+		<style>
+		/* Appliquer les styles globaux définis sur le site */:root
+		{
+			--primary-color: #370617;
+			--secondary-color: #DC2F02;
+			--danger-color: #750206;
+			--background-color: #f8f9fa;
+			--card-bg-color: rgba(255, 255, 255, 0.9);
+			--text-color: #000;
+			--font-sans: 'Roboto', sans-serif;
+			--white: #fff;
+		}
+
+		body {
+			font-family: var(--font-sans);
+			background-color: var(--background-color);
+			margin: 0;
+			padding: 20px;
+		}
+
+		.email-container {
+			background-color: var(--card-bg-color);
+			padding: 20px;
+			border-radius: 10px;
+			max-width: 600px;
+			margin: 0 auto;
+			box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1), 0 16px 32px rgba(0, 0, 0, 0.1);
+		}
+
+		h1 {
+			color: var(--primary-color);
+			text-align: center;
+			font-size: 24px;
+		}
+
+		p {
+			color: var(--text-color);
+			line-height: 1.5;
+		}
+
+		.email-footer {
+			text-align: center;
+			margin-top: 20px;
+			color: var(--text-color);
+			font-size: 14px;
+		}
+
+		.button {
+			display: inline-block;
+			padding: 10px 20px;
+			color: var(--white);
+			background-color: var(--secondary-color);
+			text-decoration: none;
+			border-radius: 5px;
+			margin-top: 20px;
+		}
+
+		.message {
+			border-left: 4px solid var(--secondary-color);
+			padding-left: 15px;
+			margin-top: 20px;
+		}
+	</style>
+</head>
+<body>
+	<div class="email-container">
+		<h1>Nouveau message de contact</h1>
+		<p>
+			<strong>Titre :</strong>
+			{{ title }}</p>
+		<p>
+			<strong>Nom :</strong>
+			{{ name }}</p>
+		<p>
+			<strong>Email :</strong>
+			<a href="mailto:{{ email }}">{{ email }}</a>
+		</p>
+
+		<div class="message">
+			<p>
+				<strong>Message :</strong>
+			</p>
+			<p>{{ message|nl2br }}</p>
+		</div>
+
+		<div class="email-footer">
+			<p>Cet email a été généré automatiquement par le site. Merci de ne pas y répondre directement.</p>
+		</div>
+	</div>
+</body></html>

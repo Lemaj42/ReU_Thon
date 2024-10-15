@@ -1,21 +1,17 @@
-{% block stylesheets %}
-	<link rel="stylesheet" href="{{ asset('styles/Partials/footer.css') }}">
-{% endblock %}
-
-<footer class="site-footer py-4 d-none d-lg-block">
+<footer class="site-footer py-4">
 	<div class="container">
 		<div class="row mt-4">
 			<div class="col-md-12">
 				<nav>
 					<ul class="footer-nav list-unstyled d-flex flex-wrap justify-content-center mb-0">
 						<li class="nav-item me-3">
-							<a href="{{ path('app_user_contact') }}" class="footer-link">Contact</a>
+							<a href="{{ path('app_contact') }}" class="footer-link">Contact</a>
 						</li>
 						<li class="nav-item me-3">
-							<a href="{{ path('app_user_cookies') }}" class="footer-link">Politique des cookies</a>
+							<a href="{{ path('app_cookies') }}" class="footer-link">Politique des cookies</a>
 						</li>
 						<li class="nav-item">
-							<a href="{{ path('app_meeting_index') }}" class="footer-link">Accueil</a>
+							<a href="{% if is_granted('IS_AUTHENTICATED_FULLY') %}{{ path('app_meeting_index') }}{% else %}{{ path('app_login') }}{% endif %}" class="footer-link">Accueil</a>
 						</li>
 					</ul>
 				</nav>
@@ -27,8 +23,7 @@
 				<div class="footer-contact mb-4">
 					<p class="mb-2">
 						<strong>Nom :</strong>
-						Colette
-					</p>
+						Colette</p>
 					<p class="mb-2">
 						<strong>Email :</strong>
 						<a href="mailto:colette@reucap.fr" class="footer-link">colette@reucap.fr</a>
@@ -39,28 +34,27 @@
 					</p>
 					<p class="mb-2">
 						<strong>Adresse :</strong>
-						Ecole Albert Camus, 9 Bis Impasse Albert CAMUS, 42160 ANDREZIEUX BOUTHEON
-					</p>
+						Ecole Albert Camus, 9 Bis Impasse Albert CAMUS, 42160 ANDREZIEUX BOUTHEON</p>
 				</div>
 				<div id="map-footer" style="height: 250px; width: 100%;"></div>
 			</div>
 			<div class="col-md-6 d-flex justify-content-center align-items-center" style="min-height: 100%;">
-				<a href="{{ path('app_meeting_index') }}" class="footer-brand text-decoration-none">
+				<a href="{% if is_granted('IS_AUTHENTICATED_FULLY') %}{{ path('app_meeting_index') }}{% else %}{{ path('app_login') }}{% endif %}" class="footer-brand text-decoration-none">
 					<img src="{{ asset('images/Logo8.svg') }}" alt="Logo" width="500" height="auto" style="margin-top: 7rem;">
 				</a>
 			</div>
 		</div>
 
-
 		<div class="row mt-4">
-			<div class="col-md-12 ">
+			<div class="col-md-12">
 				<p class="mb-1">© 2024 Abdelmadjid CHABANE. Tous droits réservés.</p>
 				<p>Ce site, son contenu et sa structure sont protégés par les lois en vigueur sur le droit d'auteur et la propriété intellectuelle. Toute reproduction ou distribution, totale ou partielle, du contenu sans autorisation expresse de l'auteur est interdite.</p>
 			</div>
 		</div>
 	</div>
 </footer>
-{% block footer_javascripts %}
+{% block javascripts %}
+	<!-- Bootstrap 5 JS Bundle with Popper -->
 	<script>
 		function initFooterMap() {
 const address = "Ecole Albert Camus, 9 Bis Impasse Albert CAMUS, 42160 ANDREZIEUX BOUTHEON";

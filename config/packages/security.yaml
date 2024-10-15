@@ -23,26 +23,28 @@ security:
 
       # Formulaire de connexion
       form_login:
-        login_path: app_login # La route de connexion
-        check_path: app_login # La route pour vérifier les identifiants
-        enable_csrf: true # Activer la protection CSRF pour le formulaire de connexion
-        default_target_path: app_meeting_index # Redirection après connexion réussie vers la page des réunions
+        login_path: app_login
+        check_path: app_login
+        enable_csrf: true
+        default_target_path: app_meeting_index
 
       # Déconnexion
       logout:
-        path: app_logout # Route de déconnexion
-        target: app_login # Redirection après déconnexion vers la page de connexion (ou vers une page publique)
+        path: app_logout
+        target: app_login
 
       # Activation de la mémorisation de l'utilisateur (Remember Me)
       remember_me:
         secret: "%kernel.secret%"
-        lifetime: 604800 # Durée de vie de la session en secondes (1 semaine)
+        lifetime: 604800
         path: /
-        always_remember_me: false # Ne mémoriser l'utilisateur que si l'option est activée explicitement
+        always_remember_me: false
 
-  # Règles de contrôle d'accès pour différentes sections du site
+  # Règles de contrôle d'accès
   access_control:
-    - { path: ^/admin, roles: ROLE_ADMIN } # Accès restreint aux administrateurs
-    - { path: ^/meeting, roles: ROLE_USER } # Accès aux réunions pour les utilisateurs authentifiés
-    - { path: ^/user, roles: IS_AUTHENTICATED_FULLY } # Accès aux pages utilisateur pour les utilisateurs authentifiés
-    - { path: ^/login } # La page de login doit être accessible uniquement aux anonymes
+    - { path: ^/contact, roles: PUBLIC_ACCESS }
+    - { path: ^/cookies, roles: PUBLIC_ACCESS }
+    - { path: ^/login, roles: PUBLIC_ACCESS }
+    - { path: ^/admin, roles: ROLE_ADMIN }
+    - { path: ^/meeting, roles: ROLE_USER }
+    - { path: ^/user, roles: IS_AUTHENTICATED_FULLY }
