@@ -115,7 +115,7 @@ class UserController extends AbstractController
     }
 
     #[Route('/{id}', name: 'app_user_show', methods: ['GET'])]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    #[IsGranted('ROLE_ADMIN')]
     public function show(User $user): Response
     {
         if ($user !== $this->getUser() && !$this->isGranted('ROLE_ADMIN')) {

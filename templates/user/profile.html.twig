@@ -1,52 +1,45 @@
 {% extends 'base.html.twig' %}
 
-{% block stylesheets %}
-	{{ parent() }}
-	<link rel="stylesheet" href="{{ asset('styles/Users/profile.css') }}">
-{% endblock %}
-
 {% block title %}Profil de
 	{{ user.firstname }}
 {% endblock %}
 
 {% block body %}
-	<div class="user-profile-page">
-		<div class="user-profile-container">
+	<div class="page1">
+		<div class="container1">
 			<h1>Profil de
 				{{ user.firstName }}</h1>
 
-			<div class="user-profile-card">
-				<div class="user-profile-card-header">
+			<div class="cards2">
+				<div class="cards2-header">
 					<h2>Détails du profil</h2>
 				</div>
-				<div class="user-profile-card-body">
-					<div class="user-profile-info">
-						<div class="user-profile-info-item">
-							<span class="user-profile-info-label">Email :</span>
+				<div class="cards2-body">
+					<div class="info">
+						<div class="info-item">
+							<span class="info-label">Email :</span>
 							<span>{{ user.email }}</span>
 						</div>
-						<div class="user-profile-info-item">
-							<span class="user-profile-info-label">Prénom :</span>
+						<div class="info-item">
+							<span class="info-label">Prénom :</span>
 							<span>{{ user.firstname }}</span>
 						</div>
-						<div class="user-profile-info-item">
-							<span class="user-profile-info-label">Nom :</span>
+						<div class="info-item">
+							<span class="info-label">Nom :</span>
 							<span>{{ user.lastname }}</span>
 						</div>
 					</div>
 				</div>
-				<div class="user-profile-card-footer">
+				<div class="cards2-footer">
 					<div class="action-buttons">
-						<div class="button-group">
-							<a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn-details">
-								<i class="fas fa-edit"></i>
-								Modifier mon profil
-							</a>
-							<a href="{{ path('app_meeting_index') }}" class="btn-delete">
-								<i class="fas fa-list"></i>
-								Retour à la liste
-							</a>
-						</div>
+						<a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn-details">
+							<i class="fas fa-edit"></i>
+							Modifier mon profil
+						</a>
+						<a href="{{ path('app_meeting_index') }}" class="btn-delete">
+							<i class="fas fa-list"></i>
+							Retour à la liste
+						</a>
 					</div>
 				</div>
 			</div>

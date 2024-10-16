@@ -1,27 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block stylesheets %}
-	{{ parent() }}
-	<link rel="stylesheet" href="{{ asset('styles/Meeting/newMeeting.css') }}">
-{% endblock %}
-
 {% block title %}Créer une nouvelle réunion
 {% endblock %}
 
 {% block body %}
-	<div class="meeting-page">
-		<div class="meeting-container">
-			<h1 class="meeting-title">Créer une nouvelle réunion</h1>
+	<div class="page1">
+		<div class="container1">
+			<h1>Créer une nouvelle réunion</h1>
 
-			<div class="meeting-card">
-				<div class="meeting-card-header">
-					<h2 class="meeting-card-title">Détails de la réunion</h2>
+			<div class="cards2">
+				<div class="cards2-header">
+					<h2>Détails de la réunion</h2>
 				</div>
-				<div class="meeting-card-body">
+				<div class="cards2-body">
 					{% include 'meeting/_form.html.twig' with {'button_label': 'Créer la réunion'} %}
 				</div>
-				<div class="meeting-card-footer">
-					<div class="meeting-actions">
+				<div class="cards2-footer">
+					<div class="action-buttons">
 						<button type="submit" form="meeting_form" class="btn-details">
 							<i class="fas fa-plus-circle"></i>
 							Créer la réunion
@@ -44,7 +39,7 @@
 const addFormToCollection = (e) => {
 const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
 const item = document.createElement('li');
-item.classList.add('meeting-form-group');
+item.classList.add('info-item');
 
 const dateNumber = collectionHolder.children.length + 1;
 const dateLabel = document.createElement('strong');
@@ -55,7 +50,7 @@ item.innerHTML += collectionHolder.dataset.prototype.replace(/__name__/g, collec
 
 const newInput = item.querySelector('input');
 if (newInput) {
-newInput.classList.add('meeting-form-control');
+newInput.classList.add('form-control');
 }
 
 collectionHolder.appendChild(item);
@@ -67,7 +62,7 @@ addTagFormDeleteLink(item);
 const addTagFormDeleteLink = (item) => {
 const removeFormButton = document.createElement('button');
 removeFormButton.innerText = 'Supprimer cette date';
-removeFormButton.classList.add('meeting-btn', 'meeting-btn-danger');
+removeFormButton.classList.add('btn-delete');
 
 item.appendChild(removeFormButton);
 

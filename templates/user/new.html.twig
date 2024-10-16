@@ -1,27 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block stylesheets %}
-	{{ parent() }}
-	<link rel="stylesheet" href="{{ asset('styles/Users/newUserAdmin.css') }}">
-{% endblock %}
-
 {% block title %}Créer un nouvel utilisateur
 {% endblock %}
 
 {% block body %}
-<div class="user-admin-page">
-	<div class="user-admin-container">
-		<h1 class="user-admin-title">Créer un nouvel utilisateur</h1>
+<div class="page1">
+	<div class="container1">
+		<h1>Créer un nouvel utilisateur</h1>
 
-		<div class="user-admin-card">
-			<div class="user-admin-card-header">
-				<h2 class="user-admin-card-title">Détails de l'utilisateur</h2>
+		<div class="cards2">
+			<div class="cards2-header">
+				<h2>Détails de l'utilisateur</h2>
 			</div>
-			<div class="user-admin-card-body">
+			<div class="cards2-body">
 				{% include 'user/_form.html.twig' with {'button_label': 'Créer l\'utilisateur'} %}
             </div>
-            <div class="user-admin-card-footer">
-                <div class="user-admin-actions">
+            <div class="cards2-footer">
+                <div class="action-buttons">
                     <button type="submit" form="user_form" class="btn-details">
                         <i class="fas fa-plus-circle"></i>
                         Créer l'utilisateur

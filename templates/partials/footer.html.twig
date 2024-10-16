@@ -39,7 +39,7 @@
 				<div id="map-footer" style="height: 250px; width: 100%;"></div>
 			</div>
 			<div class="col-md-6 d-flex justify-content-center align-items-center" style="min-height: 100%;">
-				<a href="{% if is_granted('IS_AUTHENTICATED_FULLY') %}{{ path('app_meeting_index') }}{% else %}{{ path('app_login') }}{% endif %}" class="footer-brand text-decoration-none">
+				<a href="{{ is_granted('IS_AUTHENTICATED_FULLY') ? path('app_meeting_index') : path('app_login') }}" class="footer-brand text-decoration-none">
 					<img src="{{ asset('images/Logo8.svg') }}" alt="Logo" width="500" height="auto" style="margin-top: 7rem;">
 				</a>
 			</div>

@@ -13,6 +13,10 @@
     --table-header-bg-color: #03071E;
     --table-stripe-bg: #070d2d;
     --table-border-color: #fff;
+    --page-primary-color: #370617;
+    --page-secondary-color: #DC2F02;
+    --page-bg-color: #f8f9fa;
+    --page-text-color: #333;
 }
 
 /* General styles */
@@ -20,12 +24,80 @@ body {
     padding-top: var(--navbar-height);
     font-family: var(--font-sans);
     color: var(--text-color);
+    margin-top: 3rem;
+}
+
+.page1 {
+    display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: calc(100vh - var(--navbar-height) - 3rem);
+}
+
+.container1 {
+    width: 100%;
+        max-width: 900px;
+        margin: 0 auto;
+        padding: 0 1rem;
 }
 
 .content-wrapper {
     width: 100%;
     margin: 0 auto;
     padding: 0 1rem;
+}
+
+/* Input styles */
+body input[type="text"],
+body input[type="email"],
+body input[type="password"],
+body input[type="number"],
+body input[type="date"],
+body input[type="time"],
+body textarea,
+body select,
+body .form-control {
+    border: 1px solid #ced4da;
+    border-radius: 0.25rem;
+    padding: 0.5rem;
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+body input[type="text"]:focus,
+body input[type="email"]:focus,
+body input[type="password"]:focus,
+body input[type="number"]:focus,
+body input[type="date"]:focus,
+body input[type="time"]:focus,
+body textarea:focus,
+body select:focus,
+body .form-control:focus {
+    border-color: #DC2F02 !important;
+    box-shadow: 0 0 0 0.2rem rgba(220, 47, 2, 0.25) !important;
+    outline: none;
+}
+
+/* .card styles */
+.cards2 {
+    background-color: var(--white);
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+.cards2-header {
+    background-color: var(--page-primary-color);
+    color: #fff;
+    padding: 1.5rem;
+}
+
+.cards2-body {
+    padding: 1.5rem;
+}
+
+.cards2-footer {
+    background-color: #f1f3f5;
+    padding: 1.5rem;
 }
 
 /* Heading styles */
@@ -139,6 +211,17 @@ h2:after {
     margin-right: 0.5rem;
 }
 
+/* User profile styles */
+.info-item {
+    margin-bottom: 1rem;
+}
+
+.info-label {
+    font-weight: bold;
+    margin-right: 0.5rem;
+    color: var(--page-primary-color);
+}
+
 /* User dashboard styles */
 .userlist-container {
     padding: 3rem 0;
@@ -191,7 +274,7 @@ h2:after {
     background-color: rgba(0, 0, 0, 0.05);
 }
 
-/* Styles pour les liens utilisateurs avec effet de soulignement */
+/* User link styles */
 .user-link {
     position: relative;
     color: var(--secondary-color);
@@ -258,5 +341,10 @@ h2:after {
     .btn-details,
     .btn-delete {
         width: 100%;
+    }
+
+    .info-label,
+    .info-item {
+        font-size: 1.1rem;
     }
 }

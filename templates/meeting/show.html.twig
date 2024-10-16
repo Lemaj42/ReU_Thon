@@ -1,44 +1,51 @@
 {% extends 'base.html.twig' %}
 
-{% block stylesheets %}
-	{{ parent() }}
-	<link rel="stylesheet" href="{{ asset('styles/Meeting/showMeeting.css') }}">
-{% endblock %}
-
 {% block title %}Détails de la réunion
 {% endblock %}
 
 {% block body %}
-	<main>
-		<h1 class="Title">Détails de la réunion</h1>
+	<div class="page1">
+		<div class="container1">
+			<h1>Détails de la réunion</h1>
 
-		<div class="meeting-container">
-			<article class="card">
-				<div class="card-header">
-					<h2 class="card-Title">{{ meeting.title }}</h2>
+			<div class="cards2">
+				<div class="cards2-header">
+					<h2>{{ meeting.title }}</h2>
 				</div>
-				<div class="card-body">
-					<h3 class="card-section-Title">Détails :</h3>
-					<p class="card-text">{{ meeting.detail }}</p>
-					<h3 class="card-section-Title">Adresse :</h3>
-					<p class="card-text">{{ meeting.place }}</p>
-					{% if meeting.finalDate is not null %}
-						<h3 class="card-subTitle">Date finale de la réunion :</h3>
-						<p class="card-text">{{ meeting.finalDate|date('d/m/Y à H:i') }}</p>
-					{% elseif meeting.votingDeadline <= date() %}
-						<h3 class="card-subTitle">Date finale de la réunion :</h3>
-						<p class="card-text">En attente de finalisation</p>
-					{% else %}
-						<h3 class="card-section-Title">Date de fin de vote :</h3>
-						<p class="card-text">{{ meeting.votingDeadline|date('d/m/Y à H:i') }}</p>
-					{% endif %}
+				<div class="cards2-body">
+					<div class="info">
+						<div class="info-item">
+							<span class="info-label">Détails :</span>
+							<span>{{ meeting.detail }}</span>
+						</div>
+						<div class="info-item">
+							<span class="info-label">Adresse :</span>
+							<span>{{ meeting.place }}</span>
+						</div>
+						{% if meeting.finalDate is not null %}
+							<div class="info-item">
+								<span class="info-label">Date finale de la réunion :</span>
+								<span>{{ meeting.finalDate|date('d/m/Y à H:i') }}</span>
+							</div>
+						{% elseif meeting.votingDeadline <= date() %}
+							<div class="info-item">
+								<span class="info-label">Date finale de la réunion :</span>
+								<span>En attente de finalisation</span>
+							</div>
+						{% else %}
+							<div class="info-item">
+								<span class="info-label">Date de fin de vote :</span>
+								<span>{{ meeting.votingDeadline|date('d/m/Y à H:i') }}</span>
+							</div>
+						{% endif %}
+					</div>
 				</div>
-				<div class="card-footer">
+				<div class="cards2-footer">
 					{% if meeting.finalDate is null %}
 						{% if meeting.votingDeadline > date() %}
 							{% if not hasVoted %}
-								<h4 class="card-subTitle">Dates de vote disponibles :</h4>
-								<form action="{{ path('app_meeting_vote', {'id': meeting.id}) }}" method="POST" class="btn-container">
+								<h4>Dates de vote disponibles :</h4>
+								<form action="{{ path('app_meeting_vote', {'id': meeting.id}) }}" method="POST" class="action-buttons">
 									{% for booking in meeting.bookings %}
 										<button type="submit" name="date" value="{{ booking.date|date('Y-m-d H:i:s') }}" class="btn-details">
 											{{ booking.date|date('d/m/Y H:i') }}
@@ -46,46 +53,42 @@
 									{% endfor %}
 								</form>
 							{% elseif vote is not null and vote.booking is not null %}
-								<h4 class="card-subTitle">Vous avez déjà voté pour cette réunion.</h4>
-								<p class="card-info">Date choisie :
+								<h4>Vous avez déjà voté pour cette réunion.</h4>
+								<p>Date choisie :
 									{{ vote.booking.date|date('d/m/Y à H:i') }}</p>
 							{% endif %}
 						{% endif %}
 					{% endif %}
 				</div>
-			</article>
-		</div>
+			</div>
 
-		<div id="map"></div>
+			<div id="map"></div>
 
-		<div class="btn-container">
-			<div class="meeting-actions justify-content-center">
+			<div class="action-buttons mt-4">
 				{% if is_granted('ROLE_ADMIN') %}
-					<div class="d-flex gap-2">
-						<a href="{{ path('app_meeting_edit', {'id': meeting.id}) }}" class="btn-details btn-action">
-							<i class="fas fa-edit"></i>
-							Modifier
-						</a>
-						<form method="post" action="{{ path('app_meeting_delete', {'id': meeting.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette réunion ?');" class="inline-form">
-							<button type="submit" class="btn-delete btn-action">
-								<i class="fas fa-trash-alt"></i>
-								Supprimer
-							</button>
-						</form>
-					</div>
-				{% endif %}
-				<div class="w-100 mt-4">
-					<a href="{{ path('app_meeting_index') }}" class="btn-details btn-large">
-						<i class="fas fa-arrow-left"></i>
-						Retour à la liste
+					<a href="{{ path('app_meeting_edit', {'id': meeting.id}) }}" class="btn-details">
+						<i class="fas fa-edit"></i>
+						Modifier
 					</a>
-				</div>
+					<form method="post" action="{{ path('app_meeting_delete', {'id': meeting.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette réunion ?');" class="inline-form">
+						<button type="submit" class="btn-delete">
+							<i class="fas fa-trash-alt"></i>
+							Supprimer
+						</button>
+					</form>
+				{% endif %}
+				<a href="{{ path('app_meeting_index') }}" class="btn-details">
+					<i class="fas fa-arrow-left"></i>
+					Retour à la liste
+				</a>
 			</div>
 		</div>
-	</main>
+	</div>
 {% endblock %}
+
 {% block javascripts %}
-	{{ parent() }}<script>
+	{{ parent() }}
+	<script>
 		function initMap() {
 const address = "{{ meeting.place }}";
 const geocoder = new google.maps.Geocoder();
@@ -107,7 +110,6 @@ mapElement.innerHTML = '<p>Impossible de charger la carte.</p>';
 });
 }
 
-// Attendre que l'API Google Maps soit chargée
 function waitForGoogleMaps() {
 if (typeof google === 'undefined' || typeof google.maps === 'undefined') {
 setTimeout(waitForGoogleMaps, 100);

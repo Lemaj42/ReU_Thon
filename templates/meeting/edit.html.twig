@@ -1,29 +1,24 @@
 {% extends 'base.html.twig' %}
 
-{% block stylesheets %}
-	{{ parent() }}
-	<link rel="stylesheet" href="{{ asset('styles/Meeting/editMeeting.css') }}">
-{% endblock %}
-
 {% block title %}Modifier la réunion :
 	{{ meeting.title }}
 {% endblock %}
 
 {% block body %}
-	<div class="meeting-edit-page">
-		<div class="meeting-edit-container">
-			<h1 class="meeting-edit-title">Modifier la réunion :
+	<div class="page1">
+		<div class="container1">
+			<h1>Modifier la réunion :
 				{{ meeting.title }}</h1>
 
-			<div class="meeting-edit-card">
-				<div class="meeting-edit-card-header">
-					<h2 class="meeting-edit-card-title">Détails de la réunion</h2>
+			<div class="cards2">
+				<div class="cards2-header">
+					<h2>Détails de la réunion</h2>
 				</div>
-				<div class="meeting-edit-card-body">
+				<div class="cards2-body">
 					{% include 'meeting/_form.html.twig' with {'button_label': 'Enregistrer les modifications'} %}
 				</div>
-				<div class="meeting-edit-card-footer">
-					<div class="meeting-edit-actions mt-3">
+				<div class="cards2-footer">
+					<div class="action-buttons">
 						<button type="submit" form="meeting_form" class="btn-details">
 							<i class="fas fa-save"></i>
 							Enregistrer les modifications
@@ -46,7 +41,7 @@
 const addFormToCollection = (e) => {
 const collectionHolder = document.querySelector('.' + e.currentTarget.dataset.collectionHolderClass);
 const item = document.createElement('li');
-item.classList.add('meeting-edit-form-group');
+item.classList.add('info-item');
 
 const dateNumber = collectionHolder.children.length + 1;
 const dateLabel = document.createElement('strong');
@@ -57,7 +52,7 @@ item.innerHTML += collectionHolder.dataset.prototype.replace(/__name__/g, collec
 
 const newInput = item.querySelector('input');
 if (newInput) {
-newInput.classList.add('meeting-edit-form-control');
+newInput.classList.add('form-control');
 }
 
 collectionHolder.appendChild(item);
@@ -68,7 +63,7 @@ addTagFormDeleteLink(item);
 
 const addTagFormDeleteLink = (item) => {
 const removeFormButton = document.createElement('button');
-removeFormButton.classList.add('meeting-edit-btn', 'meeting-edit-btn-danger');
+removeFormButton.classList.add('btn-delete');
 
 const icon = document.createElement('i');
 icon.classList.add('fas', 'fa-trash-alt');
@@ -89,7 +84,7 @@ item.remove();
 // Styliser le bouton "Ajouter une date"
 const addItemButtons = document.querySelectorAll('.add_item_link');
 addItemButtons.forEach(btn => {
-btn.classList.add('meeting-edit-btn', 'meeting-edit-btn-primary');
+btn.classList.add('btn-details');
 const icon = document.createElement('i');
 icon.classList.add('fas', 'fa-plus-circle');
 btn.insertBefore(icon, btn.firstChild);

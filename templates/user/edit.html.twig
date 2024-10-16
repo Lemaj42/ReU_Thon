@@ -1,101 +1,97 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modifier le profil
-{% endblock %}
-
-{% block stylesheets %}
-	{{ parent() }}
-	<link rel="stylesheet" href="{{ asset('styles/Users/editProfile.css') }}">
+{% block title %}Modifier le profil de
+	{{ user.firstname }}
 {% endblock %}
 
 {% block body %}
-	<div class="user-edit-page">
-		<div class="user-edit-container">
-			<h1>Modification de profil</h1>
+	<div class="page1">
+		<div class="container1">
+			<h1>Modification du profil de
+				{{ user.firstName }}</h1>
 
-			<div class="user-edit-card">
-				<div class="user-edit-card-header">
+			<div class="cards2">
+				<div class="cards2-header">
 					<h2>Informations personnelles</h2>
 				</div>
-				<div class="user-edit-card-body">
+				<div class="cards2-body">
 					{{ form_start(form) }}
-					<div class="user-edit-form-group">
-						{{ form_label(form.firstname, null, {'label_attr': {'class': 'user-edit-form-label'}}) }}
-						{{ form_widget(form.firstname, {'attr': {'class': 'user-edit-form-control'}}) }}
-						{{ form_errors(form.firstname) }}
-					</div>
+					<div class="info">
+						<div class="info-item">
+							{{ form_label(form.firstname, 'Prénom :', {'label_attr': {'class': 'info-label'}}) }}
+							{{ form_widget(form.firstname, {'attr': {'class': 'form-control'}}) }}
+							{{ form_errors(form.firstname) }}
+						</div>
 
-					<div class="user-edit-form-group">
-						{{ form_label(form.lastname, null, {'label_attr': {'class': 'user-edit-form-label'}}) }}
-						{{ form_widget(form.lastname, {'attr': {'class': 'user-edit-form-control'}}) }}
-						{{ form_errors(form.lastname) }}
-					</div>
+						<div class="info-item">
+							{{ form_label(form.lastname, 'Nom :', {'label_attr': {'class': 'info-label'}}) }}
+							{{ form_widget(form.lastname, {'attr': {'class': 'form-control'}}) }}
+							{{ form_errors(form.lastname) }}
+						</div>
 
-					<div class="user-edit-form-group">
-						{{ form_label(form.email, null, {'label_attr': {'class': 'user-edit-form-label'}}) }}
-						{{ form_widget(form.email, {'attr': {'class': 'user-edit-form-control'}}) }}
-						{{ form_errors(form.email) }}
-					</div>
+						<div class="info-item">
+							{{ form_label(form.email, 'Email :', {'label_attr': {'class': 'info-label'}}) }}
+							{{ form_widget(form.email, {'attr': {'class': 'form-control'}}) }}
+							{{ form_errors(form.email) }}
+						</div>
 
-					{% if app.user.id == user.id %}
-						<div class="action-buttons mb-3">
-
-							<div class="button-group">
-								<button type="button" id="toggle-password" class="btn-details flex-grow">
+						{% if app.user.id == user.id %}
+							<div class="info-item">
+								<button type="button" id="toggle-password" class="btn-details">
 									<i class="fas fa-key"></i>
 									Modifier le mot de passe
 								</button>
-								<button type="button" id="delete-account-btn" class="btn-details btn-delete flex-grow">
-									<i class="fas fa-trash-alt"></i>
-									Supprimer mon compte
-								</button>
 							</div>
-						</div>
 
-						<div id="password-fields" style="display: none;">
-							<div class="user-edit-form-group">
-								{{ form_label(form.plainPassword.first, null, {'label_attr': {'class': 'user-edit-form-label'}}) }}
-								<div class="password-input-group">
-									{{ form_widget(form.plainPassword.first, {'attr': {'class': 'user-edit-form-control password-input'}}) }}
-									<button type="button" class="toggle-password-visibility" data-target="{{ form.plainPassword.first.vars.id }}">
-										<i class="fas fa-eye"></i>
-									</button>
+							<div id="password-fields" style="display: none;">
+								<div class="info-item">
+									{{ form_label(form.plainPassword.first, 'Nouveau mot de passe :', {'label_attr': {'class': 'info-label'}}) }}
+									<div class="password-input-group">
+										{{ form_widget(form.plainPassword.first, {'attr': {'class': 'form-control password-input'}}) }}
+										<button type="button" class="toggle-password-visibility" data-target="{{ form.plainPassword.first.vars.id }}">
+											<i class="fas fa-eye"></i>
+										</button>
+									</div>
+									{{ form_errors(form.plainPassword.first) }}
 								</div>
-								{{ form_errors(form.plainPassword.first) }}
-							</div>
 
-							<div class="user-edit-form-group">
-								{{ form_label(form.plainPassword.second, null, {'label_attr': {'class': 'user-edit-form-label'}}) }}
-								<div class="password-input-group">
-									{{ form_widget(form.plainPassword.second, {'attr': {'class': 'user-edit-form-control password-input'}}) }}
-									<button type="button" class="toggle-password-visibility" data-target="{{ form.plainPassword.second.vars.id }}">
-										<i class="fas fa-eye"></i>
-									</button>
+								<div class="info-item">
+									{{ form_label(form.plainPassword.second, 'Confirmer le mot de passe :', {'label_attr': {'class': 'info-label'}}) }}
+									<div class="password-input-group">
+										{{ form_widget(form.plainPassword.second, {'attr': {'class': 'form-control password-input'}}) }}
+										<button type="button" class="toggle-password-visibility" data-target="{{ form.plainPassword.second.vars.id }}">
+											<i class="fas fa-eye"></i>
+										</button>
+									</div>
+									{{ form_errors(form.plainPassword.second) }}
 								</div>
-								{{ form_errors(form.plainPassword.second) }}
 							</div>
-						</div>
-					{% endif %}
-
+						{% endif %}
+					</div>
+				</div>
+				<div class="cards2-footer">
 					<div class="action-buttons">
-						<div class="button-group">
-							<button type="submit" class="btn-details flex-grow">
-								<i class="fas fa-save"></i>
-								Enregistrer les modifications
+						<button type="submit" class="btn-details">
+							<i class="fas fa-save"></i>
+							Enregistrer les modifications
+						</button>
+						{% if is_granted('ROLE_ADMIN') and app.user != user %}
+							<a href="{{ path('app_user_index') }}" class="btn-details">
+								<i class="fas fa-arrow-left"></i>
+								Retour à la liste des utilisateurs
+							</a>
+						{% else %}
+							<a href="{{ path('app_user_profile', {'id': user.id}) }}" class="btn-details">
+								<i class="fas fa-arrow-left"></i>
+								Retour au profil
+							</a>
+						{% endif %}
+						{% if app.user.id == user.id %}
+							<button type="button" id="delete-account-btn" class="btn-delete">
+								<i class="fas fa-trash-alt"></i>
+								Supprimer mon compte
 							</button>
-							{% if is_granted('ROLE_ADMIN') and app.user != user %}
-								<a href="{{ path('app_user_index') }}" class="btn-details flex-grow">
-									<i class="fas fa-arrow-left"></i>
-									Retour à la liste des utilisateurs
-								</a>
-							{% else %}
-								<a href="{{ path('app_user_profile', {'id': user.id}) }}" class="btn-details flex-grow">
-									<i class="fas fa-arrow-left"></i>
-									Retour au profil
-								</a>
-							{% endif %}
-
-						</div>
+						{% endif %}
 					</div>
 					{{ form_end(form) }}
 				</div>
@@ -105,24 +101,23 @@
 
 	{% if app.user.id == user.id %}
 		<div id="overlay" class="overlay d-none"></div>
-		<div id="delete-confirmation" class="user-edit-card delete-confirmation d-none">
-			<div class="user-edit-card-header">
+		<div id="delete-confirmation" class="cards2 delete-confirmation d-none">
+			<div class="cards2-header">
 				<h5>Confirmation de suppression</h5>
 			</div>
-			<div class="user-edit-card-body">
+			<div class="cards2-body">
 				<p>Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.</p>
 				<div class="d-flex justify-content-end">
 					<button id="cancel-delete" class="btn-details">Annuler</button>
 					<form id="delete-account-form" method="post" action="{{ path('app_user_delete', {'id': user.id}) }}">
 						<input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
-						<button type="submit" class="btn-details btn-delete">Confirmer la suppression</button>
+						<button type="submit" class="btn-delete">Confirmer la suppression</button>
 					</form>
 				</div>
 			</div>
 		</div>
 	{% endif %}
 {% endblock %}
-
 
 {% block javascripts %}
 	{{ parent() }}
