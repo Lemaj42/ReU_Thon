@@ -90,42 +90,6 @@ body {
     flex-wrap: wrap;
 }
 
-.user-admin-btn {
-    flex: 1;
-    min-width: 150px;
-    padding: 0.75rem 1rem;
-    border: none;
-    border-radius: 8px;
-    color: #fff;
-    text-align: center;
-    text-decoration: none;
-    font-size: 1.2rem;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    cursor: pointer;
-}
-
-.user-admin-btn-primary {
-    background-color: var(--user-admin-primary-color);
-}
-
-.user-admin-btn-primary:hover {
-    background-color: var(--user-admin-secondary-color);
-    transform: translateY(-2px);
-}
-
-.user-admin-btn-secondary {
-    background-color: var(--danger-color);
-}
-
-.user-admin-btn-secondary:hover {
-    background-color: var(--supp-color);
-    transform: translateY(-2px);
-}
-
-.user-admin-btn i {
-    margin-right: 0.5rem;
-}
-
 @media (max-width: 768px) {
     .user-admin-title {
         font-size: 2rem;
@@ -136,8 +100,7 @@ body {
     }
 
     .user-admin-form-label,
-    .user-admin-form-control,
-    .user-admin-btn {
+    .user-admin-form-control {
         font-size: 1.1rem;
     }
 }

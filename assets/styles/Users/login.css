@@ -56,73 +56,6 @@ body {
     box-shadow: 0 0 0 0.2rem rgba(220, 47, 2, 0.25);
 }
 
-/* Button styles */
-.btn {
-    text-transform: uppercase;
-    font-weight: 500;
-    letter-spacing: 0.5px;
-}
-
-.btn-primary {
-    color: #fff;
-    background-color: #370617;
-    border-color: #370617;
-}
-
-.btn-primary:hover,
-.btn-primary:focus {
-    background-color: #DC2F02;
-    border-color: #DC2F02;
-}
-
-.btn-danger {
-    color: #fff;
-    background-color: #9D0208;
-    border-color: #9D0208;
-}
-
-.btn-danger:hover,
-.btn-danger:focus {
-    background-color: #6A040F;
-    border-color: #6A040F;
-}
-
-/* Action buttons */
-.action-buttons {
-    margin-top: 1.5rem;
-}
-
-.button-group {
-    display: flex;
-    gap: 1rem;
-}
-
-.btn-details {
-    flex-grow: 1;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.btn-details i {
-    margin-right: 0.5rem;
-}
-
-/* Password input group */
-.password-input-group {
-    position: relative;
-}
-
-.toggle-password-visibility {
-    position: absolute;
-    right: 10px;
-    top: 50%;
-    transform: translateY(-50%);
-    background: none;
-    border: none;
-    cursor: pointer;
-}
-
 /* Delete confirmation modal */
 .delete-confirmation {
     background-color: #ffc107;
@@ -148,7 +81,6 @@ body {
 @media (max-width: 768px) {
 
     .card-body,
-    .btn,
     .form-label,
     .form-control {
         font-size: 0.9rem;

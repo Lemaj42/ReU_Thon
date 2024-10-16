@@ -61,19 +61,13 @@
 		<div class="btn-container">
 			<div class="meeting-actions justify-content-center">
 				{% if is_granted('ROLE_ADMIN') %}
-					<div
-						class="d-flex gap-2">
-						<!-- Flex pour centrer et espace entre les boutons -->
-						<a
-							href="{{ path('app_meeting_edit', {'id': meeting.id}) }}" class="btn-details btn-action">
-							<!-- Ajout de la classe btn-action -->
+					<div class="d-flex gap-2">
+						<a href="{{ path('app_meeting_edit', {'id': meeting.id}) }}" class="btn-details btn-action">
 							<i class="fas fa-edit"></i>
 							Modifier
 						</a>
 						<form method="post" action="{{ path('app_meeting_delete', {'id': meeting.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette réunion ?');" class="inline-form">
-							<button
-								type="submit" class="btn-delete btn-action">
-								<!-- Ajout de la classe btn-action -->
+							<button type="submit" class="btn-delete btn-action">
 								<i class="fas fa-trash-alt"></i>
 								Supprimer
 							</button>
