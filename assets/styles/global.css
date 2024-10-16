@@ -1,40 +1,37 @@
-/* Variables globales */
 :root {
     --navbar-height: 60px;
-    --font-sans: 'Roboto', sans-serif;
-    --primary-color: #370617;
-    --secondary-color: #DC2F02;
-    --danger-color: #750206;
-    --supp-color: #ED0000;
+    --primary-color: #FFAA00;
+    --secondary-color: #370617;
+    --danger-color: #9D0208;
     --hover-color: #DC2F02;
     --text-color: #000;
     --white: #fff;
-    --background-color: #f8f9fa;
-    --card-bg-color: rgba(255, 255, 255, 0.9);
-    --card-header-bg-color: rgba(255, 255, 255, 0.1);
+    --meeting-bg-color: #ffebee;
+    --d: 700ms;
+    --e: cubic-bezier(0.19, 1, 0.22, 1);
+    --font-sans: 'Roboto', sans-serif;
     --table-header-bg-color: #03071E;
     --table-stripe-bg: #070d2d;
     --table-border-color: #fff;
-    
 }
 
-/* Styles de base */
+/* General styles */
 body {
+    padding-top: var(--navbar-height);
     font-family: var(--font-sans);
-    background-color: var(--background-color);
-    margin: 5rem 0 0 0;
-    min-height: 100vh;
-    display: flex;
-    flex-direction: column;
-    color: #333;
-    width: 100%;
-    overflow-x: hidden;
+    color: var(--text-color);
 }
 
-/* Styles des titres */
+.content-wrapper {
+    width: 100%;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+/* Heading styles */
 h1,
 h2 {
-    color: #080808;
+    color: var(--secondary-color);
     text-align: center;
     text-transform: uppercase;
     position: relative;
@@ -55,26 +52,13 @@ h2 {
     padding-bottom: 0.25rem;
 }
 
-h1 span,
-h2 span {
-    display: block;
-    font-size: 0.5em;
-    line-height: 1.3;
-}
-
-h1 em,
-h2 em {
-    font-style: normal;
-    font-weight: 600;
-}
-
 h1:before,
 h2:before {
     content: "";
     display: block;
     position: absolute;
     left: 50%;
-    background-color: var(--secondary-color);
+    background-color: var(--primary-color);
 }
 
 h1:before {
@@ -97,7 +81,7 @@ h2:after {
     display: block;
     width: 6.25rem;
     height: 0.0625rem;
-    background-color: var(--secondary-color);
+    background-color: var(--primary-color);
     position: relative;
     left: 50%;
     margin-left: -3.125rem;
@@ -113,193 +97,166 @@ h2:after {
     margin-left: -2.1875rem;
 }
 
-/* Boutons */
-.btn-details {
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    border: none;
-    border-radius: 0.5rem;
-    cursor: pointer;
-    transition: background-color 0.3s ease, transform 0.3s ease;
-    font-size: 1.2rem;
-    padding: 0.75rem 1rem;
-    text-decoration: none;
-    color: var(--white);
-    background-color: var(--secondary-color);
-}
-
+/* Button styles */
+.btn-details,
 .btn-delete {
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    border: none;
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+    text-decoration: none;
     border-radius: 0.5rem;
+    border: none;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
-    font-size: 1.2rem;
-    padding: 0.75rem 1rem;
-    text-decoration: none;
     color: var(--white);
+}
+
+.btn-details {
+    background-color: var(--secondary-color);
+}
+
+.btn-delete {
     background-color: var(--danger-color);
-    /* Utilise la couleur danger */
+}
+
+.btn-details:hover,
+.btn-delete:hover {
+    transform: translateY(-0.125rem);
 }
 
 .btn-details:hover {
     background-color: var(--hover-color);
-    transform: translateY(-0.125rem);
 }
 
 .btn-delete:hover {
-    background-color: var(--supp-color);
-    /* Utilise la couleur supp lors du hover */
-    transform: translateY(-0.125rem);
-}
-
-/* Taille réduite pour certains boutons */
-.btn-small {
-    padding: 0.25rem 0.5rem;
-    font-size: 0.6rem;
+    background-color: #6A040F;
 }
 
 .btn-details i,
 .btn-delete i {
-    margin-right: 0.25rem;
+    margin-right: 0.5rem;
 }
 
-/* Formulaires */
-.form-group {
-    margin-bottom: 1.5rem;
+/* User dashboard styles */
+.userlist-container {
+    padding: 3rem 0;
 }
 
-.form-group label {
-    font-size: 1.3rem;
-    margin-bottom: 0.5rem;
-    display: block;
-    color: var(--primary-color);
+.userlist-container__content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
 }
 
-.form-control {
-    width: 100%;
-    padding: 0.8rem;
-    font-size: 1.2rem;
-    border-radius: 5px;
-    border: 1px solid #ccc;
-    height: 50px;
-    box-sizing: border-box;
+.page-title {
+    margin-bottom: 1rem;
 }
 
-.form-control:focus {
-    border-color: var(--secondary-color);
-    box-shadow: 0 0 0 0.2rem rgba(220, 47, 2, 0.25);
-}
-
-/* Cartes */
-.card {
-    background-color: var(--card-bg-color);
-    border-radius: 10px;
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1), 0 16px 32px rgba(0, 0, 0, 0.1);
-    overflow: hidden;
+.description {
+    font-size: 1.1rem;
     margin-bottom: 2rem;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-align: center;
+    font-style: italic;
 }
 
-.card:hover {
-    transform: perspective(1000px) rotateX(2deg) rotateY(2deg);
-    box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
+.table-responsive {
+    background-color: var(--white);
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.card-header {
-    background-color: var(--primary-color);
-    color: var(--white);
-    padding: 1.5rem;
-}
-
-.card-body,
-.card-footer {
-    padding: 1.5rem;
-}
-
-/* Tables */
 .table {
-    width: 100%;
     margin-bottom: 0;
     color: var(--text-color);
     background-color: var(--white);
 }
 
-.table th,
-.table td {
+.table th {
+    background-color: var(--secondary-color);
+    color: var(--white);
+    font-weight: bold;
+    text-transform: uppercase;
     padding: 1rem;
-    text-align: center;
 }
 
-.table th {
-    background-color: var(--table-header-bg-color);
-    color: var(--white);
-    text-transform: uppercase;
-    font-weight: bold;
+.table td {
+    padding: 1rem;
+    vertical-align: middle;
 }
 
 .table-striped tbody tr:nth-of-type(odd) {
-    background-color: var(--table-stripe-bg);
+    background-color: rgba(0, 0, 0, 0.05);
 }
 
-/* Pagination */
-.pagination {
-    display: flex;
-    justify-content: center;
-    list-style: none;
-    padding: 0;
-    margin-top: 2rem;
-}
-
-.page-link {
+/* Styles pour les liens utilisateurs avec effet de soulignement */
+.user-link {
+    position: relative;
     color: var(--secondary-color);
-    background-color: var(--white);
-    border: 1px solid var(--secondary-color);
-    padding: 0.5rem 1rem;
-    transition: all 0.3s ease;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
 }
 
-.page-item.active .page-link,
-.page-link:hover {
-    color: var(--white);
+.user-link::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
     background-color: var(--secondary-color);
+    transition: width 0.3s ease;
 }
 
-/* Responsive */
+.user-link:hover {
+    text-decoration: none !important;
+}
+
+.user-link:hover::after {
+    width: 100%;
+}
+
+.form-select {
+    background-color: var(--white);
+    color: var(--text-color);
+    border: 1px solid var(--secondary-color);
+    padding: 0.5rem;
+    font-size: 0.9rem;
+}
+
+.action-buttons {
+    display: flex;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+/* Responsive styles */
 @media (max-width: 768px) {
+    h1 {
+        font-size: 2rem;
+    }
 
-    h1,
     h2 {
-        font-size: 1.5rem;
+        font-size: 1.5rem !important;
     }
 
+    .description {
+        font-size: 1rem;
+    }
+
+    .table th,
     .table td {
-        display: block;
-        text-align: right;
-        padding-left: 50%;
-        position: relative;
+        padding: 0.75rem;
     }
 
-    .table td::before {
-        content: attr(data-label);
-        position: absolute;
-        left: 0;
-        padding-right: 10px;
-        font-weight: bold;
-        text-align: left;
+    .action-buttons {
+        flex-direction: column;
     }
 
     .btn-details,
-    .btn-delete,
-    .form-control,
-    .form-group label {
-        font-size: 1.1rem;
-    }
-
-    .btn-small {
-        font-size: 0.9rem;
+    .btn-delete {
+        width: 100%;
     }
 }

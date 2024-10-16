@@ -19,7 +19,7 @@
 				<h1 class="page-title">Gestion des utilisateurs</h1>
 				<p class="description">
 					Vous trouverez ci-dessous la liste des utilisateurs enregistrés.
-															                    Vous pouvez modifier ou supprimer les utilisateurs si nécessaire.
+																																																																																																														                    Vous pouvez modifier ou supprimer les utilisateurs si nécessaire.
 				</p>
 				<div class="table-responsive">
 					<table class="table table-striped">
@@ -57,7 +57,7 @@
 									<td data-label="Actions" class="align-middle">
 										<div class="action-buttons">
 											<a href="{{ path('app_user_edit', {'id': user.id}) }}" class="btn-details">
-												<i class="fas fa-edit"></i>
+												<i class="fas fa-info-circle"></i>
 												Modifier
 											</a>
 											<form method="post" action="{{ path('app_user_delete', {'id': user.id}) }}" onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur ?');">

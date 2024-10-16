@@ -23,12 +23,12 @@
 					{% include 'meeting/_form.html.twig' with {'button_label': 'Enregistrer les modifications'} %}
 				</div>
 				<div class="meeting-edit-card-footer">
-					<div class="meeting-edit-actions">
-						<button type="submit" form="meeting_form" class="meeting-edit-btn meeting-edit-btn-primary">
+					<div class="meeting-edit-actions mt-3">
+						<button type="submit" form="meeting_form" class="btn-details">
 							<i class="fas fa-save"></i>
 							Enregistrer les modifications
 						</button>
-						<a href="{{ path('app_meeting_show', {'id': meeting.id}) }}" class="meeting-edit-btn meeting-edit-btn-primary">
+						<a href="{{ path('app_meeting_show', {'id': meeting.id}) }}" class="btn-delete">
 							<i class="fas fa-arrow-left"></i>
 							Retour aux détails
 						</a>

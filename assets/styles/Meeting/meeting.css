@@ -6,7 +6,6 @@
     --hover-color: #DC2F02;
     --text-color: #000;
     --white: #fff;
-    --meeting-bg-color: #ffebee;
     --d: 700ms;
     --e: cubic-bezier(0.19, 1, 0.22, 1);
     --font-sans: 'Roboto', sans-serif;
@@ -106,7 +105,6 @@ body {
 
 .table th,
 .table td {
-    background-color: var(--table-header-bg-color);
     border-color: var(--white);
     color: var(--white);
     padding: 0.5rem;
@@ -144,19 +142,6 @@ body {
     justify-content: center;
 }
 
-.btn-details,
-.btn-delete {
-    padding: 0.25rem 0.5rem;
-    font-size: 0.875rem;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.btn-details i,
-.btn-delete i {
-    margin-right: 0.25rem;
-}
 
 .page-title,
 .description {
