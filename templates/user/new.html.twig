@@ -13,7 +13,10 @@
 				<h2>Détails de l'utilisateur</h2>
 			</div>
 			<div class="cards2-body">
-				{% include 'user/_form.html.twig' with {'button_label': 'Créer l\'utilisateur'} %}
+				{% include 'user/_form.html.twig' with {
+                    'button_label': 'Créer l\'utilisateur',
+                    'form_class': 'user-admin-form'
+                } %}
             </div>
             <div class="cards2-footer">
                 <div class="action-buttons">

@@ -51,11 +51,6 @@
     line-height: 1.6;
 }
 
-.footer-contact strong {
-    font-weight: 700;
-    margin-right: 0.5rem;
-}
-
 #map-footer {
     height: 250px;
     width: 100%;
@@ -78,35 +73,15 @@
     opacity: 0.8;
 }
 
-.footer-logo {
-    max-width: 100%;
-    height: auto;
-    margin-bottom: 1rem;
-}
-
-.footer-brand span {
-    font-size: 1.4rem;
-    font-weight: 700;
-}
-
-@media (max-width: 991px) {
-    .site-footer {
-        display: none;
-    }
-}
-
 @media (max-width: 768px) {
-    .site-footer {
-        text-align: center;
-    }
-
-    .footer-brand {
-        margin-top: 2rem;
-    }
 
     .footer-contact,
     #map-footer {
         margin-bottom: 2rem;
+    }
+
+    .footer-brand img {
+        max-width: 200px;
     }
 
     .footer-nav .nav-item {
