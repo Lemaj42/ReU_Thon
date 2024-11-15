@@ -40,29 +40,10 @@
 						{% endif %}
 					</div>
 				</div>
-				<div class="cards2-footer">
-					{% if meeting.finalDate is null %}
-						{% if meeting.votingDeadline > date() %}
-							{% if not hasVoted %}
-								<h4>Dates de vote disponibles :</h4>
-								<form action="{{ path('app_meeting_vote', {'id': meeting.id}) }}" method="POST" class="action-buttons">
-									{% for booking in meeting.bookings %}
-										<button type="submit" name="date" value="{{ booking.date|date('Y-m-d H:i:s') }}" class="btn-details">
-											{{ booking.date|date('d/m/Y H:i') }}
-										</button>
-									{% endfor %}
-								</form>
-							{% elseif vote is not null and vote.booking is not null %}
-								<h4>Vous avez déjà voté pour cette réunion.</h4>
-								<p>Date choisie :
-									{{ vote.booking.date|date('d/m/Y à H:i') }}</p>
-							{% endif %}
-						{% endif %}
-					{% endif %}
-				</div>
 			</div>
 
-			<div id="map"></div>
+			{# Section pour la carte Google Maps #}
+			<div id="map" style="width: 60%; height: 300px; margin-top: 10px; margin-left: auto; margin-right: auto;"></div>
 
 			<div class="action-buttons mt-4">
 				{% if is_granted('ROLE_ADMIN') %}
@@ -76,6 +57,14 @@
 							Supprimer
 						</button>
 					</form>
+					{% if meeting.finalDate is null %}
+						<form method="post" action="{{ path('app_meeting_calculate_final_date', {'id': meeting.id}) }}" class="inline-form">
+							<button type="submit" class="btn-details">
+								<i class="fas fa-calendar-check"></i>
+								Calculer la date finale
+							</button>
+						</form>
+					{% endif %}
 				{% endif %}
 				<a href="{{ path('app_meeting_index') }}" class="btn-details">
 					<i class="fas fa-arrow-left"></i>
@@ -84,40 +73,60 @@
 			</div>
 		</div>
 	</div>
+
+	<script>
+		const meetingPlace = "{{ meeting.place|e('js') }}";
+	</script>
 {% endblock %}
 
 {% block javascripts %}
 	{{ parent() }}
 	<script>
-		function initMap() {
-const address = "{{ meeting.place }}";
-const geocoder = new google.maps.Geocoder();
+		// Initialiser la carte
+function initMap() {
+const address = meetingPlace;
 const mapElement = document.getElementById('map');
+const geocoder = new google.maps.Geocoder();
+
+if (! address || ! mapElement) {
+console.error("Adresse ou élément carte manquant !");
+return;
+}
 
 geocoder.geocode({
 address: address
 }, function (results, status) {
-if (status === 'OK') {
+if (status === 'OK' && results[0]) {
 const map = new google.maps.Map(mapElement, {
 zoom: 14,
 center: results[0].geometry.location
 });
-new google.maps.marker.AdvancedMarkerElement({map: map, position: results[0].geometry.location, title: "Lieu de la réunion"});
+
+new google.maps.Marker({map: map, position: results[0].geometry.location, title: "Lieu de la réunion"});
 } else {
-console.error('La géolocalisation de l\'adresse a échoué : ' + status);
+console.error('La géolocalisation a échoué : ' + status);
 mapElement.innerHTML = '<p>Impossible de charger la carte.</p>';
 }
 });
 }
 
-function waitForGoogleMaps() {
-if (typeof google === 'undefined' || typeof google.maps === 'undefined') {
-setTimeout(waitForGoogleMaps, 100);
+// Charger l'API Google Maps
+function loadGoogleMapsScript() {
+if (!document.getElementById('google-maps-script')) {
+const script = document.createElement('script');
+script.id = 'google-maps-script';
+script.src = `https://maps.googleapis.com/maps/api/js?key={{ google_maps_api_key() }}&callback=initMap&libraries=places`;
+script.async = true;
+script.defer = true;
+document.head.appendChild(script);
 } else {
+console.warn('Google Maps API déjà chargée.');
+if (window.google && window.google.maps) {
 initMap();
 }
 }
+}
 
-waitForGoogleMaps();
+loadGoogleMapsScript();
 	</script>
 {% endblock %}

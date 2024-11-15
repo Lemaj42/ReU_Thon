@@ -19,10 +19,8 @@
 			Vous trouverez ci-dessous la liste des réunions passées.
 		</p>
 		<div class="row g-4">
-			{% set hasArchivedMeetings = false %}
-			{% for meeting in archivedMeetings %}
-				{% if meeting.finalDate is not null and meeting.finalDate < date() %}
-					{% set hasArchivedMeetings = true %}
+			{% if archivedMeetings is not empty %}
+				{% for meeting in archivedMeetings %}
 					<div class="col-12 col-md-6 col-lg-4">
 						<article class="card">
 							<div class="card-header">
@@ -39,13 +37,13 @@
 							<div class="card-footer">
 								<a href="{{ path('app_meeting_show', {'id': meeting.id}) }}" class="btn-details">
 									<i class="fas fa-eye"></i>
-									Voir détails</a>
+									Voir détails
+								</a>
 							</div>
 						</article>
 					</div>
-				{% endif %}
-			{% endfor %}
-			{% if not hasArchivedMeetings %}
+				{% endfor %}
+			{% else %}
 				<p class="text-center">Aucune réunion archivée trouvée.</p>
 			{% endif %}
 		</div>
@@ -54,7 +52,8 @@
 				<div class="col-md-4 text-center mt-5 mb-4">
 					<a href="{{ path('app_meeting_index') }}" class="btn-details">
 						<i class="fas fa-arrow-left"></i>
-						Retour aux réunions actives</a>
+						Retour aux réunions actives
+					</a>
 				</div>
 			</div>
 		</div>

@@ -105,9 +105,6 @@ class Meeting
         if (!$this->bookings->contains($booking)) {
             $this->bookings->add($booking);
             $booking->setMeeting($this);
-        } elseif ($booking->getMeeting() !== $this) {
-            $booking->getMeeting()->removeBooking($booking);
-            $booking->setMeeting($this);
         }
         return $this;
     }

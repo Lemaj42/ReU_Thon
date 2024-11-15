@@ -4,7 +4,6 @@ namespace App\Controller;
 
 use App\Entity\Booking;
 use App\Entity\Meeting;
-use App\Entity\User;
 use App\Entity\Vote;
 use App\Form\MeetingType;
 use App\Repository\UserRepository;
@@ -37,24 +36,24 @@ class MeetingController extends AbstractController
             ->getQuery()
             ->getResult();
 
-        // Récupération de la clé Google Maps depuis les paramètres
-        $googleMapsApiKey = $this->getParameter('google_maps_api_key');
+        // Suppression de la récupération et de l'envoi de la clé Google Maps
 
         return $this->render('meeting/index.html.twig', [
             'meetings' => $meetings,
-            'google_maps_api_key' => $googleMapsApiKey,
-            'GOOGLE_MAPS_API_KEY' => $googleMapsApiKey, // Ajoutez cette ligne
         ]);
     }
+
 
     #[Route('/archive', name: 'app_meeting_archive', methods: ['GET'])]
     #[IsGranted('IS_AUTHENTICATED_FULLY')]
     public function archive(MeetingRepository $meetingRepository): Response
     {
-        $now = new \DateTime();
+        $now = new \DateTime('now', new \DateTimeZone('Europe/Paris'));
+        $now->format('Y-m-d H:i:s'); // Format précis à la seconde
+
         $archivedMeetings = $meetingRepository->createQueryBuilder('m')
             ->where('m.finalDate IS NOT NULL')
-            ->andWhere('m.finalDate < :now')
+            ->andWhere('m.finalDate <= :now')
             ->setParameter('now', $now)
             ->orderBy('m.finalDate', 'DESC')
             ->getQuery()
@@ -93,9 +92,22 @@ class MeetingController extends AbstractController
                     'form' => $form->createView(),
                 ]);
             }
+
+            // Tri des bookings par date (si non trié dans l'entité) pour s'assurer de prendre la première date
+            usort($bookings, fn($a, $b) => $a->getDate() <=> $b->getDate());
             $firstBookingDate = $bookings[0]->getDate();
-            $votingDeadline = (clone $firstBookingDate)->modify('-7 days');
-            $meeting->setVotingDeadline($votingDeadline);
+
+            // Calcul de la date de fin de vote (7 jours avant la première date de booking)
+            if ($firstBookingDate) {
+                $votingDeadline = (clone $firstBookingDate)->modify('-7 days');
+                $meeting->setVotingDeadline($votingDeadline);
+            } else {
+                $this->addFlash('error', 'La date du premier booking est invalide.');
+                return $this->render('meeting/new.html.twig', [
+                    'meeting' => $meeting,
+                    'form' => $form->createView(),
+                ]);
+            }
 
             // Persistons les bookings et la réunion
             foreach ($meeting->getBookings() as $booking) {
@@ -155,34 +167,44 @@ class MeetingController extends AbstractController
         ]);
     }
 
-    #[Route('/close-votes/{id}', name: 'app_meeting_close_votes', methods: ['POST'])]
+    #[Route('/calculate-final-date/{id}', name: 'app_meeting_calculate_final_date', methods: ['POST'])]
     #[IsGranted('ROLE_ADMIN')]
-    public function closeVotes(
+    public function calculateFinalDate(
         Meeting $meeting,
         EntityManagerInterface $entityManager,
         VoteRepository $voteRepository
     ): Response {
-        // Vérifier si la date finale n'a pas déjà été définie
+        // Vérifier si la date finale est déjà définie
         if ($meeting->getFinalDate() !== null) {
-            $this->addFlash('warning', 'Les votes ont déjà été clôturés pour cette réunion.');
+            $this->addFlash('warning', 'La date finale est déjà définie pour cette réunion.');
             return $this->redirectToRoute('app_meeting_index');
         }
+
+        // Récupérer la date limite de vote
+        $votingDeadline = $meeting->getVotingDeadline();
 
         // Récupérer tous les bookings associés à cette réunion
         $bookings = $meeting->getBookings()->toArray();
 
         if (empty($bookings)) {
-            $this->addFlash('error', 'Aucun booking n\'a été associé à cette réunion.');
+            $this->addFlash('error', 'Aucun booking n\'est associé à cette réunion.');
             return $this->redirectToRoute('app_meeting_index');
         }
 
-        // Compter les votes pour chaque booking
+        // Compter les votes pour chaque date de booking avant la date limite
         $votesCount = [];
         foreach ($bookings as $booking) {
-            $votesCount[$booking->getId()] = count($voteRepository->findBy(['booking' => $booking]));
+            $votes = $voteRepository->findBy(['booking' => $booking]);
+
+            // Filtrer les votes valides (avant la date limite)
+            $validVotes = array_filter($votes, function ($vote) use ($votingDeadline) {
+                return $vote->getCreatedAt() <= $votingDeadline;
+            });
+
+            $votesCount[$booking->getId()] = count($validVotes);
         }
 
-        // Trouver le booking avec le plus de votes
+        // Sélectionner le booking avec le plus de votes
         $mostVotedBooking = null;
         $maxVotes = -1;
         foreach ($bookings as $booking) {
@@ -193,27 +215,78 @@ class MeetingController extends AbstractController
             }
         }
 
-        // Vérification si un booking a bien été trouvé
-        if ($mostVotedBooking === null) {
-            $this->addFlash('error', 'Aucun booking n\'a reçu de vote.');
-            return $this->redirectToRoute('app_meeting_index');
+        // Si aucun vote valide n'existe, utiliser la date de fin de vote
+        if ($maxVotes === 0) {
+            $finalDate = $votingDeadline;
+        } else {
+            $finalDate = $mostVotedBooking->getDate();
         }
 
-        // Définir la date finale comme la date du booking ayant reçu le plus de votes
-        $finalDate = $mostVotedBooking->getDate();
+        // Définir la date finale et sauvegarder
         if ($finalDate instanceof \DateTimeInterface) {
             $meeting->setFinalDate($finalDate);
-
-            // Persister la réunion avec la date finale
             $entityManager->persist($meeting);
             $entityManager->flush();
 
-            $this->addFlash('success', 'Les votes sont clôturés et la date finale de la réunion est définie.');
+            $this->addFlash('success', 'La date finale de la réunion a été calculée et définie automatiquement.');
         } else {
-            $this->addFlash('error', 'La date du booking sélectionné n\'est pas valide.');
+            $this->addFlash('error', 'La date sélectionnée n\'est pas valide.');
         }
 
         return $this->redirectToRoute('app_meeting_index');
+    }
+
+    #[Route('/{id}/vote', name: 'app_meeting_vote_action', methods: ['POST'])]
+    #[IsGranted('IS_AUTHENTICATED_FULLY')]
+    public function voteAction(
+        Meeting $meeting,
+        Request $request,
+        EntityManagerInterface $entityManager,
+        VoteRepository $voteRepository
+    ): Response {
+        $user = $this->getUser();
+
+        // Vérification de la date limite de vote définie automatiquement
+        $votingDeadline = $meeting->getVotingDeadline();
+        if ($votingDeadline && new \DateTime() > $votingDeadline) {
+            $this->addFlash('error', 'La période de vote est clôturée car la date limite est dépassée.');
+            return $this->redirectToRoute('app_meeting_show', ['id' => $meeting->getId()]);
+        }
+
+        // Récupération de la date choisie pour le vote
+        $dateChosen = new \DateTime($request->request->get('date'));
+
+        // Recherche du booking correspondant à la date choisie
+        $existingBooking = $entityManager->getRepository(Booking::class)->findOneBy([
+            'meeting' => $meeting,
+            'date' => $dateChosen
+        ]);
+
+        if (!$existingBooking) {
+            $this->addFlash('error', 'Aucune réservation trouvée pour cette date et ce meeting.');
+            return $this->redirectToRoute('app_meeting_show', ['id' => $meeting->getId()]);
+        }
+
+        // Vérification si l'utilisateur a déjà voté
+        $existingVote = $voteRepository->findOneBy([
+            'user' => $user,
+            'booking' => $existingBooking,
+        ]);
+
+        if (!$existingVote) {
+            // Création du vote si l'utilisateur n'a pas encore voté
+            $vote = new Vote();
+            $vote->setUser($user);
+            $vote->setBooking($existingBooking);
+            $entityManager->persist($vote);
+            $entityManager->flush();
+
+            $this->addFlash('success', "Votre vote a été enregistré.");
+        } else {
+            $this->addFlash('warning', 'Vous avez déjà voté pour cette réunion.');
+        }
+
+        return $this->redirectToRoute('app_meeting_show', ['id' => $meeting->getId()]);
     }
 
     #[Route('/{id}/edit', name: 'app_meeting_edit', methods: ['GET', 'POST'])]
@@ -283,50 +356,13 @@ class MeetingController extends AbstractController
 
         $hasVoted = !empty($vote);
 
-        $googleMapsApiKey = $_ENV['GOOGLE_MAPS_API_KEY'] ?? null;
-
         return $this->render('meeting/show.html.twig', [
             'meeting' => $meeting,
             'hasVoted' => $hasVoted,
             'vote' => $hasVoted ? $vote[0] : null,
-            'google_maps_api_key' => $googleMapsApiKey,
         ]);
     }
 
-    #[Route('/{id}/vote', name: 'app_meeting_vote', methods: ['POST'])]
-    #[IsGranted('IS_AUTHENTICATED_FULLY')]
-    public function vote(Meeting $meeting, Request $request, EntityManagerInterface $entityManager): Response
-    {
-        $user = $this->getUser();
-        $dateChosen = new \DateTime($request->request->get('date'));
 
-        $existingBooking = $entityManager->getRepository(Booking::class)->findOneBy([
-            'meeting' => $meeting,
-            'date' => $dateChosen
-        ]);
 
-        if (!$existingBooking) {
-            $this->addFlash('error', 'Aucune réservation trouvée pour cette date et ce meeting.');
-            return $this->redirectToRoute('app_meeting_show', ['id' => $meeting->getId()]);
-        }
-
-        $existingVote = $entityManager->getRepository(Vote::class)->findOneBy([
-            'user' => $user,
-            'booking' => $existingBooking,
-        ]);
-
-        if (!$existingVote) {
-            $vote = new Vote();
-            $vote->setUser($user);
-            $vote->setBooking($existingBooking);
-            $entityManager->persist($vote);
-            $entityManager->flush();
-
-            $this->addFlash('success', "Votre vote a été enregistré.");
-        } else {
-            $this->addFlash('warning', 'Vous avez déjà voté pour cette réunion.');
-        }
-
-        return $this->redirectToRoute('app_meeting_show', ['id' => $meeting->getId()]);
-    }
 }

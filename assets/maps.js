@@ -1,64 +1,47 @@
-// Fonction pour charger l'API Google Maps une seule fois
-function loadGoogleMapsScript() {
-    if (!window.google || !window.google.maps) {
+// Charger l'API Google Maps une seule fois
+function loadGoogleMapsScript(address, mapElementId, markerTitle) {
+    if (!document.getElementById('map')) {
         const script = document.createElement('script');
-        script.src = `https://maps.googleapis.com/maps/api/js?key=${googleMapsApiKey}&callback=initMap&libraries=marker`;
+        script.id = 'google-maps-script';
+        script.src = `https://maps.googleapis.com/maps/api/js?key=${googleMapsApiKey}&callback=initMap&libraries=places`;
         script.async = true;
         script.defer = true;
         document.head.appendChild(script);
+
+        // Initialiser la carte une fois que l'API est chargée
+        window.initMap = () => {
+            initializeMap(address, mapElementId, markerTitle);
+        };
     } else {
-        initMap();
+        console.warn('Google Maps API déjà chargée.');
+        if (window.google && window.google.maps) {
+            initializeMap(address, mapElementId, markerTitle);
+        }
     }
 }
 
-// Fonction pour initialiser les cartes et les marqueurs
-function initMap() {
+function initializeMap(address, mapElementId, markerTitle) {
     const geocoder = new google.maps.Geocoder();
+    const mapElement = document.getElementById(mapElementId);
 
-    // Première adresse (meeting.place)
-    const address1 = meetingPlace;
-    const mapElement1 = document.getElementById('map1');
-    if (mapElement1) {
-        geocoder.geocode({ address: address1 }, function(results, status) {
-            if (status === 'OK') {
-                const map1 = new google.maps.Map(mapElement1, {
+    if (mapElement) {
+        geocoder.geocode({ address: address }, function(results, status) {
+            if (status === 'OK' && results[0]) {
+                const map = new google.maps.Map(mapElement, {
                     zoom: 14,
                     center: results[0].geometry.location
                 });
-                new google.maps.marker.AdvancedMarkerElement({
-                    map: map1,
+                new google.maps.Marker({
+                    map: map,
                     position: results[0].geometry.location,
-                    title: "Lieu de la réunion"
+                    title: markerTitle
                 });
             } else {
-                console.error('La géolocalisation de la première adresse a échoué : ' + status);
-                mapElement1.innerHTML = '<p class="text-danger">Impossible de charger la carte.</p>';
+                console.error(`La géolocalisation pour "${address}" a échoué : ${status}`);
+                mapElement.innerHTML = '<p class="text-danger">Impossible de charger la carte.</p>';
             }
         });
-    }
-
-    // Deuxième adresse (statique)
-    const address2 = "Ecole Albert Camus, 9 Bis Impasse Albert CAMUS, 42160 ANDREZIEUX BOUTHEON";
-    const mapElement2 = document.getElementById('map2');
-    if (mapElement2) {
-        geocoder.geocode({ address: address2 }, function(results, status) {
-            if (status === 'OK') {
-                const map2 = new google.maps.Map(mapElement2, {
-                    zoom: 14,
-                    center: results[0].geometry.location
-                });
-                new google.maps.marker.AdvancedMarkerElement({
-                    map: map2,
-                    position: results[0].geometry.location,
-                    title: "Ecole Albert Camus"
-                });
-            } else {
-                console.error('La géolocalisation de la deuxième adresse a échoué : ' + status);
-                mapElement2.innerHTML = '<p class="text-danger">Impossible de charger la carte.</p>';
-            }
-        });
+    } else {
+        console.warn(`Élément avec l'ID "${mapElementId}" introuvable.`);
     }
 }
-
-// Appel de la fonction pour charger Google Maps
-loadGoogleMapsScript();

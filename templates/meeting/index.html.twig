@@ -49,35 +49,7 @@
 						</h1>
 						<p class="lead mb-5">Notre plateforme est dédiée à l'organisation et à la planification des réunions de notre délégation. Ici, vous pouvez :</p>
 
-						<div class="row text-start">
-							<div class="col-md-4 mb-4">
-								<div class="icon-box d-flex align-items-start">
-									<i class="bi bi-calendar-check text-primary fs-1 me-3"></i>
-									<div>
-										<h5 class="fw-bold">Consulter les prochaines réunions</h5>
-										<p class="mb-0">Découvrez les réunions programmées à venir et restez informés.</p>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-4 mb-4">
-								<div class="icon-box d-flex align-items-start">
-									<i class="bi bi-hand-thumbs-up text-primary fs-1 me-3"></i>
-									<div>
-										<h5 class="fw-bold">Voter pour les dates</h5>
-										<p class="mb-0">Participez en votant pour les dates qui vous conviennent le mieux.</p>
-									</div>
-								</div>
-							</div>
-							<div class="col-md-4 mb-4">
-								<div class="icon-box d-flex align-items-start">
-									<i class="bi bi-file-earmark-text text-primary fs-1 me-3"></i>
-									<div>
-										<h5 class="fw-bold">Voir les détails des réunions</h5>
-										<p class="mb-0">Accédez aux informations complètes des réunions planifiées.</p>
-									</div>
-								</div>
-							</div>
-						</div>
+
 						<p class="mt-4 fs-5">Participez activement à la vie de notre association en votant et en assistant à nos réunions. Ensemble, faisons avancer la recherche et soutenons les personnes atteintes de maladies neuromusculaires.</p>
 					</div>
 				</div>
@@ -125,32 +97,39 @@
 				</h2>
 				<p class="description text-center">Voici la liste des réunions dont la date a été finalisée et les votes sont clos.</p>
 				<div class="row g-4">
-					{% set plannedMeetings = meetings|filter(m => m.finalDate is not null and m.finalDate > date()) %}
-					{% for meeting in plannedMeetings %}
-						<div class="col-12 col-md-6 col-lg-4">
-							<article class="card h-100">
-								<div class="card-header">
-									<h3 class="card-title">{{ meeting.title }}</h3>
-								</div>
-								<div class="card-body">
-									<p class="mb-0">
-										<strong>Date finale :</strong>
-										<time datetime="{{ meeting.finalDate|date('Y-m-d\\TH:i') }}">
-											{{ meeting.finalDate|date('d/m/Y H:i') }}
-										</time>
-									</p>
-								</div>
-								<div class="card-footer">
-									<a href="{{ path('app_meeting_show', {'id': meeting.id}) }}" class="btn-details">
-										<i class="fas fa-eye"></i>
-										Voir détails
-									</a>
-								</div>
-							</article>
-						</div>
+					{% set now = "now"|date("Y-m-d H:i:s", "Europe/Paris") %}
+					{% set plannedMeetings = meetings|filter(meeting => 
+                meeting.finalDate is not null and 
+                meeting.finalDate|date("Y-m-d H:i:s") > now
+            ) %}
+
+					{% if plannedMeetings is not empty %}
+						{% for meeting in plannedMeetings %}
+							<div class="col-12 col-md-6 col-lg-4">
+								<article class="card h-100">
+									<div class="card-header">
+										<h3 class="card-title">{{ meeting.title }}</h3>
+									</div>
+									<div class="card-body">
+										<p class="mb-0">
+											<strong>Date finale :</strong>
+											<time datetime="{{ meeting.finalDate|date('Y-m-d\\TH:i') }}">
+												{{ meeting.finalDate|date('d/m/Y H:i') }}
+											</time>
+										</p>
+									</div>
+									<div class="card-footer">
+										<a href="{{ path('app_meeting_show', {'id': meeting.id}) }}" class="btn-details">
+											<i class="fas fa-eye"></i>
+											Voir détails
+										</a>
+									</div>
+								</article>
+							</div>
+						{% endfor %}
 					{% else %}
 						<p class="text-center">Aucune réunion planifiée à venir.</p>
-					{% endfor %}
+					{% endif %}
 				</div>
 			</div>
 		</section>
