@@ -37,12 +37,34 @@
 								<span class="info-label">Date de fin de vote :</span>
 								<span>{{ meeting.votingDeadline|date('d/m/Y à H:i') }}</span>
 							</div>
+
+							{# Section de vote si la deadline n'est pas dépassée #}
+							{% if not hasVoted %}
+								<div class="voting-section text-center">
+									<h3>Voter pour une date</h3>
+									<div class="voting-buttons" style="display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; margin-top: 10px;">
+										{% for booking in meeting.bookings %}
+											<form method="post" action="{{ path('app_meeting_vote_action', {'id': meeting.id}) }}" class="inline-form">
+												<input type="hidden" name="date" value="{{ booking.date|date('Y-m-d H:i:s') }}">
+												<button type="submit" class="btn-details" style="white-space: nowrap;">
+													<i class="fas fa-check"></i>
+													{{ booking.date|date('d/m/Y à H:i') }}
+												</button>
+											</form>
+										{% endfor %}
+									</div>
+								</div>
+							{% else %}
+								<div class="info-item">
+									<span class="info-label">Vous avez voté pour :</span>
+									<span>{{ vote.booking.date|date('d/m/Y à H:i') }}</span>
+								</div>
+							{% endif %}
 						{% endif %}
 					</div>
 				</div>
 			</div>
 
-			{# Section pour la carte Google Maps #}
 			<div id="map" style="width: 60%; height: 300px; margin-top: 10px; margin-left: auto; margin-right: auto;"></div>
 
 			<div class="action-buttons mt-4">
@@ -82,8 +104,7 @@
 {% block javascripts %}
 	{{ parent() }}
 	<script>
-		// Initialiser la carte
-function initMap() {
+		function initMap() {
 const address = meetingPlace;
 const mapElement = document.getElementById('map');
 const geocoder = new google.maps.Geocoder();
@@ -110,7 +131,6 @@ mapElement.innerHTML = '<p>Impossible de charger la carte.</p>';
 });
 }
 
-// Charger l'API Google Maps
 function loadGoogleMapsScript() {
 if (!document.getElementById('google-maps-script')) {
 const script = document.createElement('script');
